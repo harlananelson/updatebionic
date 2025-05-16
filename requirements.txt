@@ -1,0 +1,11 @@
+patsy
+numpy
+scipy
+pandas
+plotnine
+lifelines
+geopandas
+jupyterlab-quarto
+duckdb
+polars
+py4j==0.10.7
