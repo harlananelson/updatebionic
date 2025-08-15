@@ -16,7 +16,7 @@ r-janitor
 r-curl
 r-survminer
 r-nanoparquet
-r-sparklyr
+#r-sparklyr
 #r-tidycensus
 r-remotes
 r-ranger
