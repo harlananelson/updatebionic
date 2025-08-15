@@ -17,7 +17,7 @@ r-curl
 r-survminer
 r-nanoparquet
 r-sparklyr
-r-tidycensus
+#r-tidycensus
 r-remotes
 r-ranger
 r-ggally

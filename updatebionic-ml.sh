@@ -43,17 +43,29 @@
 ## 7. Modify .bashrc to activate conda environment
 ## 8. Provide instructions for activating the R environment in the current terminal.
 
-set -e
+# - It sets WORK_DIR to the directory containing the script
+# - Works even if BASH_SOURCE[0] is empty (e.g., when run via bash directly)
+
+set -euo pipefail
+
+# Fallback to $0 if BASH_SOURCE[0] is empty
+SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+WORK_DIR="$SCRIPT_DIR"
+export WORK_DIR
+
+echo "Using working directory: $WORK_DIR"
+cd "$WORK_DIR" || { echo "Directory not found: $WORK_DIR"; exit 1; }
+
 echo "========== Starting daily container setup =========="
 date
-# Define working directory as the directory where the script is located
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORK_DIR="$SCRIPT_DIR"
-echo "Using working directory: $WORK_DIR"
+
 # Change to your working directory
-cd "$WORK_DIR" || { echo "Directory not found: $WORK_DIR"; exit 1; }
+cd "$WORK_DIR" || { echo "Failed to change to directory: $WORK_DIR"; exit 1; }
+
 # Export the path to the Python package
 export PYTHONPATH="$PYTHONPATH:$WORK_DIR"
+
 echo "========== Part 1: System updates =========="
 # Update package lists and install system dependencies if needed
 echo "Updating apt package lists..."
@@ -117,7 +129,7 @@ conda clean --all -y
 echo "============ Part 5: create Conda environment /tmp/r_env =============="
 ## Create an R environment with Python and R
 # Define R version as a variable for easy updates
-R_VERSION="4.5.1"
+R_VERSION="4.4.0"
 PYTHON_VERSION="3.10"
 # Added definition for R environment path
 # Justification: The variable R_ENV_PATH was undefined but used in multiple places (e.g., conda create, environment variables, .libPaths). Defining it here ensures the script runs without errors and maintains consistency with hardcoded paths like in .Rprofile.
@@ -141,29 +153,44 @@ fi
 conda activate "$R_ENV_PATH"
 echo "=== Configure environment variables and .Rprofile ========"
 export R_INCLUDE_DIR="$R_ENV_PATH/lib/R/include"
-export R_LIB_PATH="$R_ENV_PATH/lib/R/library"
-export PKG_CONFIG_PATH=/tmp/r_env/lib/pkgconfig:$PKG_CONFIG_PATH
+export R_LIB_PATH="$R_ENV_PATH/lib/R/library"ß
+export PKG_CONFIG_PATH="/tmp/r_env/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+
 echo "Configuring .Rprofile to prioritize the new R library path..."
 cat <<'EOF' > "$HOME/.Rprofile"
 if (.libPaths()[1] != "/tmp/r_env/lib/R/library") {
   .libPaths(c("/tmp/r_env/lib/R/library", .libPaths()))
 }
 EOF
-echo "====== Install Python packages using requirements-python.txt ============="
-CONDA_PYTHON_PACKAGES="numpy scipy pandas geopandas plotnine lifelines duckdb polars pyogrio pyproj"
-conda install -y -c conda-forge $CONDA_PYTHON_PACKAGES
-echo " Installing remaining Python packages from requirements-python.txt using pip..."
-if [[ -f "$WORK_DIR/requirements-python.txt" ]]; then
-python -m pip install -r "$WORK_DIR/requirements-python.txt"
+#
+echo " ===== Install Python packages using requirements-python.txt ============="
+
+
+echo "Installing Python packages from requirements-python.txt using pip..."
+
+# Preconditions
+REQUIREMENTS_FILE="$WORK_DIR/requirements-python.txt"
+
+if [[ -f "$REQUIREMENTS_FILE" ]]; then
+    python -m pip install -r "$REQUIREMENTS_FILE"
 else
-echo "Warning: requirements-python.txt not found in $WORK_DIR. Skipping."
+    echo "Warning: $REQUIREMENTS_FILE not found. Skipping Python package installation."
 fi
-echo " ===== Register Python kernel  ==========="
+# ===== Register Python kernel  ===========
+
 python -m pip install ipykernel
 python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
-# Now install R packages
-# Note: Using conda-forge for packages with system deps/binary needs (via requirements-R.txt), CRAN for pure-R/specialized packages.
-# Justification: Filter out r-reticulate from requirements-R.txt to avoid Conda dependency conflicts with r-base=4.5.1. Install reticulate via CRAN instead.
+
+# ===== Verify critical Python packages ===========
+
+echo "===== Verify critical Python packages ==========="
+
+PYTHON_PACKAGES_TO_CHECK=("py4j" "plotnine" "geopandas" "pyogrio" "pyproj")
+for PACKAGE in "${PYTHON_PACKAGES_TO_CHECK[@]}"; do
+    python -c "import $PACKAGE" 2>/dev/null && echo "$PACKAGE is installed." || echo "$PACKAGE is NOT installed."
+done
+
+
 echo " ==== Install R packages from requirements-R.txt ==========="
 if [[ -f "$WORK_DIR/requirements-R.txt" ]]; then
 grep -v '^r-reticulate$' "$WORK_DIR/requirements-R.txt" > /tmp/requirements-R-filtered.txt
