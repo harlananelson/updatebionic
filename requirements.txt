@@ -1,0 +1,10 @@
+patsy
+numpy
+scipy
+pandas
+plotnine
+lifelines
+geopandas
+jupyterlab-quarto
+duckdb==0.10.3
+polars

@@ -1,0 +1,16 @@
+patsy
+numpy
+scipy
+pandas
+plotnine
+lifelines
+geopandas
+jupyterlab-quarto
+duckdb
+polars
+pyspark
+pyarrow
+plotly
+seaborn
+pytest
+PyYAML
