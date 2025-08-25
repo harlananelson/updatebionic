@@ -216,14 +216,6 @@ echo "Part 6 ========== Verify installations =========="
 # Check py4j version
 PY4J_VERSION=$(python -c "import py4j; print(py4j.__version__)" 2>/dev/null || echo "Not installed")
 echo "Installed py4j version: ${PY4J_VERSION}"
-# Check pyspark version and SPARK_HOME
-SPARK_HOME=${SPARK_HOME:-"Not set"}
-PYSPARK_VERSION=$(python -c "import pyspark; print(pyspark.__version__)" 2>/dev/null || echo "Not installed")
-echo "Installed pyspark version: ${PYSPARK_VERSION}"
-echo "SPARK_HOME: ${SPARK_HOME}"
-if [ "${PYSPARK_VERSION}" = "Not installed" ]; then
-echo "Warning: pyspark not found in current Python path. Ensure base Conda env is activated or paths are set."
-fi
 # Check Quarto version
 QUARTO_INSTALLED_VERSION=$(quarto --version 2>/dev/null || echo "Not installed")
 echo "Installed Quarto version: ${QUARTO_INSTALLED_VERSION}"
