@@ -153,7 +153,7 @@ fi
 conda activate "$R_ENV_PATH"
 echo "=== Configure environment variables and .Rprofile ========"
 export R_INCLUDE_DIR="$R_ENV_PATH/lib/R/include"
-export R_LIB_PATH="$R_ENV_PATH/lib/R/library"ß
+export R_LIB_PATH="$R_ENV_PATH/lib/R/library"
 export PKG_CONFIG_PATH="/tmp/r_env/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 
 echo "Configuring .Rprofile to prioritize the new R library path..."
