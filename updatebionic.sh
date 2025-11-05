@@ -201,7 +201,6 @@ fi
 # ===== Register Python kernel  ===========
 
 python -m pip install ipykernel
-# Register Python kernel with a consistent name
 python -m ipykernel install --user --name "python310_r_env" --display-name "Python 3.10 (r_env)"
 
 # Install reticulate R package first as it may be needed by other R packages for configuration
