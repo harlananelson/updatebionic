@@ -79,13 +79,14 @@ python -m pip install --upgrade pip
 # Uninstall any existing versions of py4j to prevent conflicts
 echo "Handling py4j package..."
 python -m pip uninstall -y py4j || true
+
 echo "========== Part 2: Add python packages to conda environment base in /opt/conda ======"
 # Install packages from requirements.txt
 echo "Installing Python requirements..."
 if [[ -f "$WORK_DIR/requirements.txt" ]]; then
-python -m pip install -r "$WORK_DIR/requirements.txt"
+    python -m pip install -r "$WORK_DIR/requirements.txt"
 else
-echo "Warning: requirements.txt not found in $WORK_DIR. Skipping Python package installation from file."
+    echo "Warning: requirements.txt not found in $WORK_DIR. Skipping Python package installation from file."
 fi
 
 echo "======== Part 3: Install Quarto system wide ================"
@@ -104,26 +105,29 @@ echo "========== Part 4: R Install Miniconda =========="
 # Install and initialize Miniconda in /tmp (fast)
 echo "Installing Miniconda..."
 if [ -d "/tmp/miniconda" ]; then
-echo "Miniconda already installed in /tmp/miniconda. Skipping installation."
+    echo "Miniconda already installed in /tmp/miniconda. Skipping installation."
 else
-echo "Miniconda not found. Installing..."# --- IGNORE --- wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
-# Pin to Miniconda version compatible with GLIBC 2.27 (Ubuntu 18.04)
-wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh -O /tmp/miniconda.sh
-bash /tmp/miniconda.sh -b -p /tmp/miniconda
-rm /tmp/miniconda.sh
+    echo "Miniconda not found. Installing..."
+    # --- IGNORE --- wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+    # Pin to Miniconda version compatible with GLIBC 2.27 (Ubuntu 18.04)
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh -O /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -b -p /tmp/miniconda
+    rm /tmp/miniconda.sh
 fi
+
 # Set PATH to include Miniconda
 export PATH="/tmp/miniconda/bin:$PATH"
 # Initialize Conda shell hook for activation in this script
 eval "$(conda shell.bash hook)"
+
 # Accept Anaconda Terms of Service for required channels
-echo "Accepting Anaconda Terms of Service..."# Accept Anaconda Terms of Service for required channels
 echo "Accepting Anaconda Terms of Service..."
 # --- IGNORE --- conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || { echo "Error: Failed to accept ToS for main channel."; exit 1; }
 # --- IGNORE --- conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || { echo "Error: Failed to accept ToS for r channel."; exit 1; }
 # ToS acceptance command not available in Miniconda 23.11.0-2 (required for Ubuntu 18.04 GLIBC 2.27 compatibility)
 # The older conda version does not require explicit ToS acceptance via command line
 echo "Using Miniconda version compatible with Ubuntu 18.04 (ToS acceptance not required for this version)"
+
 # Add channels
 echo "Adding channels..."
 conda config --add channels conda-forge
@@ -136,29 +140,38 @@ echo "============ Part 5: create Conda environment /tmp/r_env =============="
 # Define R version as a variable for easy updates
 R_VERSION="4.4.0"
 PYTHON_VERSION="3.10"
+
 # Added definition for R environment path
 # Justification: The variable R_ENV_PATH was undefined but used in multiple places (e.g., conda create, environment variables, .libPaths). Defining it here ensures the script runs without errors and maintains consistency with hardcoded paths like in .Rprofile.
 R_ENV_PATH="/tmp/r_env"
+
 echo "======= Create and activate conda environment with Python and R ========="
+# Define R_LIB_PATH here to be available for early package installations (Critical Fix)
+R_LIB_PATH="$R_ENV_PATH/lib/R/library"
 
 echo "Creating R ${R_VERSION} environment with Python..."
 RETRY_COUNT=0
 MAX_RETRIES=3
 until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
 do
-conda create -y -p "$R_ENV_PATH" python=${PYTHON_VERSION} r-base=${R_VERSION} cmake && break
-RETRY_COUNT=$((RETRY_COUNT+1))
-echo "Conda environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
-sleep 5
+    conda create -y -p "$R_ENV_PATH" python=${PYTHON_VERSION} r-base=${R_VERSION} cmake && break
+    RETRY_COUNT=$((RETRY_COUNT+1))
+    echo "Conda environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+    sleep 5
 done
+
 if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
-echo "Fatal error: Conda environment creation failed after $MAX_RETRIES attempts. Exiting."
-exit 1
+    echo "Fatal error: Conda environment creation failed after $MAX_RETRIES attempts. Exiting."
+    exit 1
 fi
+
 conda activate "$R_ENV_PATH"
+
 echo "=== Configure environment variables and .Rprofile ========"
+# Set explicit Quarto environment variables to ensure interpreter discovery (Enhancement)
+export QUARTO_PYTHON="$R_ENV_PATH/bin/python"
+export QUARTO_R="$R_ENV_PATH/bin/R"
 export R_INCLUDE_DIR="$R_ENV_PATH/lib/R/include"
-export R_LIB_PATH="$R_ENV_PATH/lib/R/library"
 export PKG_CONFIG_PATH="/tmp/r_env/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 
 echo "Configuring .Rprofile to prioritize the new R library path..."
@@ -170,6 +183,9 @@ EOF
 
 echo " ===== Install Python packages using requirements-python.txt ============="
 
+echo "Installing required Python packages for Quarto/Jupyter reliability..."
+# Install the 'quarto' package for better kernel management from Python environments
+python -m pip install quarto
 
 echo "Installing Python packages from requirements-python.txt using pip..."
 
@@ -181,75 +197,96 @@ if [[ -f "$REQUIREMENTS_FILE" ]]; then
 else
     echo "Warning: $REQUIREMENTS_FILE not found. Skipping Python package installation."
 fi
+
 # ===== Register Python kernel  ===========
 
 python -m pip install ipykernel
-python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
+# Register Python kernel with a consistent name
+python -m ipykernel install --user --name "python310_r_env" --display-name "Python 3.10 (r_env)"
+
+# Install reticulate R package first as it may be needed by other R packages for configuration
+echo "Installing R package reticulate via CRAN..."
+R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); install.packages('reticulate', lib='$R_LIB_PATH', repos='https://cloud.r-project.org')"
 
 # ===== Verify critical Python packages ===========
 
 echo "===== Verify critical Python packages ==========="
 
 PYTHON_PACKAGES_TO_CHECK=("py4j" "plotnine" "geopandas" "pyogrio" "pyproj")
+
 for PACKAGE in "${PYTHON_PACKAGES_TO_CHECK[@]}"; do
     python -c "import $PACKAGE" 2>/dev/null && echo "$PACKAGE is installed." || echo "$PACKAGE is NOT installed."
 done
 
-
 echo " ==== Install R packages from requirements-R.txt ==========="
+
 if [[ -f "$WORK_DIR/requirements-R.txt" ]]; then
-grep -v '^r-reticulate$' "$WORK_DIR/requirements-R.txt" > /tmp/requirements-R-filtered.txt
-conda install -y -c conda-forge --file /tmp/requirements-R-filtered.txt || { echo "Error: Failed to install R packages from filtered requirements-R.txt."; exit 1; }
-rm -f /tmp/requirements-R-filtered.txt
+    grep -v '^r-reticulate$' "$WORK_DIR/requirements-R.txt" > /tmp/requirements-R-filtered.txt
+    conda install -y -c conda-forge --file /tmp/requirements-R-filtered.txt || { echo "Error: Failed to install R packages from filtered requirements-R.txt."; exit 1; }
+    rm -f /tmp/requirements-R-filtered.txt
 else
-echo "Warning: requirements-R.txt not found in $WORK_DIR. Skipping R package installation from file."
+    echo "Warning: requirements-R.txt not found in $WORK_DIR. Skipping R package installation from file."
 fi
+
 echo " ====== Install specified R packages via CRAN that cannot be installed with CONDA ========"
-# Correctly format the R_PACKAGES_CRAN array for install.packages()
-R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate")
-R_LIB_PATH="$R_ENV_PATH/lib/R/library"
+# R package 'reticulate' has been moved up to ensure Python path is correctly set.
+R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel")
+
 # A single R -e command to install all remaining packages
 R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
 R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,} # Remove trailing comma
 echo "Installing specified R packages via CRAN if not already present..."
 R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
-# Now register the R kernel
+
+# Now register the R kernel with the consistent name r_env and dynamic R version
 echo " ====== Register Jupyter kernel for R =========="
 R -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${R_VERSION} (r_env)')"
+
 #
 echo "Part 6 ========== Verify installations =========="
 # Check py4j version
 PY4J_VERSION=$(python -c "import py4j; print(py4j.__version__)" 2>/dev/null || echo "Not installed")
 echo "Installed py4j version: ${PY4J_VERSION}"
+
 # Check Quarto version
 QUARTO_INSTALLED_VERSION=$(quarto --version 2>/dev/null || echo "Not installed")
 echo "Installed Quarto version: ${QUARTO_INSTALLED_VERSION}"
+
 # Check if plotnine is installed
 python -c "import plotnine" 2>/dev/null && echo "plotnine is installed" || echo "plotnine is NOT installed"
+
 # Check R version
 echo "R version:"
 R --version | head -n1
+
 # Verify Python packages again (after all installations)
 echo "Verifying critical Python packages..."
 PYTHON_PACKAGES_TO_CHECK=("py4j" "plotnine" "geopandas") # Add other critical packages
 for PACKAGE in "${PYTHON_PACKAGES_TO_CHECK[@]}"; do
-python -c "import $PACKAGE" 2>/dev/null && echo "$PACKAGE is installed." || echo "$PACKAGE is NOT installed."
+    python -c "import $PACKAGE" 2>/dev/null && echo "$PACKAGE is installed." || echo "$PACKAGE is NOT installed."
 done
+
 # Verify R packages again (after all installations)
 echo "Verifying critical R packages..."
 R_PACKAGES_TO_CHECK_VERIFY=("tidyverse" "IRkernel" "reticulate") # Add other critical R packages
 for PACKAGE in "${R_PACKAGES_TO_CHECK_VERIFY[@]}"; do
-R -e "if(requireNamespace('$PACKAGE', quietly = TRUE, lib.loc = '$R_LIB_PATH')) {cat('$PACKAGE is installed.\n')} else {cat('$PACKAGE is NOT installed.\n')}"
+    R -e "if(requireNamespace('$PACKAGE', quietly = TRUE, lib.loc = '$R_LIB_PATH')) {cat('$PACKAGE is installed.\n')} else {cat('$PACKAGE is NOT installed.\n')}"
 done
+
 echo "========== Setup complete! =========="
 echo "Container is ready for use."
 echo "To use R in JupyterLab, choose the 'R ${R_VERSION} (r_env)' kernel."
-echo "Setup completed at: $(date)" # SC2005: Replaced echo with just date
+echo "Setup completed at: $(date)"
+echo ""
+echo "NOTE: Based on environment conflicts, we recommend using a Quarto wrapper file to render R notebooks reliably (e.g., 'quarto render figures.qmd')."
+echo "NOTE: This forces Quarto to use the correct R kernel and avoids Python fallback errors."
+
 echo " Part 7. ====== Modify .bashrc to activate conda environment ==="
 echo "Configuring .bashrc with conda init and environment activation..."
 conda init bash
 echo "conda activate $R_ENV_PATH" >> "$HOME/.bashrc"
 sudo chown "$USER":"$(id -gn)" "$HOME/.bashrc"
+
 echo "Part 8 ======  Provide instructions for activating the R environment in the current terminal ======"
 echo ""
 echo "IMPORTANT: To activate the R environment in your CURRENT terminal session, run:"
