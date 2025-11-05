@@ -106,8 +106,9 @@ echo "Installing Miniconda..."
 if [ -d "/tmp/miniconda" ]; then
 echo "Miniconda already installed in /tmp/miniconda. Skipping installation."
 else
-echo "Miniconda not found. Installing..."
-wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+echo "Miniconda not found. Installing..."# --- IGNORE --- wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
+# Pin to Miniconda version compatible with GLIBC 2.27 (Ubuntu 18.04)
+wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh -O /tmp/miniconda.sh
 bash /tmp/miniconda.sh -b -p /tmp/miniconda
 rm /tmp/miniconda.sh
 fi
@@ -116,9 +117,13 @@ export PATH="/tmp/miniconda/bin:$PATH"
 # Initialize Conda shell hook for activation in this script
 eval "$(conda shell.bash hook)"
 # Accept Anaconda Terms of Service for required channels
+echo "Accepting Anaconda Terms of Service..."# Accept Anaconda Terms of Service for required channels
 echo "Accepting Anaconda Terms of Service..."
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || { echo "Error: Failed to accept ToS for main channel."; exit 1; }
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || { echo "Error: Failed to accept ToS for r channel."; exit 1; }
+# --- IGNORE --- conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || { echo "Error: Failed to accept ToS for main channel."; exit 1; }
+# --- IGNORE --- conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || { echo "Error: Failed to accept ToS for r channel."; exit 1; }
+# ToS acceptance command not available in Miniconda 23.11.0-2 (required for Ubuntu 18.04 GLIBC 2.27 compatibility)
+# The older conda version does not require explicit ToS acceptance via command line
+echo "Using Miniconda version compatible with Ubuntu 18.04 (ToS acceptance not required for this version)"
 # Add channels
 echo "Adding channels..."
 conda config --add channels conda-forge
