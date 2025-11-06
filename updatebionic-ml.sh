@@ -208,7 +208,7 @@ echo "Warning: requirements-R.txt not found in $WORK_DIR. Skipping R package ins
 fi
 echo " ====== Install specified R packages via CRAN that cannot be installed with CONDA ========"
 # Correctly format the R_PACKAGES_CRAN array for install.packages()
-R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate")
+R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate"  "visNetwork")
 R_LIB_PATH="$R_ENV_PATH/lib/R/library"
 # A single R -e command to install all remaining packages
 R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
