@@ -12,14 +12,14 @@
 # - The / filesystem and /tmp are mounted from a local NVMe disk (/dev/nvme0n1p1), which should be fast.
 # - home directory, specifically /home/hnelson3/work, is a FUSE filesystem mounted from s3fs. (slow)
 # - Performance Bottleneck: 
-#   - Anything installed on th s3fs mount will be slow.  Avoid installation on /home, instead use /tmp
+#   - Anything installed on th s3fs mount will be slow.   Avoid installation on /home, instead use /tmp
 #   - S3fs is not a high-performance filesystem and is particularly bad for I/O-intensive operations like installing software with many small files.
 #   - renv installation would be slow because it uses a subdirectory of the project directory, which will be in /home
 # default base conda environment with:
 #   - in /opt/conda and called base
-#   -  R version 4.0.2 and 
-#   -  Python 3.7.6 is in /opt/conda and called base 
-#   -  pyspark (2.4.x)
+#   -   R version 4.0.2 and 
+#   -   Python 3.7.6 is in /opt/conda and called base 
+#   -   pyspark (2.4.x)
 
 # Goal of this script:
 ## 1. Update the base system such as pip and libraries
@@ -73,6 +73,8 @@ sudo apt-get update
 # Install consolidated system dependencies for geopandas, plotting, and other R packages
 echo "Installing system dependencies..."
 sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev
+# Add vim (Vi IMproved) text editor for basic system administration tasks, which provides the 'vi' command
+sudo apt-get install -y vim 
 # Update pip to the latest version
 echo "Updating pip..."
 python -m pip install --upgrade pip
@@ -181,7 +183,7 @@ if [[ -f "$REQUIREMENTS_FILE" ]]; then
 else
     echo "Warning: $REQUIREMENTS_FILE not found. Skipping Python package installation."
 fi
-# ===== Register Python kernel  ===========
+# ===== Register Python kernel   ===========
 
 python -m pip install ipykernel
 python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
@@ -250,7 +252,7 @@ echo "Configuring .bashrc with conda init and environment activation..."
 conda init bash
 echo "conda activate $R_ENV_PATH" >> "$HOME/.bashrc"
 sudo chown "$USER":"$(id -gn)" "$HOME/.bashrc"
-echo "Part 8 ======  Provide instructions for activating the R environment in the current terminal ======"
+echo "Part 8 ======   Provide instructions for activating the R environment in the current terminal ======"
 echo ""
 echo "IMPORTANT: To activate the R environment in your CURRENT terminal session, run:"
 echo "source ~/.bashrc"
