@@ -72,7 +72,8 @@ echo "Updating apt package lists..."
 sudo apt-get update
 # Install consolidated system dependencies for geopandas, plotting, and other R packages
 echo "Installing system dependencies..."
-sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev
+# openssh-client added for SSH connectivity from the container
+sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev openssh-client
 # Add vim (Vi IMproved) text editor for basic system administration tasks, which provides the 'vi' command
 sudo apt-get install -y vim 
 # Update pip to the latest version
@@ -81,6 +82,53 @@ python -m pip install --upgrade pip
 # Uninstall any existing versions of py4j to prevent conflicts
 echo "Handling py4j package..."
 python -m pip uninstall -y py4j || true
+echo "========== Part 1b: SSH Key Setup =========="
+# SSH Key Persistence Setup
+# Since the container's home directory is reset daily, SSH keys need to be restored from persistent storage.
+#
+# FIRST-TIME SETUP INSTRUCTIONS:
+# 1. Generate an SSH key (run once, then save to persistent storage):
+#    ssh-keygen -t ed25519 -C "your_email@example.com"
+#    (Press Enter to accept default location, then enter a passphrase or leave empty)
+#
+# 2. Copy the key to persistent storage:
+#    mkdir -p ~/work/Users/hnelson3/.ssh
+#    cp ~/.ssh/id_ed25519 ~/work/Users/hnelson3/.ssh/
+#    cp ~/.ssh/id_ed25519.pub ~/work/Users/hnelson3/.ssh/
+#
+# 3. Add the public key to GitHub:
+#    a. Display your public key: cat ~/.ssh/id_ed25519.pub
+#    b. Copy the output
+#    c. Go to GitHub.com -> Settings -> SSH and GPG keys -> New SSH key
+#    d. Paste the key and give it a title (e.g., "Bionic Container")
+#    e. Click "Add SSH key"
+#
+# 4. Test the connection: ssh -T git@github.com
+#    You should see: "Hi username! You've successfully authenticated..."
+
+# Create ~/.ssh directory if it doesn't exist
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# Persistent SSH key storage location
+SSH_PERSIST_DIR="$HOME/work/Users/hnelson3/.ssh"
+
+# Restore SSH keys from persistent storage if they exist
+if [[ -d "$SSH_PERSIST_DIR" ]] && [[ -n "$(ls -A "$SSH_PERSIST_DIR" 2>/dev/null)" ]]; then
+    echo "Restoring SSH keys from persistent storage ($SSH_PERSIST_DIR)..."
+    cp -n "$SSH_PERSIST_DIR"/* ~/.ssh/ 2>/dev/null || true
+    # Set correct permissions on private keys (read/write for owner only)
+    chmod 600 ~/.ssh/id_* 2>/dev/null || true
+    # Set correct permissions on public keys (readable by others)
+    chmod 644 ~/.ssh/*.pub 2>/dev/null || true
+    # Restore known_hosts if present
+    [[ -f "$SSH_PERSIST_DIR/known_hosts" ]] && cp -n "$SSH_PERSIST_DIR/known_hosts" ~/.ssh/
+    echo "SSH keys restored successfully."
+else
+    echo "WARNING: No SSH keys found in persistent storage at $SSH_PERSIST_DIR"
+    echo "See comments in this script for first-time SSH key setup instructions."
+fi
+
 echo "========== Part 2: Add python packages to conda environment base in /opt/conda ======"
 # Install packages from requirements.txt
 echo "Installing Python requirements..."
