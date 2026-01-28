@@ -1,21 +1,28 @@
 #!/bin/bash
 # setup-lhn-dual-envs.sh
 #
-# Purpose: Create two conda environments for side-by-side testing of lhn versions
-#   - lhn_prod: Production monolithic version (v0.1.0)
-#   - lhn_dev:  Development refactored version (v0.2.0-dev)
+# Purpose: Comprehensive daily container setup including:
+#   1. System updates and SSH key restoration
+#   2. Quarto installation (system-wide)
+#   3. R environment with Python 3.10 and R 4.4.0 (/tmp/r_env)
+#   4. Two lhn conda environments for side-by-side testing:
+#      - lhn_prod: Production monolithic version (v0.1.0)
+#      - lhn_dev:  Development refactored version (v0.2.0-dev)
 #
 # Prerequisites:
 #   - Original Docker conda at /opt/conda with pyspark 2.4.x
 #   - Git installed and configured
+#   - SSH keys in persistent storage (see Part 1b)
 #
 # Usage:
 #   chmod +x setup-lhn-dual-envs.sh
 #   ./setup-lhn-dual-envs.sh
 #
 # After running, select kernels in JupyterLab:
-#   - "Python (lhn-prod v0.1.0)" for production testing
-#   - "Python (lhn-dev v0.2.0)" for development testing
+#   - "PySpark + lhn-prod (v0.1.0)" for production Spark work
+#   - "PySpark + lhn-dev (v0.2.0)" for development Spark work
+#   - "Python 3.10 (r_env)" for Python ML work
+#   - "R 4.4.0 (r_env)" for R analysis
 
 # Note: Not using -u (nounset) because conda activation scripts have unbound variables
 set -eo pipefail
@@ -105,9 +112,158 @@ else
     exit 1
 fi
 
-# ========== Part 2: Verify Prerequisites ==========
+# ========== Part 2: System Updates ==========
 echo ""
-echo "========== Part 2: Verify Prerequisites =========="
+echo "========== Part 2: System Updates =========="
+
+# Update package lists and install system dependencies
+echo "Updating apt package lists..."
+sudo apt-get update
+
+# Install consolidated system dependencies for geopandas, plotting, and other R packages
+echo "Installing system dependencies..."
+sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev vim
+
+# Update pip in base conda
+echo "Updating pip in base conda..."
+/opt/conda/bin/python -m pip install --upgrade pip
+
+# ========== Part 3: Install Quarto ==========
+echo ""
+echo "========== Part 3: Install Quarto =========="
+
+echo "Installing Quarto..."
+# Fetch the latest tag from GitHub API
+LATEST_TAG=$(curl -s https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+QUARTO_VERSION=${LATEST_TAG#v} # Remove 'v' prefix if present
+sudo mkdir -p "/opt/quarto/${QUARTO_VERSION}"
+RELEASE_URL="https://github.com/quarto-dev/quarto-cli/releases/download/${LATEST_TAG}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz"
+echo "Downloading and extracting Quarto ${QUARTO_VERSION}..."
+sudo curl -L "${RELEASE_URL}" | sudo tar -xz -C "/opt/quarto/${QUARTO_VERSION}" --strip-components=1
+sudo ln -sf "/opt/quarto/${QUARTO_VERSION}/bin/quarto" "/usr/local/bin/quarto"
+echo "Quarto ${QUARTO_VERSION} installed successfully."
+
+# ========== Part 4: Install Miniconda ==========
+echo ""
+echo "========== Part 4: Install Miniconda =========="
+
+if [ -d "/tmp/miniconda" ]; then
+    echo "Miniconda already installed in /tmp/miniconda. Skipping installation."
+else
+    echo "Installing Miniconda..."
+    # Pin to Miniconda version compatible with GLIBC 2.27 (Ubuntu 18.04)
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh -O /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -b -p /tmp/miniconda
+    rm /tmp/miniconda.sh
+fi
+
+# Set PATH to include Miniconda
+export PATH="/tmp/miniconda/bin:$PATH"
+
+# Initialize Conda shell hook for activation in this script
+eval "$(conda shell.bash hook)"
+
+# ToS acceptance not required for Miniconda 23.11.0-2 (Ubuntu 18.04 compatible)
+echo "Using Miniconda version compatible with Ubuntu 18.04"
+
+# Add channels
+echo "Configuring conda channels..."
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+
+echo "Cleaning conda cache..."
+conda clean --all -y
+
+# ========== Part 5: Create R Environment ==========
+echo ""
+echo "========== Part 5: Create R Environment =========="
+
+R_VERSION="4.4.0"
+PYTHON_VERSION="3.10"
+R_ENV_PATH="/tmp/r_env"
+
+if [ -d "$R_ENV_PATH" ]; then
+    echo "R environment already exists at $R_ENV_PATH. Removing and recreating..."
+    conda env remove -p "$R_ENV_PATH" -y 2>/dev/null || rm -rf "$R_ENV_PATH"
+fi
+
+echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION}..."
+RETRY_COUNT=0
+MAX_RETRIES=3
+until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
+do
+    conda create -y -p "$R_ENV_PATH" python=${PYTHON_VERSION} r-base=${R_VERSION} cmake && break
+    RETRY_COUNT=$((RETRY_COUNT+1))
+    echo "Conda environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+    sleep 5
+done
+if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
+    echo "ERROR: Conda environment creation failed after $MAX_RETRIES attempts."
+    echo "Continuing with lhn setup (R environment will not be available)..."
+else
+    # Activate R environment for package installation
+    conda activate "$R_ENV_PATH"
+
+    # Configure environment variables
+    export R_INCLUDE_DIR="$R_ENV_PATH/lib/R/include"
+    export R_LIB_PATH="$R_ENV_PATH/lib/R/library"
+    export PKG_CONFIG_PATH="$R_ENV_PATH/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+
+    # Configure .Rprofile
+    echo "Configuring .Rprofile..."
+    cat <<'EOF' > "$HOME/.Rprofile"
+if (.libPaths()[1] != "/tmp/r_env/lib/R/library") {
+  .libPaths(c("/tmp/r_env/lib/R/library", .libPaths()))
+}
+EOF
+
+    # Install Python packages for R environment
+    echo "Installing Python packages for R environment..."
+    REQUIREMENTS_PYTHON="$SCRIPT_DIR/requirements-python.txt"
+    if [[ -f "$REQUIREMENTS_PYTHON" ]]; then
+        python -m pip install -r "$REQUIREMENTS_PYTHON"
+    else
+        echo "Warning: $REQUIREMENTS_PYTHON not found. Installing critical packages..."
+        python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
+    fi
+
+    # Register Python kernel for R environment
+    echo "Registering Python 3.10 kernel..."
+    python -m pip install ipykernel
+    python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
+
+    # Install R packages from conda
+    echo "Installing R packages via conda..."
+    REQUIREMENTS_R="$SCRIPT_DIR/requirements-R.txt"
+    if [[ -f "$REQUIREMENTS_R" ]]; then
+        conda install -y -c conda-forge --file "$REQUIREMENTS_R" || echo "Warning: Some R conda packages failed"
+    else
+        echo "Warning: $REQUIREMENTS_R not found. Installing critical R packages..."
+        conda install -y -c conda-forge r-tidyverse r-devtools r-irkernel || echo "Warning: Some R packages failed"
+    fi
+
+    # Pre-install RcppTOML via conda (dependency of reticulate)
+    echo "Installing RcppTOML via conda-forge..."
+    conda install -y -c conda-forge r-rcpptoml || echo "Warning: r-rcpptoml conda install failed"
+
+    # Install R packages via CRAN
+    echo "Installing R packages via CRAN..."
+    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2")
+    R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
+    R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
+    R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
+
+    # Register R kernel
+    echo "Registering R ${R_VERSION} kernel..."
+    R -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${R_VERSION} (r_env)')"
+
+    conda deactivate
+    echo "R environment setup complete."
+fi
+
+# ========== Part 6: Verify Prerequisites for lhn ==========
+echo ""
+echo "========== Part 6: Verify Prerequisites for lhn =========="
 
 # Check that old conda exists
 if [[ ! -d "$OLD_CONDA_PATH" ]]; then
@@ -133,9 +289,9 @@ conda deactivate
 
 echo "Prerequisites verified successfully."
 
-# ========== Part 3: Verify/Update Source Repositories ==========
+# ========== Part 7: Verify/Update Source Repositories ==========
 echo ""
-echo "========== Part 3: Verify/Update Source Repositories =========="
+echo "========== Part 7: Verify/Update Source Repositories =========="
 
 # --- Production: Clone lhn to /tmp with v0.1.0-monolithic branch ---
 echo ""
@@ -200,9 +356,9 @@ fi
 echo ""
 echo "Source repositories ready."
 
-# ========== Part 4: Create Production Environment (v0.1.0) ==========
+# ========== Part 8: Create Production Environment (v0.1.0) ==========
 echo ""
-echo "========== Part 4: Create Production Environment (lhn_prod) =========="
+echo "========== Part 8: Create Production Environment (lhn_prod) =========="
 
 # Remove existing environment if present
 if [[ -d "$PROD_ENV_PATH" ]]; then
@@ -266,9 +422,9 @@ python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lh
 
 conda deactivate
 
-# ========== Part 5: Create Development Environment (v0.2.0-dev) ==========
+# ========== Part 9: Create Development Environment (v0.2.0-dev) ==========
 echo ""
-echo "========== Part 5: Create Development Environment (lhn_dev) =========="
+echo "========== Part 9: Create Development Environment (lhn_dev) =========="
 
 # Remove existing environment if present
 if [[ -d "$DEV_ENV_PATH" ]]; then
@@ -350,7 +506,7 @@ python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lh
 
 conda deactivate
 
-# ========== Part 6: Summary and Instructions ==========
+# ========== Part 10: Summary and Instructions ==========
 echo ""
 echo "========== Setup Complete! =========="
 echo ""
@@ -372,11 +528,16 @@ echo "    Activate: conda activate $DEV_ENV_PATH"
 echo ""
 echo "========== Jupyter Kernel Usage =========="
 echo ""
-echo "In JupyterLab, create two notebooks and select:"
-echo "  - Notebook 1: Kernel > Change Kernel > Python (lhn-prod v0.1.0)"
-echo "  - Notebook 2: Kernel > Change Kernel > Python (lhn-dev v0.2.0)"
+echo "RECOMMENDED (with Hive metastore access):"
+echo "  - PySpark + lhn-prod (v0.1.0)  <- Use this for production testing"
+echo "  - PySpark + lhn-dev (v0.2.0)   <- Use this for development testing"
 echo ""
-echo "Run cells step-by-step in both to compare behavior."
+echo "These hybrid kernels have full database access and lhn pre-loaded."
+echo "No sys.path modification needed!"
+echo ""
+echo "ALTERNATIVE (no metastore, for non-Spark testing only):"
+echo "  - Python (lhn-prod v0.1.0)"
+echo "  - Python (lhn-dev v0.2.0)"
 echo ""
 echo "========== Editable Installs =========="
 echo ""
@@ -398,7 +559,126 @@ echo ""
 echo "If you encounter pandas-related import errors, the code may need"
 echo "to be updated to support pandas 0.25.x API."
 echo ""
+echo "========== Hive Metastore Note =========="
+echo ""
+echo "IMPORTANT: The lhn_prod and lhn_dev kernels may NOT have access to"
+echo "the Hive metastore (you'll only see 'default' database)."
+echo ""
+echo "The base pyspark kernel has the metastore configuration."
+echo ""
+echo "RECOMMENDED: Use the 'pyspark' kernel with sys.path modification:"
+echo ""
+echo "  # For PRODUCTION testing (add to top of notebook):"
+echo "  import sys"
+echo "  sys.path.insert(0, '$LHN_PROD_CLONE')"
+echo "  import lhn"
+echo ""
+echo "  # For DEVELOPMENT testing (add to top of notebook):"
+echo "  import sys"
+echo "  sys.path.insert(0, '$SPARK_CONFIG_PERSIST')"
+echo "  sys.path.insert(0, '$LHN_PERSIST')"
+echo "  import lhn"
+echo ""
+echo "========== Creating Hybrid Kernels (pyspark + lhn) =========="
+echo ""
+echo "Creating kernels that use base pyspark (with metastore) + lhn paths..."
+
+# Create kernel directory for pyspark-lhn-prod
+KERNEL_DIR_PROD="$HOME/.local/share/jupyter/kernels/pyspark-lhn-prod"
+mkdir -p "$KERNEL_DIR_PROD"
+cat > "$KERNEL_DIR_PROD/kernel.json" << EOF
+{
+  "argv": ["/opt/conda/bin/python", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+  "display_name": "PySpark + lhn-prod (v0.1.0)",
+  "language": "python",
+  "env": {
+    "PYTHONPATH": "$LHN_PROD_CLONE:\${PYTHONPATH}",
+    "PYSPARK_PYTHON": "/opt/conda/bin/python",
+    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
+  }
+}
+EOF
+echo "Created: PySpark + lhn-prod (v0.1.0)"
+
+# Create kernel directory for pyspark-lhn-dev
+KERNEL_DIR_DEV="$HOME/.local/share/jupyter/kernels/pyspark-lhn-dev"
+mkdir -p "$KERNEL_DIR_DEV"
+cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
+{
+  "argv": ["/opt/conda/bin/python", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+  "display_name": "PySpark + lhn-dev (v0.2.0)",
+  "language": "python",
+  "env": {
+    "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:\${PYTHONPATH}",
+    "PYSPARK_PYTHON": "/opt/conda/bin/python",
+    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
+  }
+}
+EOF
+echo "Created: PySpark + lhn-dev (v0.2.0)"
+
+echo ""
+echo "These hybrid kernels use the base pyspark (with Hive metastore access)"
+echo "but automatically include the lhn paths - no sys.path needed!"
+echo ""
+
+echo "========== R Environment =========="
+echo ""
+echo "  R ENVIRONMENT:"
+echo "    Environment: /tmp/r_env"
+echo "    R Version: 4.4.0"
+echo "    Python Version: 3.10"
+echo "    Kernels:"
+echo "      - Python 3.10 (r_env)  <- For Python ML work"
+echo "      - R 4.4.0 (r_env)      <- For R analysis"
+echo ""
+echo "    Activate: conda activate /tmp/r_env"
+echo ""
+echo "========== Quarto =========="
+echo ""
+QUARTO_INSTALLED_VERSION=$(quarto --version 2>/dev/null || echo "Not installed")
+echo "  Quarto version: ${QUARTO_INSTALLED_VERSION}"
+echo "  Location: /opt/quarto/"
+echo ""
+
+echo "========== Configuring .bashrc =========="
+echo ""
+
+# Initialize miniconda in .bashrc
+/tmp/miniconda/bin/conda init bash 2>/dev/null || true
+
+# Add conda environment activation (only if not already present)
+if ! grep -q "conda activate /tmp/r_env" "$HOME/.bashrc"; then
+    echo "conda activate /tmp/r_env" >> "$HOME/.bashrc"
+    echo "Added R environment activation to .bashrc"
+fi
+
+# Add aliases for switching between conda environments (only if not already present)
+if ! grep -q "alias oldbase=" "$HOME/.bashrc"; then
+cat <<'EOF' >> "$HOME/.bashrc"
+
+# === Helpers for switching between conda environments ===
+# oldbase: Switch to original Docker conda (base) environment at /opt/conda (has pyspark)
+alias oldbase='conda deactivate && source /opt/conda/etc/profile.d/conda.sh && conda activate base && echo "Now using ORIGINAL Docker conda (base) environment from /opt/conda"'
+# oldconda: Make original /opt/conda available without activating
+alias oldconda='source /opt/conda/etc/profile.d/conda.sh && echo "Original /opt/conda is now available (run conda activate base if you want the base env)"'
+EOF
+echo "Added conda environment switching aliases (oldbase, oldconda) to .bashrc"
+fi
+
+sudo chown "$USER":"$(id -gn)" "$HOME/.bashrc"
+
 echo "========== List Available Kernels =========="
 jupyter kernelspec list 2>/dev/null || echo "(jupyter not in PATH, kernels were registered for --user)"
+echo ""
+echo "========== Quick Reference =========="
+echo ""
+echo "  For PySpark + lhn work:    Use 'PySpark + lhn-dev (v0.2.0)' kernel"
+echo "  For Python ML work:        Use 'Python 3.10 (r_env)' kernel"
+echo "  For R analysis:            Use 'R 4.4.0 (r_env)' kernel"
+echo ""
+echo "  Terminal shortcuts:"
+echo "    oldbase  - Switch to original Docker conda with pyspark"
+echo "    oldconda - Make /opt/conda available without activating"
 echo ""
 echo "Setup completed at: $(date)"
