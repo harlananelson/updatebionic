@@ -610,6 +610,12 @@ echo "========== Creating Hybrid Kernels (pyspark + lhn) =========="
 echo ""
 echo "Creating kernels that use base pyspark (with metastore) + lhn paths..."
 
+# Find the py4j zip file for PYTHONPATH
+PY4J_ZIP=$(ls /usr/local/spark/python/lib/py4j-*-src.zip 2>/dev/null | head -1)
+if [ -z "$PY4J_ZIP" ]; then
+  PY4J_ZIP="/usr/local/spark/python/lib/py4j-0.10.7-src.zip"
+fi
+
 # Create kernel directory for pyspark-lhn-prod
 KERNEL_DIR_PROD="$HOME/.local/share/jupyter/kernels/pyspark-lhn-prod"
 mkdir -p "$KERNEL_DIR_PROD"
@@ -619,7 +625,9 @@ cat > "$KERNEL_DIR_PROD/kernel.json" << EOF
   "display_name": "PySpark + lhn-prod (v0.1.0)",
   "language": "python",
   "env": {
-    "PYTHONPATH": "$LHN_PROD_CLONE:\${PYTHONPATH}",
+    "SPARK_HOME": "/usr/local/spark",
+    "HADOOP_CONF_DIR": "/etc/jupyter/configs",
+    "PYTHONPATH": "$LHN_PROD_CLONE:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
     "PYSPARK_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
   }
@@ -636,7 +644,9 @@ cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
   "display_name": "PySpark + lhn-dev (v0.2.0)",
   "language": "python",
   "env": {
-    "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:\${PYTHONPATH}",
+    "SPARK_HOME": "/usr/local/spark",
+    "HADOOP_CONF_DIR": "/etc/jupyter/configs",
+    "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
     "PYSPARK_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
   }
