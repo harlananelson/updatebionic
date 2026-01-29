@@ -8,8 +8,10 @@ geopandas
 jupyterlab-quarto
 duckdb
 polars
-pyspark
-pyarrow
+# pyspark 3.5.0 supports Python 3.10; use lhn_prod/lhn_dev for pyspark 2.4.4 work
+pyspark==3.5.0
+# pyarrow 14.0.2 has pre-built wheels for Python 3.10 on Linux
+pyarrow==14.0.2
 plotly
 seaborn
 pytest

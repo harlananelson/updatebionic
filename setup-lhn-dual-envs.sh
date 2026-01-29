@@ -53,6 +53,10 @@ echo "========== LHN Dual Environment Setup =========="
 echo "Script directory: $SCRIPT_DIR"
 date
 
+# Ensure conda environments registry exists (suppresses "Unable to create environments file" warning)
+mkdir -p ~/.conda
+touch ~/.conda/environments.txt 2>/dev/null || true
+
 # ========== Part 1: Install SSH and Restore Keys ==========
 echo ""
 echo "========== Part 1: Install SSH and Restore Keys =========="
@@ -375,8 +379,14 @@ conda create -p "$PROD_ENV_PATH" --clone base -y
 echo "Activating production environment..."
 conda activate "$PROD_ENV_PATH"
 
-# Upgrade pip to avoid build isolation issues that can corrupt packages
-# Old pip (20.0.2) has issues with build isolation that can corrupt pandas
+# Fix corrupted pip in cloned environment before upgrading
+# Cloning conda environments can leave pip in a broken state with mixed version files
+echo "Removing corrupted pip installation from cloned environment..."
+find "$PROD_ENV_PATH/lib/python3.7/site-packages" -maxdepth 1 -name "pip*" -exec rm -rf {} + 2>/dev/null || true
+echo "Installing fresh pip via get-pip.py..."
+curl -sS https://bootstrap.pypa.io/pip/3.7/get-pip.py | python
+
+# Upgrade pip to latest version compatible with Python 3.7
 echo "Upgrading pip..."
 python -m pip install --upgrade pip
 
@@ -409,6 +419,11 @@ else
     pip install plotnine lifelines
 fi
 
+# Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
+# pyspark 2.4.4 requires pandas 0.25.x
+echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
+pip install --no-cache-dir pandas==0.25.3 --force-reinstall
+
 # Install ipykernel and register
 echo "Installing ipykernel..."
 pip install ipykernel
@@ -440,6 +455,13 @@ conda create -p "$DEV_ENV_PATH" --clone base -y
 # Activate and install lhn v0.2.0-dev
 echo "Activating development environment..."
 conda activate "$DEV_ENV_PATH"
+
+# Fix corrupted pip in cloned environment before upgrading
+# Cloning conda environments can leave pip in a broken state with mixed version files
+echo "Removing corrupted pip installation from cloned environment..."
+find "$DEV_ENV_PATH/lib/python3.7/site-packages" -maxdepth 1 -name "pip*" -exec rm -rf {} + 2>/dev/null || true
+echo "Installing fresh pip via get-pip.py..."
+curl -sS https://bootstrap.pypa.io/pip/3.7/get-pip.py | python
 
 # Upgrade pip to support pyproject.toml-only editable installs (requires pip >= 21.3)
 # Old pip (20.0.2) requires setup.py for editable installs
@@ -492,6 +514,11 @@ else
     echo "Warning: $REQUIREMENTS_FILE not found, installing critical packages individually..."
     pip install plotnine lifelines
 fi
+
+# Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
+# pyspark 2.4.4 requires pandas 0.25.x
+echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
+pip install --no-cache-dir pandas==0.25.3 --force-reinstall
 
 # Install ipykernel and register
 echo "Installing ipykernel..."
@@ -617,6 +644,55 @@ cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
 EOF
 echo "Created: PySpark + lhn-dev (v0.2.0)"
 
+# Create kernels for upgraded Spark with metastore access
+# These use the cloned environments (with newer pyspark if installed) but set HADOOP_CONF_DIR
+# to enable metastore connectivity
+
+echo ""
+echo "Creating upgraded Spark kernels with metastore access..."
+
+# Upgraded Spark kernel for production environment
+KERNEL_DIR_PROD_UPGRADED="$HOME/.local/share/jupyter/kernels/spark-upgraded-prod"
+mkdir -p "$KERNEL_DIR_PROD_UPGRADED"
+cat > "$KERNEL_DIR_PROD_UPGRADED/kernel.json" << EOF
+{
+  "argv": ["$PROD_ENV_PATH/bin/python", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+  "display_name": "Spark Upgraded + lhn-prod (Metastore)",
+  "language": "python",
+  "env": {
+    "HADOOP_CONF_DIR": "/etc/jupyter/configs",
+    "HADOOP_HOME": "/usr/local/hadoop",
+    "JAVA_HOME": "/usr/lib/jvm/java-8-openjdk-amd64/jre/",
+    "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell",
+    "PYSPARK_PYTHON": "$PROD_ENV_PATH/bin/python",
+    "PYSPARK_DRIVER_PYTHON": "$PROD_ENV_PATH/bin/python",
+    "PATH": "/usr/local/hadoop/bin:\${PATH}"
+  }
+}
+EOF
+echo "Created: Spark Upgraded + lhn-prod (Metastore)"
+
+# Upgraded Spark kernel for development environment
+KERNEL_DIR_DEV_UPGRADED="$HOME/.local/share/jupyter/kernels/spark-upgraded-dev"
+mkdir -p "$KERNEL_DIR_DEV_UPGRADED"
+cat > "$KERNEL_DIR_DEV_UPGRADED/kernel.json" << EOF
+{
+  "argv": ["$DEV_ENV_PATH/bin/python", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+  "display_name": "Spark Upgraded + lhn-dev (Metastore)",
+  "language": "python",
+  "env": {
+    "HADOOP_CONF_DIR": "/etc/jupyter/configs",
+    "HADOOP_HOME": "/usr/local/hadoop",
+    "JAVA_HOME": "/usr/lib/jvm/java-8-openjdk-amd64/jre/",
+    "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell",
+    "PYSPARK_PYTHON": "$DEV_ENV_PATH/bin/python",
+    "PYSPARK_DRIVER_PYTHON": "$DEV_ENV_PATH/bin/python",
+    "PATH": "/usr/local/hadoop/bin:\${PATH}"
+  }
+}
+EOF
+echo "Created: Spark Upgraded + lhn-dev (Metastore)"
+
 echo ""
 echo "These hybrid kernels use the base pyspark (with Hive metastore access)"
 echo "but automatically include the lhn paths - no sys.path needed!"
@@ -673,9 +749,22 @@ jupyter kernelspec list 2>/dev/null || echo "(jupyter not in PATH, kernels were 
 echo ""
 echo "========== Quick Reference =========="
 echo ""
-echo "  For PySpark + lhn work:    Use 'PySpark + lhn-dev (v0.2.0)' kernel"
-echo "  For Python ML work:        Use 'Python 3.10 (r_env)' kernel"
-echo "  For R analysis:            Use 'R 4.4.0 (r_env)' kernel"
+echo "  RECOMMENDED KERNELS:"
+echo "    PySpark + lhn-dev (v0.2.0)           <- PySpark 2.4.4 + lhn dev (stable metastore)"
+echo "    Spark Upgraded + lhn-dev (Metastore) <- Uses lhn_dev env pyspark + metastore"
+echo ""
+echo "  OTHER KERNELS:"
+echo "    Python 3.10 (r_env)  <- For Python ML work (no Spark)"
+echo "    R 4.4.0 (r_env)      <- For R analysis"
+echo ""
+echo "  UPGRADED SPARK NOTE:"
+echo "    The 'Spark Upgraded' kernels use HADOOP_CONF_DIR=/etc/jupyter/configs"
+echo "    to enable metastore access. If you upgrade pyspark in lhn_prod or lhn_dev,"
+echo "    these kernels should connect to the metastore automatically."
+echo ""
+echo "    To upgrade pyspark in an environment:"
+echo "      conda activate $DEV_ENV_PATH"
+echo "      pip install pyspark==3.3.0  # or desired version"
 echo ""
 echo "  Terminal shortcuts:"
 echo "    oldbase  - Switch to original Docker conda with pyspark"
