@@ -125,8 +125,9 @@ echo "Updating apt package lists..."
 sudo apt-get update
 
 # Install consolidated system dependencies for geopandas, plotting, and other R packages
+# build-essential and gfortran are needed for compiling R packages from source (lobstr, butcher, etc.)
 echo "Installing system dependencies..."
-sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev vim
+sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev vim build-essential gfortran
 
 # Update pip in base conda
 echo "Updating pip in base conda..."
@@ -231,6 +232,15 @@ EOF
         python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
     fi
 
+    # Install txtarchive from persistent storage
+    TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
+    if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
+        echo "Installing txtarchive from $TXTARCHIVE_PERSIST..."
+        python -m pip install "$TXTARCHIVE_PERSIST"
+    else
+        echo "Warning: txtarchive not found at $TXTARCHIVE_PERSIST (skipping)"
+    fi
+
     # Register Python kernel for R environment
     echo "Registering Python 3.10 kernel..."
     python -m pip install ipykernel
@@ -252,7 +262,7 @@ EOF
 
     # Install R packages via CRAN
     echo "Installing R packages via CRAN..."
-    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "kernelshap")
+    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap")
     R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
     R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
     R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
