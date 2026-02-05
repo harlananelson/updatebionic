@@ -262,7 +262,7 @@ EOF
 
     # Install R packages via CRAN
     echo "Installing R packages via CRAN..."
-    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap")
+    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz")
     R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
     R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
     R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
