@@ -1,5 +1,6 @@
-r-matrix 
-r-mass 
+r-matrix
+r-mass
+r-duckdb
 r-tidyverse
 r-data.table
 r-tidymodels
