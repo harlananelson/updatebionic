@@ -35,4 +35,8 @@ r-pillar
 #r-rhdfs
 r-pkgconfig
 r-mgcv
-r-matrix 
+r-matrix
+r-glmnet
+r-data.tree
+r-diagrammer
+r-randomforestsrc
