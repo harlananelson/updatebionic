@@ -49,6 +49,36 @@ OLD_CONDA_PATH="/opt/conda"
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
 
+# ========== Self-Update from GitHub ==========
+SELF_UPDATE_REPO="harlananelson/updatebionic"
+SELF_UPDATE_BRANCH="main"
+SELF_UPDATE_FILE="setup-lhn-dual-envs.sh"
+
+if [[ "${SKIP_SELF_UPDATE:-}" == "1" ]]; then
+    echo "Self-update: skipping (already updated this run)."
+else
+    echo "Checking GitHub for newer version of $SELF_UPDATE_FILE..."
+    REMOTE_SCRIPT=$(curl -sfL "https://raw.githubusercontent.com/${SELF_UPDATE_REPO}/${SELF_UPDATE_BRANCH}/${SELF_UPDATE_FILE}" 2>/dev/null) || true
+
+    if [[ -n "$REMOTE_SCRIPT" ]]; then
+        LOCAL_HASH=$(sha256sum "$SCRIPT_PATH" | cut -d' ' -f1)
+        REMOTE_HASH=$(echo "$REMOTE_SCRIPT" | sha256sum | cut -d' ' -f1)
+
+        if [[ "$LOCAL_HASH" != "$REMOTE_HASH" ]]; then
+            echo "Newer version found on GitHub. Updating..."
+            echo "$REMOTE_SCRIPT" > "$SCRIPT_PATH"
+            chmod +x "$SCRIPT_PATH"
+            echo "Updated. Re-executing with new version..."
+            export SKIP_SELF_UPDATE=1
+            exec "$SCRIPT_PATH" "$@"
+        else
+            echo "Already running the latest version."
+        fi
+    else
+        echo "Warning: Could not reach GitHub (continuing with current version)."
+    fi
+fi
+
 echo "========== LHN Dual Environment Setup =========="
 echo "Script directory: $SCRIPT_DIR"
 date
@@ -262,7 +292,7 @@ EOF
 
     # Install R packages via CRAN
     echo "Installing R packages via CRAN..."
-    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "TrialEmulation")
+    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "TrialEmulation" "randomForestSRC" "timeROC")
     R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
     R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
     R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
