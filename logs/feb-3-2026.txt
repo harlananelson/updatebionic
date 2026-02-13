@@ -1,0 +1,947 @@
+Error in Jupyter:
+# Package loading
+pacman::p_load(
+  tidyverse, data.table, magrittr, janitor, glue,
+  tidymodels, ranger,
+  yardstick, probably, pROC,
+  vip,
+  treeshap, shapviz,
+  survival, survminer,
+  gt, gtsummary, knitr,
+  targets, tarchetypes,
+  IRdisplay
+)
+
+# treeshap loaded via pacman above — replaces kernelshap for speed
+
+
+output:
+Warning message:
+“package ‘treeshap’ is not available for this version of R
+
+A version of this package for your version of R might be available elsewhere,
+see the ideas at
+https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages”
+Warning message:
+“'BiocManager' not available.  Could not check Bioconductor.
+
+Please use `install.packages('BiocManager')` and then retry.”
+Warning message in p_install(package, character.only = TRUE, ...):
+“”
+Warning message in library(package, lib.loc = lib.loc, character.only = TRUE, logical.return = TRUE, :
+“there is no package called ‘treeshap’”
+Warning message in pacman::p_load(tidyverse, data.table, magrittr, janitor, glue, :
+“Failed to install/load:
+treeshap”
+
+
+Problem:  The treeshap package should have been installed when running setup-lhn-dual-envs.sh
+
+
+
+Last Part of terminal output
+
+
+r-dt-0.25            | #################################################################################################### | 100%
+r-furrr-0.3.1        | #################################################################################################### | 100%
+r-future.apply-1.9.1 | #################################################################################################### | 100%
+r-hms-1.1.2          | #################################################################################################### | 100%
+r-httpuv-1.6.6       | #################################################################################################### | 100%
+r-httr-1.4.4         | #################################################################################################### | 100%
+r-ids-1.0.1          | #################################################################################################### | 100%
+r-lme4-1.1_30        | #################################################################################################### | 100%
+r-pillar-1.8.1       | #################################################################################################### | 100%
+r-pkgbuild-1.3.1     | #################################################################################################### | 100%
+r-pkgload-1.3.0      | #################################################################################################### | 100%
+r-r2d3-0.2.6         | #################################################################################################### | 100%
+r-ranger-0.14.1      | #################################################################################################### | 100%
+r-rmarkdown-2.7      | #################################################################################################### | 100%
+r-slider-0.2.2       | #################################################################################################### | 100%
+r-svglite-2.1.0      | #################################################################################################### | 100%
+r-tidyselect-1.1.2   | #################################################################################################### | 100%
+r-ttr-0.24.3         | #################################################################################################### | 100%
+r-vcd-1.4_10         | #################################################################################################### | 100%
+r-webshot-0.5.4      | #################################################################################################### | 100%
+r-covr-3.6.1         | #################################################################################################### | 100%
+r-gargle-1.2.1       | #################################################################################################### | 100%
+r-gert-1.3.1         | #################################################################################################### | 100%
+r-gh-1.3.1           | #################################################################################################### | 100%
+r-lava-1.6.10        | #################################################################################################### | 100%
+r-progress-1.2.2     | #################################################################################################### | 100%
+r-quantmod-0.4.20    | #################################################################################################### | 100%
+r-rcmdcheck-1.4.0    | #################################################################################################### | 100%
+r-repr-1.1.4         | #################################################################################################### | 100%
+r-reprex-2.0.2       | #################################################################################################### | 100%
+r-roxygen2-7.1.1     | #################################################################################################### | 100%
+r-rsqlite-2.2.8      | #################################################################################################### | 100%
+r-shiny-1.6.0        | #################################################################################################### | 100%
+r-tibble-3.1.8       | #################################################################################################### | 100%
+r-cellranger-1.1.0   | #################################################################################################### | 100%
+r-dplyr-1.0.10       | #################################################################################################### | 100%
+r-forcats-0.5.2      | #################################################################################################### | 100%
+r-googledrive-2.0.0  | #################################################################################################### | 100%
+r-hardhat-1.2.0      | #################################################################################################### | 100%
+r-irdisplay-0.7      | #################################################################################################### | 100%
+r-nycflights13-1.0.2 | #################################################################################################### | 100%
+r-prodlim-2019.11.13 | #################################################################################################### | 100%
+r-rematch2-2.1.2     | #################################################################################################### | 100%
+r-rvest-1.0.3        | #################################################################################################### | 100%
+r-tseries-0.10_47    | #################################################################################################### | 100%
+r-usethis-2.1.6      | #################################################################################################### | 100%
+r-vroom-1.5.7        | #################################################################################################### | 100%
+r-dbplyr-2.2.1       | #################################################################################################### | 100%
+r-dials-1.0.0        | #################################################################################################### | 100%
+r-dtplyr-1.2.2       | #################################################################################################### | 100%
+r-googlesheets4-1.0. | #################################################################################################### | 100%
+r-ipred-0.9_13       | #################################################################################################### | 100%
+r-irkernel-1.1.1     | #################################################################################################### | 100%
+r-kableextra-1.3.4   | #################################################################################################### | 100%
+r-modeldata-1.0.1    | #################################################################################################### | 100%
+r-readr-2.1.2        | #################################################################################################### | 100%
+r-readxl-1.4.1       | #################################################################################################### | 100%
+r-tidyr-1.2.1        | #################################################################################################### | 100%
+r-waldo-0.4.0        | #################################################################################################### | 100%
+r-yardstick-1.1.0    | #################################################################################################### | 100%
+r-haven-2.5.0        | #################################################################################################### | 100%
+r-recipes-1.0.1      | #################################################################################################### | 100%
+r-rsample-1.1.0      | #################################################################################################### | 100%
+r-sparklyr-1.6.3     | #################################################################################################### | 100%
+r-testthat-3.1.4     | #################################################################################################### | 100%
+r-devtools-2.4.3     | #################################################################################################### | 100%
+r-isoband-0.2.5      | #################################################################################################### | 100%
+r-rio-0.5.29         | #################################################################################################### | 100%
+r-ggplot2-3.3.6      | #################################################################################################### | 100%
+r-broom-1.0.1        | #################################################################################################### | 100%
+r-caret-6.0_93       | #################################################################################################### | 100%
+r-forecast-8.14      | #################################################################################################### | 100%
+r-ggridges-0.5.3     | #################################################################################################### | 100%
+r-parsnip-1.0.1      | #################################################################################################### | 100%
+r-patchwork-1.1.2    | #################################################################################################### | 100%
+r-upsetr-1.4.0       | #################################################################################################### | 100%
+r-conquer-1.3.0      | #################################################################################################### | 100%
+r-infer-1.0.3        | #################################################################################################### | 100%
+r-modelr-0.1.9       | #################################################################################################### | 100%
+r-pbkrtest-0.5.1     | #################################################################################################### | 100%
+r-workflows-1.1.0    | #################################################################################################### | 100%
+r-quantreg-5.73      | #################################################################################################### | 100%
+r-tidyverse-1.3.2    | #################################################################################################### | 100%
+r-tune-1.0.0         | #################################################################################################### | 100%
+r-car-3.1_0          | #################################################################################################### | 100%
+r-workflowsets-1.0.0 | #################################################################################################### | 100%
+r-tidymodels-0.1.4   | #################################################################################################### | 100%
+r-vim-6.2.2          | #################################################################################################### | 100%
+importlib_metadata-1 | #################################################################################################### | 100%
+inflect-4.0.0        | #################################################################################################### | 100%
+jsonschema-3.2.0     | #################################################################################################### | 100%
+jaraco.itertools-5.0 | #################################################################################################### | 100%
+jupyter_telemetry-0. | #################################################################################################### | 100%
+nbformat-5.0.4       | #################################################################################################### | 100%
+jupyterhub-base-1.1. | #################################################################################################### | 100%
+nbconvert-5.6.1      | #################################################################################################### | 100%
+zipp-2.1.0           | #################################################################################################### | 100%
+jupyterhub-1.1.0     | #################################################################################################### | 100%
+notebook-6.0.3       | #################################################################################################### | 100%
+jupyterlab_server-1. | #################################################################################################### | 100%
+widgetsnbextension-3 | #################################################################################################### | 100%
+ipywidgets-7.5.1     | #################################################################################################### | 100%
+jupyterlab-1.2.5     | #################################################################################################### | 100%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: / b'Enabling notebook extension jupyter-js-widgets/extension...\n      - Validating: \x1b[32mOK\x1b[0m\n'
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate /tmp/lhn_prod
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Activating production environment...
+Removing corrupted pip installation from cloned environment...
+Installing fresh pip via get-pip.py...
+Collecting pip<24.1
+  Downloading pip-24.0-py3-none-any.whl.metadata (3.6 kB)
+Downloading pip-24.0-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 36.7 MB/s eta 0:00:00
+Installing collected packages: pip
+Successfully installed pip-24.0
+Upgrading pip...
+Requirement already satisfied: pip in /tmp/lhn_prod/lib/python3.7/site-packages (24.0)
+Installing lhn v0.1.0 (monolithic) in editable mode...
+Obtaining file:///tmp/lhn_prod_src
+  Checking if build backend supports build_editable ... done
+  Preparing metadata (pyproject.toml) ... done
+Installing collected packages: lhn
+  Running setup.py develop for lhn
+Successfully installed lhn-0.1.0
+Fixing corrupted pandas installation...
+Found existing installation: pandas 0.25.3
+Uninstalling pandas-0.25.3:
+  Successfully uninstalled pandas-0.25.3
+Installing pandas 0.25.3 fresh (for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from pandas==0.25.3) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_prod/lib/python3.7/site-packages (from pandas==0.25.3) (2019.3)
+Requirement already satisfied: numpy>=1.13.3 in /tmp/lhn_prod/lib/python3.7/site-packages (from pandas==0.25.3) (1.17.5)
+Requirement already satisfied: six>=1.5 in /tmp/lhn_prod/lib/python3.7/site-packages (from python-dateutil>=2.6.1->pandas==0.25.3)(1.14.0)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 160.5 MB/s eta 0:00:00
+Installing collected packages: pandas
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.2.4
+    Uninstalling pandas-1.2.4:
+      Successfully uninstalled pandas-1.2.4
+Successfully installed pandas-0.25.3
+Installing additional Python packages (plotnine, lifelines, etc.)...
+Requirement already satisfied: patsy in /tmp/lhn_prod/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (0.5.1)
+Requirement already satisfied: numpy in /tmp/lhn_prod/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2)) (1.17.5)
+Requirement already satisfied: scipy in /tmp/lhn_prod/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3)) (1.4.1)
+Requirement already satisfied: pandas in /tmp/lhn_prod/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (0.25.3)
+Collecting plotnine (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading plotnine-0.8.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting lifelines (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading lifelines-0.27.8-py3-none-any.whl.metadata (3.3 kB)
+Collecting geopandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading geopandas-0.10.2-py2.py3-none-any.whl.metadata (935 bytes)
+Collecting jupyterlab-quarto (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 8))
+  Downloading jupyterlab_quarto-0.1.45-py3-none-any.whl.metadata (5.8 kB)
+Collecting duckdb==0.10.3 (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 9))
+  Downloading duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (763 bytes)
+Collecting polars (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Downloading polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+Requirement already satisfied: six in /tmp/lhn_prod/lib/python3.7/site-packages (from patsy->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (1.14.0)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_prod/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2019.3)
+Collecting mizani>=0.7.3 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading mizani-0.7.3-py3-none-any.whl.metadata (677 bytes)
+Requirement already satisfied: matplotlib>=3.1.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (3.1.2)
+Collecting numpy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2))
+  Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting scipy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3))
+  Downloading scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.2 kB)
+Collecting statsmodels>=0.12.1 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4))
+  Downloading pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting descartes>=1.1.0 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading descartes-1.1.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting autograd>=1.5 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading autograd-1.6.2-py3-none-any.whl.metadata (706 bytes)
+Collecting autograd-gamma>=0.3 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached autograd-gamma-0.5.0.tar.gz (4.0 kB)
+  Preparing metadata (setup.py) ... done
+Collecting formulaic>=0.2.2 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading formulaic-1.1.1-py3-none-any.whl.metadata (6.9 kB)
+Collecting shapely>=1.6 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.9 kB)
+Collecting fiona>=1.8 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl.metadata (50 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.2/50.2 kB 3.3 MB/s eta 0:00:00
+Collecting pyproj>=2.2.0 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl.metadata (22 kB)
+Collecting typing_extensions>=4.0.1 (from polars->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Downloading typing_extensions-4.7.1-py3-none-any.whl.metadata (3.1 kB)
+Requirement already satisfied: future>=0.15.2 in /tmp/lhn_prod/lib/python3.7/site-packages (from autograd>=1.5->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6)) (0.18.3)
+Requirement already satisfied: attrs>=19.2.0 in /tmp/lhn_prod/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (19.3.0)
+Requirement already satisfied: certifi in /tmp/lhn_prod/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2023.7.22)
+Collecting click~=8.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting click-plugins>=1.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading click_plugins-1.1.1.2-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting cligj>=0.5 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading cligj-0.7.2-py3-none-any.whl.metadata (5.0 kB)
+Requirement already satisfied: importlib-metadata in /tmp/lhn_prod/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (1.5.0)
+Collecting astor>=0.8 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line6))
+  Downloading astor-0.8.1-py2.py3-none-any.whl.metadata (4.2 kB)
+Collecting cached-property>=1.3.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading cached_property-1.5.2-py2.py3-none-any.whl.metadata (11 kB)
+Collecting graphlib-backport>=1.0.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading graphlib_backport-1.1.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting interface-meta>=1.2.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached interface_meta-1.3.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting wrapt>=1.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line6))
+  Downloading wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Requirement already satisfied: cycler>=0.10 in /tmp/lhn_prod/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (0.10.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (1.1.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (2.4.6)
+Collecting palettable (from mizani>=0.7.3->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading palettable-3.3.3-py2.py3-none-any.whl.metadata (3.3 kB)
+Collecting patsy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1))
+  Using cached patsy-1.0.2-py2.py3-none-any.whl.metadata (3.6 kB)
+Collecting packaging>=21.3 (from statsmodels>=0.12.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading packaging-24.0-py3-none-any.whl.metadata (3.2 kB)
+Requirement already satisfied: setuptools in /tmp/lhn_prod/lib/python3.7/site-packages (from kiwisolver>=1.0.1->matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (45.1.0.post20200119)
+Requirement already satisfied: zipp>=0.5 in /tmp/lhn_prod/lib/python3.7/site-packages (from importlib-metadata->fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2.1.0)
+Downloading duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.5/18.5 MB 118.6 MB/s eta 0:00:00
+Downloading plotnine-0.8.0-py3-none-any.whl (4.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 98.5 MB/s eta 0:00:00
+Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 134.1 MB/s eta 0:00:00
+Downloading scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (38.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.1/38.1 MB 99.6 MB/s eta 0:00:00
+Downloading pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 127.6 MB/s eta 0:00:00
+Downloading lifelines-0.27.8-py3-none-any.whl (350 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 350.7/350.7 kB 35.6 MB/s eta 0:00:00
+Downloading geopandas-0.10.2-py2.py3-none-any.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 79.3 MB/s eta 0:00:00
+Downloading jupyterlab_quarto-0.1.45-py3-none-any.whl (3.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 67.6 MB/s eta 0:00:00
+Downloading polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.9/18.9 MB 122.6 MB/s eta 0:00:00
+Downloading autograd-1.6.2-py3-none-any.whl (49 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.3/49.3 kB 5.3 MB/s eta 0:00:00
+Downloading descartes-1.1.0-py3-none-any.whl (5.8 kB)
+Downloading fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl (15.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.6/15.6 MB 120.5 MB/s eta 0:00:00
+Downloading formulaic-1.1.1-py3-none-any.whl (115 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 115.7/115.7 kB 13.6 MB/s eta 0:00:00
+Downloading mizani-0.7.3-py3-none-any.whl (63 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.1/63.1 kB 7.2 MB/s eta 0:00:00
+Downloading pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl (6.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 141.4 MB/s eta 0:00:00
+Downloading shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 115.6 MB/s eta 0:00:00
+Downloading statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (9.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 150.8 MB/s eta 0:00:00
+Using cached patsy-1.0.2-py2.py3-none-any.whl (233 kB)
+Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+Downloading astor-0.8.1-py2.py3-none-any.whl (27 kB)
+Downloading cached_property-1.5.2-py2.py3-none-any.whl (7.6 kB)
+Downloading click-8.1.8-py3-none-any.whl (98 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 12.6 MB/s eta 0:00:00
+Downloading click_plugins-1.1.1.2-py2.py3-none-any.whl (11 kB)
+Downloading cligj-0.7.2-py3-none-any.whl (7.1 kB)
+Downloading graphlib_backport-1.1.0-py3-none-any.whl (7.1 kB)
+Using cached interface_meta-1.3.0-py3-none-any.whl (14 kB)
+Downloading packaging-24.0-py3-none-any.whl (53 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.5/53.5 kB 7.3 MB/s eta 0:00:00
+Downloading wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (77 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.5/77.5 kB 10.9 MB/s eta 0:00:00
+Downloading palettable-3.3.3-py2.py3-none-any.whl (332 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 332.3/332.3 kB 34.6 MB/s eta 0:00:00
+Building wheels for collected packages: autograd-gamma
+  Building wheel for autograd-gamma (setup.py) ... done
+  Created wheel for autograd-gamma: filename=autograd_gamma-0.5.0-py3-none-any.whl size=4033 sha256=c58a185b5a3319fea5a6e9fd44503308f98cdbe02acc9eefa784b4753e2bdf4b
+  Stored in directory: /home/jovyan/.cache/pip/wheels/9f/01/ee/1331593abb5725ff7d8c1333aee93a50a1c29d6ddda9665c9f
+Successfully built autograd-gamma
+Installing collected packages: cached-property, wrapt, typing_extensions, pyproj, palettable, packaging, numpy, jupyterlab-quarto,interface-meta, graphlib-backport, duckdb, astor, shapely, scipy, polars, patsy, pandas, click, autograd, statsmodels, mizani, formulaic, descartes, cligj, click-plugins, autograd-gamma, plotnine, lifelines, fiona, geopandas
+  Attempting uninstall: packaging
+    Found existing installation: packaging 20.1
+    Uninstalling packaging-20.1:
+      Successfully uninstalled packaging-20.1
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.17.5
+    Uninstalling numpy-1.17.5:
+      Successfully uninstalled numpy-1.17.5
+  Attempting uninstall: scipy
+    Found existing installation: scipy 1.4.1
+    Uninstalling scipy-1.4.1:
+      Successfully uninstalled scipy-1.4.1
+  Attempting uninstall: patsy
+    Found existing installation: patsy 0.5.1
+    Uninstalling patsy-0.5.1:
+      Successfully uninstalled patsy-0.5.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 0.25.3
+    Uninstalling pandas-0.25.3:
+      Successfully uninstalled pandas-0.25.3
+  Attempting uninstall: click
+    Found existing installation: Click 7.0
+    Uninstalling Click-7.0:
+      Successfully uninstalled Click-7.0
+  Attempting uninstall: statsmodels
+    Found existing installation: statsmodels 0.11.0
+    Uninstalling statsmodels-0.11.0:
+      Successfully uninstalled statsmodels-0.11.0
+Successfully installed astor-0.8.1 autograd-1.6.2 autograd-gamma-0.5.0 cached-property-1.5.2 click-8.1.8 click-plugins-1.1.1.2 cligj-0.7.2 descartes-1.1.0 duckdb-0.10.3 fiona-1.9.6 formulaic-1.1.1 geopandas-0.10.2 graphlib-backport-1.1.0 interface-meta-1.3.0 jupyterlab-quarto-0.1.45 lifelines-0.27.8 mizani-0.7.3 numpy-1.21.6 packaging-24.0 palettable-3.3.3 pandas-1.3.5 patsy-1.0.2 plotnine-0.8.0 polars-0.18.4 pyproj-3.2.1 scipy-1.7.3 shapely-2.0.7 statsmodels-0.13.5 typing_extensions-4.7.1 wrapt-1.16.0
+Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Collecting python-dateutil>=2.6.1 (from pandas==0.25.3)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz>=2017.2 (from pandas==0.25.3)
+  Downloading pytz-2025.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting numpy>=1.13.3 (from pandas==0.25.3)
+  Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting six>=1.5 (from python-dateutil>=2.6.1->pandas==0.25.3)
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 148.8 MB/s eta 0:00:00
+Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 212.0 MB/s eta 0:00:00
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 280.3 MB/s eta 0:00:00
+Downloading pytz-2025.2-py2.py3-none-any.whl (509 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 509.2/509.2 kB 297.5 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pytz, six, numpy, python-dateutil, pandas
+  Attempting uninstall: pytz
+    Found existing installation: pytz 2019.3
+    Uninstalling pytz-2019.3:
+      Successfully uninstalled pytz-2019.3
+  Attempting uninstall: six
+    Found existing installation: six 1.14.0
+    Uninstalling six-1.14.0:
+      Successfully uninstalled six-1.14.0
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.21.6
+    Uninstalling numpy-1.21.6:
+      Successfully uninstalled numpy-1.21.6
+  Attempting uninstall: python-dateutil
+    Found existing installation: python-dateutil 2.8.1
+    Uninstalling python-dateutil-2.8.1:
+      Successfully uninstalled python-dateutil-2.8.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.3.5
+    Uninstalling pandas-1.3.5:
+      Successfully uninstalled pandas-1.3.5
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+formulaic 1.1.1 requires pandas>=1.0, but you have pandas 0.25.3 which is incompatible.
+jupyter-console 6.6.3 requires ipykernel>=6.14, but you have ipykernel 5.1.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-client>=7.0.0, but you have jupyter-client 5.3.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-core!=5.0.*,>=4.12, but you have jupyter-core 4.6.1 which is incompatible.
+jupyter-console 6.6.3 requires prompt-toolkit>=3.0.30, but you have prompt-toolkit 3.0.3 which is incompatible.
+jupyter-console 6.6.3 requires traitlets>=5.4, but you have traitlets 4.3.3 which is incompatible.
+lifelines 0.27.8 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+mizani 0.7.3 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+plotnine 0.8.0 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+Successfully installed numpy-1.21.6 pandas-0.25.3 python-dateutil-2.9.0.post0 pytz-2025.2 six-1.17.0
+Installing ipykernel...
+Requirement already satisfied: ipykernel in /tmp/lhn_prod/lib/python3.7/site-packages (5.1.4)
+Requirement already satisfied: ipython>=5.0.0 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipykernel) (7.11.1)
+Requirement already satisfied: traitlets>=4.1.0 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipykernel) (4.3.3)
+Requirement already satisfied: jupyter-client in /tmp/lhn_prod/lib/python3.7/site-packages (from ipykernel) (5.3.4)
+Requirement already satisfied: tornado>=4.2 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipykernel) (5.1.1)
+Requirement already satisfied: setuptools>=18.5 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (45.1.0.post20200119)
+Requirement already satisfied: jedi>=0.10 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.16.0)
+Requirement already satisfied: decorator in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.4.1)
+Requirement already satisfied: pickleshare in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.7.5)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (3.0.3)
+Requirement already satisfied: pygments in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (2.5.2)
+Requirement already satisfied: backcall in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.1.0)
+Requirement already satisfied: pexpect in /tmp/lhn_prod/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.8.0)
+Requirement already satisfied: ipython-genutils in /tmp/lhn_prod/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (0.2.0)
+Requirement already satisfied: six in /tmp/lhn_prod/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (1.17.0)
+Requirement already satisfied: jupyter-core>=4.6.0 in /tmp/lhn_prod/lib/python3.7/site-packages (from jupyter-client->ipykernel) (4.6.1)
+Requirement already satisfied: pyzmq>=13 in /tmp/lhn_prod/lib/python3.7/site-packages (from jupyter-client->ipykernel) (18.1.1)
+Requirement already satisfied: python-dateutil>=2.1 in /tmp/lhn_prod/lib/python3.7/site-packages (from jupyter-client->ipykernel) (2.9.0.post0)
+Requirement already satisfied: parso>=0.5.2 in /tmp/lhn_prod/lib/python3.7/site-packages (from jedi>=0.10->ipython>=5.0.0->ipykernel) (0.6.0)
+Requirement already satisfied: wcwidth in /tmp/lhn_prod/lib/python3.7/site-packages (from prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0->ipython>=5.0.0->ipykernel) (0.1.8)
+Requirement already satisfied: ptyprocess>=0.5 in /tmp/lhn_prod/lib/python3.7/site-packages (from pexpect->ipython>=5.0.0->ipykernel) (0.6.0)
+Registering Jupyter kernel for production environment...
+Installed kernelspec lhn_prod in /home/hnelson3/.local/share/jupyter/kernels/lhn_prod
+Verifying lhn installation...
+26/02/13 13:59:34 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/02/13 13:59:35 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+26/02/13 13:59:36 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
+26/02/13 14:00:15 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+2026-02-13 14:00:15,900 - root - INFO - Spark Session Started by iuhealth.header.py
+lhn imported successfully
+
+========== Part 9: Create Development Environment (lhn_dev) ==========
+Cloning base environment to /tmp/lhn_dev...
+This may take a few minutes...
+/opt/conda/lib/python3.7/site-packages/boto3/compat.py:82: PythonDeprecationWarning: Boto3 will no longer support Python 3.7 starting December 13, 2023. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.8 or later. More information can be found here: https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/
+  warnings.warn(warning, PythonDeprecationWarning)
+Source:      /opt/conda
+Destination: /tmp/lhn_dev
+The following packages cannot be cloned out of the root environment:
+ - conda-forge::conda-4.7.12-py37_1
+Packages: 498
+Files: 38714
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: | b'Enabling notebook extension jupyter-js-widgets/extension...\n      - Validating: \x1b[32mOK\x1b[0m\n'
+done
+#
+# To activate this environment, use
+#
+#     $ conda activate /tmp/lhn_dev
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Activating development environment...
+Removing corrupted pip installation from cloned environment...
+Installing fresh pip via get-pip.py...
+Collecting pip<24.1
+  Using cached pip-24.0-py3-none-any.whl.metadata (3.6 kB)
+Using cached pip-24.0-py3-none-any.whl (2.1 MB)
+Installing collected packages: pip
+Successfully installed pip-24.0
+Upgrading pip to support modern package formats...
+Requirement already satisfied: pip in /tmp/lhn_dev/lib/python3.7/site-packages (24.0)
+Fixing corrupted pandas installation...
+Found existing installation: pandas 0.25.3
+Uninstalling pandas-0.25.3:
+  Successfully uninstalled pandas-0.25.3
+Installing pandas 0.25.3 fresh (for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from pandas==0.25.3) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_dev/lib/python3.7/site-packages (from pandas==0.25.3) (2019.3)
+Requirement already satisfied: numpy>=1.13.3 in /tmp/lhn_dev/lib/python3.7/site-packages (from pandas==0.25.3) (1.17.5)
+Requirement already satisfied: six>=1.5 in /tmp/lhn_dev/lib/python3.7/site-packages (from python-dateutil>=2.6.1->pandas==0.25.3) (1.14.0)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 146.2 MB/s eta 0:00:00
+Installing collected packages: pandas
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.2.4
+    Uninstalling pandas-1.2.4:
+      Successfully uninstalled pandas-1.2.4
+Successfully installed pandas-0.25.3
+Installing dependencies for refactored lhn from persistent storage...
+Installing spark_config_mapper from /home/hnelson3/work/Users/hnelson3/spark_config_mapper...
+  (Using --no-deps to avoid pandas version conflict with pyspark 2.4.4)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/spark_config_mapper
+  Installing build dependencies ... done
+  Checking if build backend supports build_editable ... done
+  Getting requirements to build editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: spark-config-mapper
+  Building editable for spark-config-mapper (pyproject.toml) ... done
+  Created wheel for spark-config-mapper: filename=spark_config_mapper-0.1.0-0.editable-py3-none-any.whl size=5096 sha256=13e803997cd8300a999fe5cff62023262326c7da3e3a19e3f3978872193cf9bf
+  Stored in directory: /tmp/pip-ephem-wheel-cache-mg268tdo/wheels/a9/86/5d/41da808220424a712ee82ddc922b831da5e6889190bb1678eb
+Successfully built spark-config-mapper
+Installing collected packages: spark-config-mapper
+Successfully installed spark-config-mapper-0.1.0
+Installing omop_concept_mapper from /home/hnelson3/work/Users/hnelson3/omop_concept_mapper...
+  (Using --no-deps to avoid pandas version conflict)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/omop_concept_mapper
+  Installing build dependencies ... done
+  Checking if build backend supports build_editable ... done
+  Getting requirements to build editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: omop-concept-mapper
+  Building editable for omop-concept-mapper (pyproject.toml) ... done
+  Created wheel for omop-concept-mapper: filename=omop_concept_mapper-0.1.0-0.editable-py3-none-any.whl size=4948 sha256=3e7eb5a9374d8d5eff99ae12489a7b54bf924068fa744e3547892c1f2a329b5c
+  Stored in directory: /tmp/pip-ephem-wheel-cache-240hhyqi/wheels/63/96/49/b52089d164aab01ae5b6509b5c67632643629ba97a77763b42
+Successfully built omop-concept-mapper
+Installing collected packages: omop-concept-mapper
+Successfully installed omop-concept-mapper-0.1.0
+Installing lhn v0.2.0-dev (refactored) from /home/hnelson3/work/Users/hnelson3/lhn...
+  (Using --no-deps to avoid pandas version conflict with pyspark 2.4.4)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/lhn
+  Installing build dependencies ... done
+  Checking if build backend supports build_editable ... done
+  Getting requirements to build editable ... done
+  Preparing editable metadata (pyproject.toml) ... done
+Building wheels for collected packages: lhn
+  Building editable for lhn (pyproject.toml) ... done
+  Created wheel for lhn: filename=lhn-0.2.0.dev0-0.editable-py3-none-any.whl size=4706 sha256=bc9b49410fd263d4dbbd26bf8f38f15c2b7f0492b1c44fe0c2a9c77d100f7251
+  Stored in directory: /tmp/pip-ephem-wheel-cache-pwattu1w/wheels/40/05/cc/4dea4d09c52516c2074d46aca396600adf8e75c735740ea73c
+Successfully built lhn
+Installing collected packages: lhn
+Successfully installed lhn-0.2.0.dev0
+Installing additional Python packages (plotnine, lifelines, etc.)...
+Requirement already satisfied: patsy in /tmp/lhn_dev/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (0.5.1)
+Requirement already satisfied: numpy in /tmp/lhn_dev/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2)) (1.17.5)
+Requirement already satisfied: scipy in /tmp/lhn_dev/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3)) (1.4.1)
+Requirement already satisfied: pandas in /tmp/lhn_dev/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (0.25.3)
+Collecting plotnine (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached plotnine-0.8.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting lifelines (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached lifelines-0.27.8-py3-none-any.whl.metadata (3.3 kB)
+Collecting geopandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached geopandas-0.10.2-py2.py3-none-any.whl.metadata (935 bytes)
+Collecting jupyterlab-quarto (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 8))
+  Using cached jupyterlab_quarto-0.1.45-py3-none-any.whl.metadata (5.8 kB)
+Collecting duckdb==0.10.3 (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 9))
+  Using cached duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (763 bytes)
+Collecting polars (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Using cached polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+Requirement already satisfied: six in /tmp/lhn_dev/lib/python3.7/site-packages (from patsy->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (1.14.0)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_dev/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2019.3)
+Collecting mizani>=0.7.3 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached mizani-0.7.3-py3-none-any.whl.metadata (677 bytes)
+Requirement already satisfied: matplotlib>=3.1.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (3.1.2)
+Collecting numpy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2))
+  Using cached numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting scipy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3))
+  Using cached scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.2 kB)
+Collecting statsmodels>=0.12.1 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4))
+  Using cached pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting descartes>=1.1.0 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached descartes-1.1.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting autograd>=1.5 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached autograd-1.6.2-py3-none-any.whl.metadata (706 bytes)
+Collecting autograd-gamma>=0.3 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached autograd-gamma-0.5.0.tar.gz (4.0 kB)
+  Preparing metadata (setup.py) ... done
+Collecting formulaic>=0.2.2 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached formulaic-1.1.1-py3-none-any.whl.metadata (6.9 kB)
+Collecting shapely>=1.6 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.9 kB)
+Collecting fiona>=1.8 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl.metadata (50 kB)
+Collecting pyproj>=2.2.0 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl.metadata (22 kB)
+Collecting typing_extensions>=4.0.1 (from polars->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Using cached typing_extensions-4.7.1-py3-none-any.whl.metadata (3.1 kB)
+Requirement already satisfied: future>=0.15.2 in /tmp/lhn_dev/lib/python3.7/site-packages (from autograd>=1.5->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6)) (0.18.3)
+Requirement already satisfied: attrs>=19.2.0 in /tmp/lhn_dev/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (19.3.0)
+Requirement already satisfied: certifi in /tmp/lhn_dev/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2023.7.22)
+Collecting click~=8.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting click-plugins>=1.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached click_plugins-1.1.1.2-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting cligj>=0.5 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Using cached cligj-0.7.2-py3-none-any.whl.metadata (5.0 kB)
+Requirement already satisfied: importlib-metadata in /tmp/lhn_dev/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (1.5.0)
+Collecting astor>=0.8 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line6))
+  Using cached astor-0.8.1-py2.py3-none-any.whl.metadata (4.2 kB)
+Collecting cached-property>=1.3.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached cached_property-1.5.2-py2.py3-none-any.whl.metadata (11 kB)
+Collecting graphlib-backport>=1.0.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached graphlib_backport-1.1.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting interface-meta>=1.2.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Using cached interface_meta-1.3.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting wrapt>=1.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line6))
+  Using cached wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Requirement already satisfied: cycler>=0.10 in /tmp/lhn_dev/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (0.10.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r/home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (1.1.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (2.4.6)
+Collecting palettable (from mizani>=0.7.3->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached palettable-3.3.3-py2.py3-none-any.whl.metadata (3.3 kB)
+Collecting patsy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1))
+  Using cached patsy-1.0.2-py2.py3-none-any.whl.metadata (3.6 kB)
+Collecting packaging>=21.3 (from statsmodels>=0.12.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Using cached packaging-24.0-py3-none-any.whl.metadata (3.2 kB)
+Requirement already satisfied: setuptools in /tmp/lhn_dev/lib/python3.7/site-packages (from kiwisolver>=1.0.1->matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (45.1.0.post20200119)
+Requirement already satisfied: zipp>=0.5 in /tmp/lhn_dev/lib/python3.7/site-packages (from importlib-metadata->fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2.1.0)
+Using cached duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.5 MB)
+Using cached plotnine-0.8.0-py3-none-any.whl (4.7 MB)
+Using cached numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+Using cached scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (38.1 MB)
+Using cached pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+Using cached lifelines-0.27.8-py3-none-any.whl (350 kB)
+Using cached geopandas-0.10.2-py2.py3-none-any.whl (1.0 MB)
+Using cached jupyterlab_quarto-0.1.45-py3-none-any.whl (3.2 MB)
+Using cached polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.9 MB)
+Using cached autograd-1.6.2-py3-none-any.whl (49 kB)
+Using cached descartes-1.1.0-py3-none-any.whl (5.8 kB)
+Using cached fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl (15.6 MB)
+Using cached formulaic-1.1.1-py3-none-any.whl (115 kB)
+Using cached mizani-0.7.3-py3-none-any.whl (63 kB)
+Using cached pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl (6.3 MB)
+Using cached shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.4 MB)
+Using cached statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (9.9 MB)
+Using cached patsy-1.0.2-py2.py3-none-any.whl (233 kB)
+Using cached typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+Using cached astor-0.8.1-py2.py3-none-any.whl (27 kB)
+Using cached cached_property-1.5.2-py2.py3-none-any.whl (7.6 kB)
+Using cached click-8.1.8-py3-none-any.whl (98 kB)
+Using cached click_plugins-1.1.1.2-py2.py3-none-any.whl (11 kB)
+Using cached cligj-0.7.2-py3-none-any.whl (7.1 kB)
+Using cached graphlib_backport-1.1.0-py3-none-any.whl (7.1 kB)
+Using cached interface_meta-1.3.0-py3-none-any.whl (14 kB)
+Using cached packaging-24.0-py3-none-any.whl (53 kB)
+Using cached wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (77 kB)
+Using cached palettable-3.3.3-py2.py3-none-any.whl (332 kB)
+Building wheels for collected packages: autograd-gamma
+  Building wheel for autograd-gamma (setup.py) ... done
+  Created wheel for autograd-gamma: filename=autograd_gamma-0.5.0-py3-none-any.whl size=4033 sha256=aa89d0e179c34d681f9d507a0270a1f252f955be4bd063945fb0466c27f3b9c5
+  Stored in directory: /home/jovyan/.cache/pip/wheels/9f/01/ee/1331593abb5725ff7d8c1333aee93a50a1c29d6ddda9665c9f
+Successfully built autograd-gamma
+Installing collected packages: cached-property, wrapt, typing_extensions, pyproj, palettable, packaging, numpy, jupyterlab-quarto,interface-meta, graphlib-backport, duckdb, astor, shapely, scipy, polars, patsy, pandas, click, autograd, statsmodels, mizani, formulaic, descartes, cligj, click-plugins, autograd-gamma, plotnine, lifelines, fiona, geopandas
+  Attempting uninstall: packaging
+    Found existing installation: packaging 20.1
+    Uninstalling packaging-20.1:
+      Successfully uninstalled packaging-20.1
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.17.5
+    Uninstalling numpy-1.17.5:
+      Successfully uninstalled numpy-1.17.5
+  Attempting uninstall: scipy
+    Found existing installation: scipy 1.4.1
+    Uninstalling scipy-1.4.1:
+      Successfully uninstalled scipy-1.4.1
+  Attempting uninstall: patsy
+    Found existing installation: patsy 0.5.1
+    Uninstalling patsy-0.5.1:
+      Successfully uninstalled patsy-0.5.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 0.25.3
+    Uninstalling pandas-0.25.3:
+      Successfully uninstalled pandas-0.25.3
+  Attempting uninstall: click
+    Found existing installation: Click 7.0
+    Uninstalling Click-7.0:
+      Successfully uninstalled Click-7.0
+  Attempting uninstall: statsmodels
+    Found existing installation: statsmodels 0.11.0
+    Uninstalling statsmodels-0.11.0:
+      Successfully uninstalled statsmodels-0.11.0
+Successfully installed astor-0.8.1 autograd-1.6.2 autograd-gamma-0.5.0 cached-property-1.5.2 click-8.1.8 click-plugins-1.1.1.2 cligj-0.7.2 descartes-1.1.0 duckdb-0.10.3 fiona-1.9.6 formulaic-1.1.1 geopandas-0.10.2 graphlib-backport-1.1.0 interface-meta-1.3.0 jupyterlab-quarto-0.1.45 lifelines-0.27.8 mizani-0.7.3 numpy-1.21.6 packaging-24.0 palettable-3.3.3 pandas-1.3.5 patsy-1.0.2 plotnine-0.8.0 polars-0.18.4 pyproj-3.2.1 scipy-1.7.3 shapely-2.0.7 statsmodels-0.13.5 typing_extensions-4.7.1 wrapt-1.16.0
+Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Collecting python-dateutil>=2.6.1 (from pandas==0.25.3)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz>=2017.2 (from pandas==0.25.3)
+  Downloading pytz-2025.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting numpy>=1.13.3 (from pandas==0.25.3)
+  Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting six>=1.5 (from python-dateutil>=2.6.1->pandas==0.25.3)
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 150.6 MB/s eta 0:00:00
+Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 211.1 MB/s eta 0:00:00
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 270.8 MB/s eta 0:00:00
+Downloading pytz-2025.2-py2.py3-none-any.whl (509 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 509.2/509.2 kB 289.5 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pytz, six, numpy, python-dateutil, pandas
+  Attempting uninstall: pytz
+    Found existing installation: pytz 2019.3
+    Uninstalling pytz-2019.3:
+      Successfully uninstalled pytz-2019.3
+  Attempting uninstall: six
+    Found existing installation: six 1.14.0
+    Uninstalling six-1.14.0:
+      Successfully uninstalled six-1.14.0
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.21.6
+    Uninstalling numpy-1.21.6:
+      Successfully uninstalled numpy-1.21.6
+  Attempting uninstall: python-dateutil
+    Found existing installation: python-dateutil 2.8.1
+    Uninstalling python-dateutil-2.8.1:
+      Successfully uninstalled python-dateutil-2.8.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.3.5
+    Uninstalling pandas-1.3.5:
+      Successfully uninstalled pandas-1.3.5
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+formulaic 1.1.1 requires pandas>=1.0, but you have pandas 0.25.3 which is incompatible.
+jupyter-console 6.6.3 requires ipykernel>=6.14, but you have ipykernel 5.1.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-client>=7.0.0, but you have jupyter-client 5.3.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-core!=5.0.*,>=4.12, but you have jupyter-core 4.6.1 which is incompatible.
+jupyter-console 6.6.3 requires prompt-toolkit>=3.0.30, but you have prompt-toolkit 3.0.3 which is incompatible.
+jupyter-console 6.6.3 requires traitlets>=5.4, but you have traitlets 4.3.3 which is incompatible.
+lhn 0.2.0.dev0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+lifelines 0.27.8 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+mizani 0.7.3 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+omop-concept-mapper 0.1.0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+plotnine 0.8.0 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+spark-config-mapper 0.1.0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+Successfully installed numpy-1.21.6 pandas-0.25.3 python-dateutil-2.9.0.post0 pytz-2025.2 six-1.17.0
+Installing ipykernel...
+Requirement already satisfied: ipykernel in /tmp/lhn_dev/lib/python3.7/site-packages (5.1.4)
+Requirement already satisfied: ipython>=5.0.0 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipykernel) (7.11.1)
+Requirement already satisfied: traitlets>=4.1.0 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipykernel) (4.3.3)
+Requirement already satisfied: jupyter-client in /tmp/lhn_dev/lib/python3.7/site-packages (from ipykernel) (5.3.4)
+Requirement already satisfied: tornado>=4.2 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipykernel) (5.1.1)
+Requirement already satisfied: setuptools>=18.5 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (45.1.0.post20200119)
+Requirement already satisfied: jedi>=0.10 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.16.0)
+Requirement already satisfied: decorator in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.4.1)
+Requirement already satisfied: pickleshare in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.7.5)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (3.0.3)
+Requirement already satisfied: pygments in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (2.5.2)
+Requirement already satisfied: backcall in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.1.0)
+Requirement already satisfied: pexpect in /tmp/lhn_dev/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.8.0)
+Requirement already satisfied: ipython-genutils in /tmp/lhn_dev/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (0.2.0)
+Requirement already satisfied: six in /tmp/lhn_dev/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (1.17.0)
+Requirement already satisfied: jupyter-core>=4.6.0 in /tmp/lhn_dev/lib/python3.7/site-packages (from jupyter-client->ipykernel) (4.6.1)
+Requirement already satisfied: pyzmq>=13 in /tmp/lhn_dev/lib/python3.7/site-packages (from jupyter-client->ipykernel) (18.1.1)
+Requirement already satisfied: python-dateutil>=2.1 in /tmp/lhn_dev/lib/python3.7/site-packages (from jupyter-client->ipykernel) (2.9.0.post0)
+Requirement already satisfied: parso>=0.5.2 in /tmp/lhn_dev/lib/python3.7/site-packages (from jedi>=0.10->ipython>=5.0.0->ipykernel) (0.6.0)
+Requirement already satisfied: wcwidth in /tmp/lhn_dev/lib/python3.7/site-packages (from prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0->ipython>=5.0.0->ipykernel) (0.1.8)
+Requirement already satisfied: ptyprocess>=0.5 in /tmp/lhn_dev/lib/python3.7/site-packages (from pexpect->ipython>=5.0.0->ipykernel) (0.6.0)
+Registering Jupyter kernel for development environment...
+Installed kernelspec lhn_dev in /home/hnelson3/.local/share/jupyter/kernels/lhn_dev
+Verifying lhn installation...
+Warning: Ignoring non-spark config property: hive.exec.dynamic.partition.mode=nonstrict
+26/02/13 14:04:33 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/02/13 14:04:34 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+26/02/13 14:04:35 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
+26/02/13 14:05:13 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+lhn imported successfully
+
+========== Setup Complete! ==========
+
+Created two conda environments with lhn:
+
+  PRODUCTION (monolithic v0.1.0):
+    Environment: /tmp/lhn_prod
+    Source code: /tmp/lhn_prod_src
+    Kernel: Python (lhn-prod v0.1.0)
+    Activate: conda activate /tmp/lhn_prod
+
+  DEVELOPMENT (refactored v0.2.0-dev):
+    Environment: /tmp/lhn_dev
+    Source code: /home/hnelson3/work/Users/hnelson3/lhn (persistent)
+    Dependencies: /home/hnelson3/work/Users/hnelson3/spark_config_mapper
+                  /home/hnelson3/work/Users/hnelson3/omop_concept_mapper
+    Kernel: Python (lhn-dev v0.2.0)
+    Activate: conda activate /tmp/lhn_dev
+
+========== Jupyter Kernel Usage ==========
+
+RECOMMENDED (with Hive metastore access):
+  - PySpark + lhn-prod (v0.1.0)  <- Use this for production testing
+  - PySpark + lhn-dev (v0.2.0)   <- Use this for development testing
+
+These hybrid kernels have full database access and lhn pre-loaded.
+No sys.path modification needed!
+
+ALTERNATIVE (no metastore, for non-Spark testing only):
+  - Python (lhn-prod v0.1.0)
+  - Python (lhn-dev v0.2.0)
+
+========== Editable Installs ==========
+
+Both environments use editable installs (-e), so:
+  - Changes to /tmp/lhn_prod_src affect the production env (temp, lost on restart)
+  - Changes to /home/hnelson3/work/Users/hnelson3/lhn affect the development env (persistent)
+
+Production source is in /tmp (fast but ephemeral).
+Development source is in ~/work (persistent S3 mount).
+
+========== Pandas Version Note ==========
+
+IMPORTANT: Both environments use pandas 0.25.3 (from base conda)
+for compatibility with pyspark 2.4.4.
+
+The pyproject.toml files in spark_config_mapper and lhn v0.2.0
+require pandas>=1.0.0, but this was bypassed using --no-deps.
+
+If you encounter pandas-related import errors, the code may need
+to be updated to support pandas 0.25.x API.
+
+========== Hive Metastore Note ==========
+
+IMPORTANT: The lhn_prod and lhn_dev kernels may NOT have access to
+the Hive metastore (you'll only see 'default' database).
+
+The base pyspark kernel has the metastore configuration.
+
+RECOMMENDED: Use the 'pyspark' kernel with sys.path modification:
+
+  # For PRODUCTION testing (add to top of notebook):
+  import sys
+  sys.path.insert(0, '/tmp/lhn_prod_src')
+  import lhn
+
+  # For DEVELOPMENT testing (add to top of notebook):
+  import sys
+  sys.path.insert(0, '/home/hnelson3/work/Users/hnelson3/spark_config_mapper')
+  sys.path.insert(0, '/home/hnelson3/work/Users/hnelson3/lhn')
+  import lhn
+
+========== Creating Hybrid Kernels (pyspark + lhn) ==========
+
+Creating kernels that use base pyspark (with metastore) + lhn paths...
+Created: PySpark + lhn-prod (v0.1.0)
+Created: PySpark + lhn-dev (v0.2.0)
+
+Creating upgraded Spark kernels with metastore access...
+Created: Spark Upgraded + lhn-prod (Metastore)
+Created: Spark Upgraded + lhn-dev (Metastore)
+
+These hybrid kernels use the base pyspark (with Hive metastore access)
+but automatically include the lhn paths - no sys.path needed!
+
+========== R Environment ==========
+
+  R ENVIRONMENT:
+    Environment: /tmp/r_env
+    R Version: 4.4.0
+    Python Version: 3.10
+    Kernels:
+      - Python 3.10 (r_env)  <- For Python ML work
+      - R 4.4.0 (r_env)      <- For R analysis
+
+    Activate: conda activate /tmp/r_env
+
+========== Quarto ==========
+
+  Quarto version: 1.8.27
+  Location: /opt/quarto/
+
+========== Configuring .bashrc ==========
+
+no change     /tmp/miniconda/condabin/conda
+no change     /tmp/miniconda/bin/conda
+no change     /tmp/miniconda/bin/conda-env
+no change     /tmp/miniconda/bin/activate
+no change     /tmp/miniconda/bin/deactivate
+no change     /tmp/miniconda/etc/profile.d/conda.sh
+no change     /tmp/miniconda/etc/fish/conf.d/conda.fish
+no change     /tmp/miniconda/shell/condabin/Conda.psm1
+no change     /tmp/miniconda/shell/condabin/conda-hook.ps1
+no change     /tmp/miniconda/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /tmp/miniconda/etc/profile.d/conda.csh
+modified      /home/hnelson3/.bashrc
+
+==> For changes to take effect, close and re-open your current shell. <==
+
+Added R environment activation to .bashrc
+Added conda environment switching aliases (oldbase, oldconda) to .bashrc
+========== List Available Kernels ==========
+Available kernels:
+  lhn_dev                /home/hnelson3/.local/share/jupyter/kernels/lhn_dev
+  lhn_prod               /home/hnelson3/.local/share/jupyter/kernels/lhn_prod
+  pyspark-lhn-dev        /home/hnelson3/.local/share/jupyter/kernels/pyspark-lhn-dev
+  pyspark-lhn-prod       /home/hnelson3/.local/share/jupyter/kernels/pyspark-lhn-prod
+  python310_renv         /home/hnelson3/.local/share/jupyter/kernels/python310_renv
+  r_env                  /home/hnelson3/.local/share/jupyter/kernels/r_env
+  spark-upgraded-dev     /home/hnelson3/.local/share/jupyter/kernels/spark-upgraded-dev
+  spark-upgraded-prod    /home/hnelson3/.local/share/jupyter/kernels/spark-upgraded-prod
+  ir                     /opt/conda/share/jupyter/kernels/ir
+  python3                /opt/conda/share/jupyter/kernels/python3
+  pyspark                /usr/local/share/jupyter/kernels/pyspark
+
+========== Quick Reference ==========
+
+  RECOMMENDED KERNELS:
+    PySpark + lhn-dev (v0.2.0)           <- PySpark 2.4.4 + lhn dev (stable metastore)
+    Spark Upgraded + lhn-dev (Metastore) <- Uses lhn_dev env pyspark + metastore
+
+  OTHER KERNELS:
+    Python 3.10 (r_env)  <- For Python ML work (no Spark)
+    R 4.4.0 (r_env)      <- For R analysis
+
+  UPGRADED SPARK NOTE:
+    The 'Spark Upgraded' kernels use HADOOP_CONF_DIR=/etc/jupyter/configs
+    to enable metastore access. If you upgrade pyspark in lhn_prod or lhn_dev,
+    these kernels should connect to the metastore automatically.
+
+    To upgrade pyspark in an environment:
+      conda activate /tmp/lhn_dev
+      pip install pyspark==3.3.0  # or desired version
+
+  Terminal shortcuts:
+    oldbase  - Switch to original Docker conda with pyspark
+    oldconda - Make /opt/conda available without activating
+
+Setup completed at: Fri Feb 13 14:05:23 UTC 2026
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$ grep -n 'treeshap' setup
+setup-lhn-dual-envs.sh  setup_spark_upgrade.py
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$ grep -n 'treeshap' setup
+setup-lhn-dual-envs.sh  setup_spark_upgrade.py
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$ grep -n 'treeshap' setup-lhn-dual-envs.sh
+295:    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "TrialEmulation" "randomForestSRC" "timeROC" "data.tree" "DiagrammeR" "treeshap" "cmprsk" "doParallel" "mets" "plotrix" "Publish" "glmnet" "riskRegression" "timereg" "pec")
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-147:~/work/Users/hnelson3/updatebionic$
+r-dt-0.25            | ##############################################
