@@ -1,221 +1,294 @@
-# Ubuntu Bionic Data Science Environment Setup
+# LHN Dual Environment Container Setup
 
 ## Overview
 
-This repository provides automated setup scripts for creating comprehensive data science environments in Ubuntu Bionic Docker containers. Choose between two setup options based on your needs:
+This repository provides a **single, comprehensive setup script** for daily use inside the LHN Docker environment:
 
-- **`updatebionic.sh`** - R-focused data science environment with Python integration
-- **`updatebionic-ml.sh`** - Complete setup including the R environment PLUS a dedicated machine learning environment
+**`setup-lhn-dual-envs.sh`**
 
-## Script Options
+The script provisions:
 
-### Option 1: Standard Data Science Environment (`updatebionic.sh`)
+*   System dependencies and restored SSH access
+*   Quarto (system-wide)
+*   A modern **R + Python analysis environment**
+*   **Two side‑by‑side LHN conda environments** for production vs. development testing
+*   Multiple **Jupyter kernels** for Spark, non‑Spark, and hybrid workflows
 
-Creates a single R-focused environment with Python integration:
-- **R Environment**: R 4.3.3 with Python 3.10 integration
-- **Python Packages**: Data science tools (pandas, plotnine, geopandas, etc.)
-- **R Packages**: Tidyverse, data.table, tidymodels, and more
-- **Tools**: Quarto CLI, Jupyter kernels for both R and Python
+The design explicitly supports **Spark 2.4.4 + pandas 0.25.x constraints**, while still enabling active development on the refactored LHN codebase.
 
-### Option 2: Extended ML Environment (`updatebionic-ml.sh`)
+***
 
-Includes everything from Option 1 PLUS a dedicated ML environment:
-- **R Environment**: Same as Option 1 (R 4.3.3 + Python 3.10)
-- **ML Environment**: Separate Python 3.12.2 environment optimized for machine learning
-  - PyTorch with CUDA 12.4 support
-  - scikit-learn, TensorBoard, Weights & Biases
-  - Uses `environment-ml.yml` configuration from Zhiu Tu (Purdue University)
-- **Isolation**: ML environment is separate to avoid conflicts with PySpark in the R environment
+## What This Script Creates
 
-## Features
+### 1. System Setup
 
-Both scripts provide:
+*   Restores SSH keys from persistent storage
+*   Installs required system libraries (GDAL, GEOS, PROJ, compilers, fonts)
+*   Ensures GitHub SSH connectivity
+*   Updates pip in the original Docker conda
 
-* **System Updates:** Updates `apt` package lists and installs geospatial dependencies
-* **Base Conda Environment Updates:** Updates Python packages in the base Conda environment from `requirements.txt` using `pip` (excludes `pyspark` to preserve existing version)
-* **Quarto Installation:** Downloads and installs Quarto CLI (v1.3.450) to `/opt/quarto`
-* **Miniconda Installation:** Sets up Miniconda in `/tmp` for fast, temporary environments
-* **R Environment:** Creates R 4.3.3 environment with Python 3.10 integration
-* **Jupyter Integration:** Registers kernels for both R and Python environments
-* **Automatic Activation:** Configures `.bashrc` for automatic environment activation
+***
 
-Additional features in `updatebionic-ml.sh`:
-* **ML Environment:** Dedicated Python 3.12.2 environment with PyTorch and CUDA support
-* **Advanced ML Tools:** TensorBoard, Weights & Biases, advanced PyTorch ecosystem
-* **Multiple Kernels:** Separate Jupyter kernels for R, standard Python, and ML Python environments
+### 2. Quarto (System-Wide)
 
-## Required Files
+*   Installs the **latest Quarto CLI** under:
 
-Ensure these files are in the same directory as your chosen script:
+<!---->
 
-### For Both Scripts:
-- `requirements.txt` - Python packages for base Conda environment (excludes `pyspark`)
-- `requirements-python.txt` - Python packages for the R environment
-- `requirements-R.txt` - R packages to install via Conda and CRAN
+    /opt/quarto/<version>
 
-### Additional for ML Script:
-- `environment-ml.yml` - ML environment specification (from Zhiu Tu, Purdue University)
+*   Symlinked to:
 
-## User Instructions
+<!---->
 
-### Choose Your Setup
+    /usr/local/bin/quarto
 
-**For standard data science work (R + Python):**
+Available immediately in terminals and notebooks.
+
+***
+
+### 3. Miniconda (Fast, Ephemeral)
+
+*   Installed to:
+
+<!---->
+
+    /tmp/miniconda
+
+*   Pinned to a version compatible with **Ubuntu 18.04 (glibc 2.27)**
+*   Used for all newly created environments
+*   Automatically initialized in `.bashrc`
+
+***
+
+## Environments Created
+
+### A. R + Python Analysis Environment
+
+**Path:**
+
+    /tmp/r_env
+
+**Versions**
+
+*   R: **4.4.0**
+*   Python: **3.10**
+
+**Purpose**
+
+*   R analysis
+*   Python ML (non‑Spark)
+*   Quarto documents
+*   Plotting, modeling, reporting
+
+**Installed**
+
+*   Python packages from `requirements-python.txt`
+*   R packages from:
+    *   `requirements-R.txt` (conda)
+    *   CRAN (fallback + additional modeling packages)
+    *   GitHub (`treeshap`)
+*   `reticulate` fully configured
+
+**Jupyter Kernels**
+
+*   `Python 3.10 (r_env)`
+*   `R 4.4.0 (r_env)`
+
+This environment is **auto‑activated in new terminals**.
+
+***
+
+### B. LHN Production Environment (`lhn_prod`)
+
+**Path:**
+
+    /tmp/lhn_prod
+
+**LHN Version**
+
+*   `v0.1.0-monolithic`
+
+**Source Location**
+
+    /tmp/lhn_prod_src
+
+(ephemeral, fast)
+
+**Key Characteristics**
+
+*   Cloned from original Docker `base` conda
+*   Python **3.7**
+*   pandas **0.25.3** (required for Spark 2.4.4)
+*   Editable install (`pip install -e`)
+*   Aggressively repairs broken `pip` and `pandas` caused by conda cloning
+
+**Jupyter Kernel**
+
+*   `Python (lhn-prod v0.1.0)`
+
+Used for **production validation and regression testing**.
+
+***
+
+### C. LHN Development Environment (`lhn_dev`)
+
+**Path:**
+
+    /tmp/lhn_dev
+
+**LHN Version**
+
+*   `v0.2.0-dev` (refactored)
+
+**Source Location (persistent)**
+
+    ~/work/Users/hnelson3/lhn
+
+**Additional Dependencies**
+
+*   `spark_config_mapper` (persistent)
+*   `omop_concept_mapper` (optional)
+
+**Key Characteristics**
+
+*   Python **3.7**
+*   pandas **0.25.3**
+*   Uses `--no-deps` installs to bypass incompatible `pandas>=1.0` requirements
+*   Editable install for active development
+
+**Jupyter Kernel**
+
+*   `Python (lhn-dev v0.2.0)`
+
+Used for **refactoring, feature work, and side‑by‑side comparison**.
+
+***
+
+## Spark & Jupyter Kernel Strategy
+
+### Recommended (Hive Metastore Access ✅)
+
+These kernels use the **original Docker PySpark** and automatically inject LHN paths:
+
+*   **PySpark + lhn-prod (v0.1.0)**
+*   **PySpark + lhn-dev (v0.2.0)**
+
+✅ Full database access  
+✅ No `sys.path` hacks needed  
+✅ Safest for Spark work
+
+***
+
+### Upgraded Spark Kernels (Optional)
+
+If you upgrade `pyspark` inside `lhn_prod` or `lhn_dev`, the script also creates:
+
+*   **Spark Upgraded + lhn-prod (Metastore)**
+*   **Spark Upgraded + lhn-dev (Metastore)**
+
+These preserve Hive access via `HADOOP_CONF_DIR`.
+
+***
+
+### Non-Spark Kernels
+
+*   `Python (lhn-prod v0.1.0)`
+*   `Python (lhn-dev v0.2.0)`
+*   `Python 3.10 (r_env)`
+*   `R 4.4.0 (r_env)`
+
+Useful for unit tests, modeling, and analysis **without Spark**.
+
+***
+
+## Pandas Compatibility (Important)
+
+Both LHN environments **intentionally pin**:
+
+    pandas==0.25.3
+
+Reason:
+
+*   Required for **Spark 2.4.4**
+*   Newer pandas versions break Spark internals
+
+The refactored LHN code declares `pandas>=1.0` but is installed with:
+
+    pip install --no-deps
+
+If you encounter pandas-related errors, the code may need to be adapted to the 0.25.x API.
+
+***
+
+## Usage
+
+### Run the Setup
+
 ```bash
-chmod +x updatebionic.sh
-./updatebionic.sh
+chmod +x setup-lhn-dual-envs.sh
+./setup-lhn-dual-envs.sh
 ```
 
-**For data science + dedicated ML environment:**
+The script is **idempotent** and safe to re-run.
+
+***
+
+### Switching Conda Contexts
+
+Added to `.bashrc`:
+
 ```bash
-chmod +x updatebionic-ml.sh
-./updatebionic-ml.sh
+oldbase   # Activate original Docker conda (Spark lives here)
+oldconda  # Make /opt/conda available without activating
 ```
 
-### Steps to Run
+***
 
-1. **Prepare Files:**
-   - Place your chosen script and required files in the same directory
-   - Review `requirements.txt` - this updates the base Conda environment via `pip` (excludes `pyspark`)
-   - Check `requirements-python.txt` and `requirements-R.txt` for environment-specific packages
-   - If using ML script, ensure `environment-ml.yml` is present
+### Activate Environments Manually
 
-2. **Make the Script Executable:**
-   ```bash
-   chmod +x updatebionic.sh        # For standard setup
-   # OR
-   chmod +x updatebionic-ml.sh     # For ML-extended setup
-   ```
-
-3. **Run the Script:**
-   ```bash
-   ./updatebionic.sh               # For standard setup
-   # OR
-   ./updatebionic-ml.sh            # For ML-extended setup
-   ```
-   - Scripts require `sudo` privileges for system installations
-   - You may be prompted for a password during execution
-
-4. **Activate the Environment (Current Terminal):**
-   
-   **For standard setup:**
-   ```bash
-   source /tmp/miniconda/etc/profile.d/conda.sh
-   conda activate /tmp/r_env
-   ```
-   
-   **For ML setup:**
-   ```bash
-   source /tmp/miniconda/etc/profile.d/conda.sh
-   conda activate /tmp/r_env        # For R and standard Python work
-   # OR
-   conda activate /tmp/ml_env       # For machine learning work
-   ```
-
-5. **Use the Environment:**
-   - New terminal sessions automatically activate the R environment via `.bashrc`
-   - **Jupyter Kernels Available:**
-     - **R 4.3.3** - For R notebooks and analysis
-     - **Python 3.10 (r_env)** - For Python work integrated with R environment
-     - **Python 3.12 (ml_env)** - For machine learning (ML setup only)
-   - Use Quarto with the `quarto` command for publishing
-
-6. **Troubleshooting:**
-   - Check the script's output for errors and note any line numbers
-   - Verify installations:
-     ```bash
-     quarto --version
-     python -c "import plotnine; print(plotnine.__version__)"
-     R -e "library(tidyverse)"
-     ```
-   - For ML environment (if using ML script):
-     ```bash
-     conda activate /tmp/ml_env
-     python -c "import torch; print(torch.__version__)"
-     ```
-   - If errors occur, share the specific error message and line number
-
-## Environment Details
-
-### Base Conda Environment
-- **Purpose:** System-wide Python packages, updated but stable
-- **Python Packages:** From `requirements.txt` via `pip`
-- **Note:** `pyspark` is intentionally excluded to preserve existing version
-
-### R Environment (`/tmp/r_env`)
-- **R Version:** 4.3.3
-- **Python Version:** 3.10 (integrated with R)
-- **Purpose:** Primary environment for data science workflows
-- **Packages:** Data analysis, visualization, geospatial tools
-- **PySpark Compatibility:** Configured to work with existing PySpark installation
-
-### ML Environment (`/tmp/ml_env`) - ML Setup Only
-- **Python Version:** 3.12.2
-- **Purpose:** Dedicated machine learning environment
-- **Key Features:**
-  - PyTorch with CUDA 12.4 support
-  - TensorBoard, Weights & Biases integration
-  - Latest ML libraries and tools
-  - Isolated from PySpark to prevent conflicts
-- **Configuration:** Based on `environment-ml.yml` from Zhiu Tu (Purdue University)
-
-## Prerequisites
-
-- Ubuntu Bionic Docker container
-- User with `sudo` privileges
-- Internet connection for package downloads
-- Sufficient disk space (environments are created in `/tmp` for speed)
-
-## LLM Instructions
-
-This section guides AI assistants in helping users with these setup scripts:
-
-### General Principles
-- **Minimal Changes:** Provide targeted fixes that modify only relevant lines
-- **Error Focus:** Request exact error messages and line numbers when available
-- **Preserve Functionality:** Don't rewrite entire scripts unless absolutely necessary
-
-### User Constraints
-- **Environment:** Ubuntu Bionic Docker container with user-level permissions
-- **No System Modifications:** Cannot modify Docker setup or system outside container
-- **Package Management:** 
-  - Base environment: Update via `requirements.txt` using `pip` (exclude `pyspark`)
-  - R environment: Install from `requirements-python.txt` and `requirements-R.txt`
-  - ML environment: Use `environment-ml.yml` specification
-
-### Common Issues and Solutions
-- **R Package Installation (Line ~192):** If errors occur in the R package loop, add `set -x` before the loop and `set +x` after for debugging
-- **Conda Package Availability:** Check if packages exist on `conda-forge`; fall back to CRAN/PyPI as needed
-- **Environment Conflicts:** ML environment is separate to avoid PySpark conflicts
-- **Permission Issues:** Scripts handle `/tmp` directory permissions and `.bashrc` ownership
-
-### Script Selection Guidance
-- **Standard Setup:** Use `updatebionic.sh` for general data science work
-- **ML-Extended Setup:** Use `updatebionic-ml.sh` when PyTorch/CUDA/advanced ML tools are needed
-- **File Requirements:** Ensure all required files are present before running
-
-### Response Guidelines
-- Provide clear, concise fixes with code snippets
-- Explain why changes address the specific issue
-- Reference appropriate files (`requirements.txt`, `environment-ml.yml`, etc.)
-- Avoid generating unrelated modifications
-
-Example: If `r-tidyverse` installation fails, verify availability on `conda-forge`. If unavailable, suggest adding `tidyverse` to the `R_PACKAGES_CRAN` array in the script for CRAN installation.
-
-## File Structure
-
-```
-updatebionic/
-├── updatebionic.sh              # Standard data science setup
-├── updatebionic-ml.sh           # ML-extended setup
-├── requirements.txt             # Base Conda environment packages
-├── requirements-python.txt      # R environment Python packages  
-├── requirements-R.txt           # R packages for Conda/CRAN installation
-├── environment-ml.yml           # ML environment specification
-└── README.md                    # This file
+```bash
+conda activate /tmp/r_env
+conda activate /tmp/lhn_prod
+conda activate /tmp/lhn_dev
 ```
 
-## Credits
+***
 
-- **ML Environment Configuration:** `environment-ml.yml` provided by Zhiu Tu, Purdue University
-- **Base Setup:** Adapted for Ubuntu Bionic Docker containers with R and Python integration
+## File Expectations
+
+The script expects these files **next to itself**:
+
+    requirements.txt
+    requirements-python.txt
+    requirements-R.txt
+
+Persistent repositories must exist at:
+
+    ~/work/Users/hnelson3/lhn
+    ~/work/Users/hnelson3/spark_config_mapper
+    ~/work/Users/hnelson3/omop_concept_mapper (optional)
+
+***
+
+## Design Philosophy
+
+*   **Side-by-side reproducibility**
+*   **Fast ephemeral envs**, persistent source
+*   **Spark compatibility first**
+*   **Editable installs everywhere**
+*   No Docker changes required
+
+***
+
+## Summary
+
+After running this script you have:
+
+*   ✅ R 4.4 + Python 3.10 analysis environment
+*   ✅ LHN production and development environments
+*   ✅ Spark-safe kernels with Hive access
+*   ✅ Quarto ready for publishing
+*   ✅ One command rebuild when the container resets
+
+This setup is optimized for **daily, real-world LHN development and validation**.
