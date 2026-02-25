@@ -45,9 +45,10 @@ PROD_ENV_PATH="/tmp/lhn_prod"
 DEV_ENV_PATH="/tmp/lhn_dev"
 OLD_CONDA_PATH="/opt/conda"
 
-# Fallback to $0 if BASH_SOURCE[0] is empty
+# Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+SCRIPT_PATH="$SCRIPT_DIR/$(basename "$SCRIPT_PATH")"
 
 # ========== Self-Update from GitHub ==========
 SELF_UPDATE_REPO="harlananelson/updatebionic"
