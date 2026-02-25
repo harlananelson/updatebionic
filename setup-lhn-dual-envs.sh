@@ -120,8 +120,26 @@ if [[ -d "$SSH_PERSIST_DIR" ]] && [[ -n "$(ls -A "$SSH_PERSIST_DIR" 2>/dev/null)
     # Start ssh-agent and add key (so passphrase is only entered once)
     echo "Starting ssh-agent..."
     eval "$(ssh-agent -s)"
-    echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
-    ssh-add ~/.ssh/id_ed25519
+
+    # Support non-interactive passphrase entry via SSH_KEY_PASSPHRASE env var
+    # This enables automation (e.g., Playwright MCP) without manual input.
+    # If SSH_KEY_PASSPHRASE is not set, falls back to interactive prompt.
+    if [[ -n "${SSH_KEY_PASSPHRASE:-}" ]]; then
+        echo "Adding SSH key to agent (using SSH_KEY_PASSPHRASE)..."
+        # Create a temporary askpass script that echoes the passphrase
+        ASKPASS_SCRIPT=$(mktemp /tmp/ssh-askpass-XXXXXX)
+        cat > "$ASKPASS_SCRIPT" <<ASKEOF
+#!/bin/bash
+echo "\$SSH_KEY_PASSPHRASE"
+ASKEOF
+        chmod +x "$ASKPASS_SCRIPT"
+        # Use SSH_ASKPASS with DISPLAY unset to force askpass usage
+        SSH_ASKPASS="$ASKPASS_SCRIPT" SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519 </dev/null
+        rm -f "$ASKPASS_SCRIPT"
+    else
+        echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
+        ssh-add ~/.ssh/id_ed25519
+    fi
 
     # Test GitHub connectivity
     echo "Testing GitHub SSH connectivity..."
