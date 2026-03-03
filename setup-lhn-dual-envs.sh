@@ -281,6 +281,10 @@ EOF
         python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
     fi
 
+    # Install nbformat/nbconvert so quarto render --execute works from r_env
+    echo "Installing nbformat and nbconvert (required by quarto render --execute)..."
+    python -m pip install nbformat nbconvert
+
     # Install txtarchive from persistent storage
     TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
     if [[ -d "$TXTARCHIVE_PERSIST" ]]; then

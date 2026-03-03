@@ -16,5 +16,8 @@ plotly
 seaborn
 pytest
 PyYAML
+# Required by quarto render --execute (quarto's jupyter.py imports nbformat)
+nbformat
+nbconvert
 pyogrio
 pyproj
