@@ -182,6 +182,10 @@ sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-d
 echo "Updating pip in base conda..."
 /opt/conda/bin/python -m pip install --upgrade pip
 
+# Install duckdb in base conda (needed by scd_phenotyping via pyspark-lhn-dev kernel)
+echo "Installing duckdb in base conda..."
+/opt/conda/bin/python -m pip install duckdb
+
 # ========== Part 3: Install Quarto ==========
 echo ""
 echo "========== Part 3: Install Quarto =========="
@@ -582,6 +586,10 @@ else
     pip install plotnine lifelines
 fi
 
+# Install duckdb for scd_phenotyping (ICD phenotype classification)
+echo "Installing duckdb..."
+pip install duckdb
+
 # Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
 # pyspark 2.4.4 requires pandas 0.25.x
 echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
@@ -597,6 +605,7 @@ python -m ipykernel install --user --name "lhn_dev" --display-name "Python (lhn-
 # Verify installation
 echo "Verifying lhn installation..."
 python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lhn import failed"
+python -c "import duckdb; print(f'duckdb {duckdb.__version__} installed')" || echo "WARNING: duckdb import failed"
 
 conda deactivate
 
