@@ -182,9 +182,9 @@ sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-d
 echo "Updating pip in base conda..."
 /opt/conda/bin/python -m pip install --upgrade pip
 
-# Install duckdb in base conda (needed by scd_phenotyping via pyspark-lhn-dev kernel)
-echo "Installing duckdb in base conda..."
-/opt/conda/bin/python -m pip install duckdb
+# Install packages in base conda (needed by pyspark-lhn-dev kernel)
+echo "Installing duckdb and plotnine in base conda..."
+/opt/conda/bin/python -m pip install duckdb plotnine
 
 # ========== Part 3: Install Quarto ==========
 echo ""
