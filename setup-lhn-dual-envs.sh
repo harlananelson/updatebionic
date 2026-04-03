@@ -327,8 +327,8 @@ EOF
     # Install GitHub-only R packages
     echo "Installing R packages from GitHub..."
     R -e "if (!requireNamespace('treeshap', quietly=TRUE)) remotes::install_github('ModelOriented/treeshap', lib='$R_LIB_PATH')"
-    R -e "if (!requireNamespace('usmapdata', quietly=TRUE)) remotes::install_github('pdil/usmapdata', lib='$R_LIB_PATH')"
-    R -e "if (!requireNamespace('usmap', quietly=TRUE)) remotes::install_github('pdil/usmap', lib='$R_LIB_PATH')"
+    R -e "if (!requireNamespace('usmapdata', quietly=TRUE)) remotes::install_github('pdil/usmapdata', lib='$R_LIB_PATH', dependencies=TRUE)"
+    R -e "if (!requireNamespace('usmap', quietly=TRUE)) remotes::install_github('pdil/usmap', lib='$R_LIB_PATH', dependencies=TRUE)"
 
     # Register R kernel
     echo "Registering R ${R_VERSION} kernel..."
