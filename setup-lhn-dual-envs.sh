@@ -84,6 +84,34 @@ echo "========== LHN Dual Environment Setup =========="
 echo "Script directory: $SCRIPT_DIR"
 date
 
+# ========== Retry Helper ==========
+# Usage: retry_cmd <max_attempts> <delay_seconds> <description> command [args...]
+# Retries a command up to max_attempts times with delay between attempts.
+retry_cmd() {
+    local max_attempts=$1
+    local delay=$2
+    local desc=$3
+    shift 3
+
+    local attempt=1
+    while true; do
+        echo "[$desc] Attempt $attempt of $max_attempts..."
+        if "$@"; then
+            echo "[$desc] Succeeded on attempt $attempt."
+            return 0
+        fi
+
+        if (( attempt >= max_attempts )); then
+            echo "[$desc] FAILED after $max_attempts attempts."
+            return 1
+        fi
+
+        echo "[$desc] Failed. Retrying in ${delay}s..."
+        sleep "$delay"
+        ((attempt++))
+    done
+}
+
 # Ensure conda environments registry exists (suppresses "Unable to create environments file" warning)
 mkdir -p ~/.conda
 touch ~/.conda/environments.txt 2>/dev/null || true
@@ -176,7 +204,8 @@ sudo apt-get update
 # Install consolidated system dependencies for geopandas, plotting, and other R packages
 # build-essential and gfortran are needed for compiling R packages from source (lobstr, butcher, etc.)
 echo "Installing system dependencies..."
-sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev vim build-essential gfortran
+retry_cmd 3 30 "apt-get install" \
+    sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-dev libudunits2-dev libfreetype6-dev libpng-dev vim build-essential gfortran
 
 # Update pip in base conda
 echo "Updating pip in base conda..."
