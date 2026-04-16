@@ -45,9 +45,10 @@ PROD_ENV_PATH="/tmp/lhn_prod"
 DEV_ENV_PATH="/tmp/lhn_dev"
 OLD_CONDA_PATH="/opt/conda"
 
-# Fallback to $0 if BASH_SOURCE[0] is empty
+# Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
 SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+SCRIPT_PATH="$SCRIPT_DIR/$(basename "$SCRIPT_PATH")"
 
 # ========== Self-Update from GitHub ==========
 SELF_UPDATE_REPO="harlananelson/updatebionic"
@@ -120,8 +121,26 @@ if [[ -d "$SSH_PERSIST_DIR" ]] && [[ -n "$(ls -A "$SSH_PERSIST_DIR" 2>/dev/null)
     # Start ssh-agent and add key (so passphrase is only entered once)
     echo "Starting ssh-agent..."
     eval "$(ssh-agent -s)"
-    echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
-    ssh-add ~/.ssh/id_ed25519
+
+    # Support non-interactive passphrase entry via SSH_KEY_PASSPHRASE env var
+    # This enables automation (e.g., Playwright MCP) without manual input.
+    # If SSH_KEY_PASSPHRASE is not set, falls back to interactive prompt.
+    if [[ -n "${SSH_KEY_PASSPHRASE:-}" ]]; then
+        echo "Adding SSH key to agent (using SSH_KEY_PASSPHRASE)..."
+        # Create a temporary askpass script that echoes the passphrase
+        ASKPASS_SCRIPT=$(mktemp /tmp/ssh-askpass-XXXXXX)
+        cat > "$ASKPASS_SCRIPT" <<ASKEOF
+#!/bin/bash
+echo "\$SSH_KEY_PASSPHRASE"
+ASKEOF
+        chmod +x "$ASKPASS_SCRIPT"
+        # Use SSH_ASKPASS with DISPLAY unset to force askpass usage
+        SSH_ASKPASS="$ASKPASS_SCRIPT" SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519 </dev/null
+        rm -f "$ASKPASS_SCRIPT"
+    else
+        echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
+        ssh-add ~/.ssh/id_ed25519
+    fi
 
     # Test GitHub connectivity
     echo "Testing GitHub SSH connectivity..."
@@ -162,6 +181,10 @@ sudo apt-get install -y --fix-missing gdal-bin libgdal-dev libgeos-dev libproj-d
 # Update pip in base conda
 echo "Updating pip in base conda..."
 /opt/conda/bin/python -m pip install --upgrade pip
+
+# Install packages in base conda (needed by pyspark-lhn-dev kernel)
+echo "Installing duckdb and plotnine in base conda..."
+/opt/conda/bin/python -m pip install duckdb plotnine
 
 # ========== Part 3: Install Quarto ==========
 echo ""
@@ -262,6 +285,10 @@ EOF
         python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
     fi
 
+    # Install nbformat/nbconvert so quarto render --execute works from r_env
+    echo "Installing nbformat and nbconvert (required by quarto render --execute)..."
+    python -m pip install nbformat nbconvert
+
     # Install txtarchive from persistent storage
     TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
     if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
@@ -292,7 +319,7 @@ EOF
 
     # Install R packages via CRAN
     echo "Installing R packages via CRAN..."
-    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "TrialEmulation" "randomForestSRC" "timeROC" "data.tree" "DiagrammeR" "cmprsk" "doParallel" "mets" "plotrix" "Publish" "glmnet" "riskRegression" "timereg" "pec")
+    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "msm" "flexsurv" "mstate" "JMbayes2" "fdapace" "nlme" "TrialEmulation" "randomForestSRC" "timeROC" "data.tree" "DiagrammeR" "cmprsk" "doParallel" "mets" "plotrix" "Publish" "glmnet" "riskRegression" "timereg" "pec" "parameters" "skimr" "smd")
     R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
     R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
     R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
@@ -300,6 +327,8 @@ EOF
     # Install GitHub-only R packages
     echo "Installing R packages from GitHub..."
     R -e "if (!requireNamespace('treeshap', quietly=TRUE)) remotes::install_github('ModelOriented/treeshap', lib='$R_LIB_PATH')"
+    R -e "if (!requireNamespace('usmapdata', quietly=TRUE)) remotes::install_github('pdil/usmapdata', lib='$R_LIB_PATH', dependencies=TRUE)"
+    R -e "if (!requireNamespace('usmap', quietly=TRUE)) remotes::install_github('pdil/usmap', lib='$R_LIB_PATH', dependencies=TRUE)"
 
     # Register R kernel
     echo "Registering R ${R_VERSION} kernel..."
@@ -559,6 +588,10 @@ else
     pip install plotnine lifelines
 fi
 
+# Install duckdb for scd_phenotyping (ICD phenotype classification)
+echo "Installing duckdb..."
+pip install duckdb
+
 # Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
 # pyspark 2.4.4 requires pandas 0.25.x
 echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
@@ -574,6 +607,7 @@ python -m ipykernel install --user --name "lhn_dev" --display-name "Python (lhn-
 # Verify installation
 echo "Verifying lhn installation..."
 python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lhn import failed"
+python -c "import duckdb; print(f'duckdb {duckdb.__version__} installed')" || echo "WARNING: duckdb import failed"
 
 conda deactivate
 
