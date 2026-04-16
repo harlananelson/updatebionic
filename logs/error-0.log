@@ -1,0 +1,528 @@
+hnelson3@ip-10-42-66-151:~$ cd work/Users/hnelson3/
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3$ cd updatebionic
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$ ls
+add-r-kernel.sh           environment-ml.yml  nix        requirements-python.txt  scripts                 spark_metastore_init.py
+diagnose_spark_config.py  install-log.md      oldstuff   requirements-R.txt       setup-lhn-dual-envs.sh
+documentation             logs                README.md  requirements.txt         setup_spark_upgrade.py
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$ bash setup-lhn-dual-envs.sh
+Checking GitHub for newer version of setup-lhn-dual-envs.sh...
+Already running the latest version.
+========== LHN Dual Environment Setup ==========
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Thu Apr 16 12:52:58 UTC 2026
+
+========== Part 1: Install SSH and Restore Keys ==========
+Installing openssh-client...
+Hit:1 http://repos.mesosphere.com/ubuntu xenial InRelease
+Get:2 http://security.ubuntu.com/ubuntu bionic-security InRelease [102 kB]
+Hit:3 http://archive.ubuntu.com/ubuntu bionic InRelease
+Get:4 http://security.ubuntu.com/ubuntu bionic-security/main amd64 Packages [3,373 kB]
+Get:5 http://security.ubuntu.com/ubuntu bionic-security/universe amd64 Packages [1,637 kB]
+Get:6 http://archive.ubuntu.com/ubuntu bionic-updates InRelease [102 kB]
+Get:7 http://archive.ubuntu.com/ubuntu bionic-backports InRelease [102 kB]
+Get:8 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 Packages [2,411 kB]
+Get:9 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 Packages [3,786 kB]
+Fetched 11.5 MB in 48s (241 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  libxmuu1 xauth
+Suggested packages:
+  keychain libpam-ssh monkeysphere ssh-askpass
+The following NEW packages will be installed:
+  libxmuu1 openssh-client xauth
+0 upgraded, 3 newly installed, 0 to remove and 197 not upgraded.
+Need to get 644 kB of archives.
+After this operation, 4,270 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu bionic/main amd64 libxmuu1 amd64 2:1.1.2-2 [9,674 B]
+Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 openssh-client amd64 1:7.6p1-4ubuntu0.7 [610 kB]
+Get:3 http://archive.ubuntu.com/ubuntu bionic/main amd64 xauth amd64 1:1.0.10-1 [24.6 kB]
+Fetched 644 kB in 49s (13.1 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libxmuu1:amd64.
+(Reading database ... 123090 files and directories currently installed.)
+Preparing to unpack .../libxmuu1_2%3a1.1.2-2_amd64.deb ...
+Unpacking libxmuu1:amd64 (2:1.1.2-2) ...
+Selecting previously unselected package openssh-client.
+Preparing to unpack .../openssh-client_1%3a7.6p1-4ubuntu0.7_amd64.deb ...
+Unpacking openssh-client (1:7.6p1-4ubuntu0.7) ...
+Selecting previously unselected package xauth.
+Preparing to unpack .../xauth_1%3a1.0.10-1_amd64.deb ...
+Unpacking xauth (1:1.0.10-1) ...
+Setting up libxmuu1:amd64 (2:1.1.2-2) ...
+Setting up xauth (1:1.0.10-1) ...
+Setting up openssh-client (1:7.6p1-4ubuntu0.7) ...
+Processing triggers for libc-bin (2.27-3ubuntu1) ...
+Restoring SSH keys from persistent storage (/home/hnelson3/work/Users/hnelson3/.ssh)...
+SSH keys restored successfully.
+Starting ssh-agent...
+Agent pid 877
+Adding SSH key to agent (you'll be prompted for passphrase once)...
+Enter passphrase for /home/hnelson3/.ssh/id_ed25519:
+Bad passphrase, try again for /home/hnelson3/.ssh/id_ed25519:
+Identity added: /home/hnelson3/.ssh/id_ed25519 (harlananelson@gmaill.com)
+Testing GitHub SSH connectivity...
+The authenticity of host 'github.com (140.82.112.3)' can't be established.
+ECDSA key fingerprint is SHA256:p2QAMXNIC1TJYWeIOttrVc98/R1BUFWu3/LiyKgUfQM.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,140.82.112.3' (ECDSA) to the list of known hosts.
+Hi harlananelson! You've successfully authenticated, but GitHub does not provide shell access.
+
+========== Part 2: System Updates ==========
+Updating apt package lists...
+Hit:1 http://repos.mesosphere.com/ubuntu xenial InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Err:5 http://security.ubuntu.com/ubuntu bionic-security InRelease
+  Connection failed [IP: 91.189.92.22 80]
+Reading package lists... Done
+W: Failed to fetch http://security.ubuntu.com/ubuntu/dists/bionic-security/InRelease  Connection failed [IP: 91.189.92.22 80]
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+Installing system dependencies...
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+build-essential is already the newest version (12.4ubuntu1).
+gfortran is already the newest version (4:7.4.0-1ubuntu2.3).
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  default-libmysqlclient-dev file gdal-data hdf5-helpers libaec-dev libaec0 libarmadillo-dev libarmadillo8 libarpack2 libarpack2-dev
+  libblas-dev libblas3 libboost-dev libboost1.65-dev libdap-dev libdap25 libdapclient6v5 libdapserver7v5 libepsilon-dev libepsilon1
+  libfreetype6 libfreexl-dev libfreexl1 libfyba-dev libfyba0 libgdal20 libgeos-3.6.2 libgeos-c1v5 libgeotiff-dev libgeotiff2 libgif-dev
+  libhdf4-0-alt libhdf4-alt-dev libhdf5-100 libhdf5-cpp-100 libhdf5-dev libjbig-dev libjbig0 libjpeg-dev libjpeg-turbo8 libjpeg-turbo8-dev
+  libjpeg8-dev libjson-c-dev libkml-dev libkmlbase1 libkmlconvenience1 libkmldom1 libkmlengine1 libkmlregionator1 libkmlxsd1 liblapack-dev
+  liblapack3 libltdl-dev liblzma-dev liblzma5 libmagic-mgc libmagic1 libminizip-dev libminizip1 libmysqlclient-dev libmysqlclient20
+  libnetcdf-dev libnetcdf13 libodbc1 libogdi3.2 libogdi3.2-dev libopenjp2-7 libopenjp2-7-dev libpng-tools libpoppler-dev libpoppler-glib8
+  libpoppler-private-dev libpoppler73 libpq-dev libpq5 libproj12 libpython3.6 libqhull-dev libqhull-r7 libqhull7 libspatialite-dev
+  libspatialite7 libsqlite3-0 libsqlite3-dev libsuperlu-dev libsuperlu5 libsz2 libtiff-dev libtiff5 libtiff5-dev libtiffxx5 libtool
+  libudunits2-0 libudunits2-data liburiparser-dev liburiparser1 libuuid1 libwebp-dev libwebp6 libwebpdemux2 libwebpmux3 libxerces-c-dev
+  libxerces-c3.2 mysql-common odbcinst odbcinst1debian2 proj-bin proj-data unixodbc-dev uuid-dev vim-common vim-runtime xxd
+Suggested packages:
+  libgdal-grass python-gdal libitpp-dev liblapack-doc libboost-doc libboost1.65-doc libboost-atomic1.65-dev libboost-chrono1.65-dev
+  libboost-container1.65-dev libboost-context1.65-dev libboost-coroutine1.65-dev libboost-date-time1.65-dev libboost-exception1.65-dev
+  libboost-fiber1.65-dev libboost-filesystem1.65-dev libboost-graph1.65-dev libboost-graph-parallel1.65-dev libboost-iostreams1.65-dev
+  libboost-locale1.65-dev libboost-log1.65-dev libboost-math1.65-dev libboost-mpi1.65-dev libboost-mpi-python1.65-dev libboost-numpy1.65-dev
+  libboost-program-options1.65-dev libboost-python1.65-dev libboost-random1.65-dev libboost-regex1.65-dev libboost-serialization1.65-dev
+  libboost-signals1.65-dev libboost-stacktrace1.65-dev libboost-system1.65-dev libboost-test1.65-dev libboost-thread1.65-dev
+  libboost-timer1.65-dev libboost-type-erasure1.65-dev libboost-wave1.65-dev libboost1.65-tools-dev libmpfrc++-dev libntl-dev libgdal-doc
+  libgeotiff-epsg geotiff-bin libhdf4-doc hdf4-tools libhdf5-doc libtool-doc liblzma-doc netcdf-bin netcdf-doc libmyodbc odbc-postgresql
+  tdsodbc unixodbc-bin ogdi-bin postgresql-doc-10 sqlite3-doc libsuperlu-doc gcj-jdk libxerces-c-doc ctags vim-doc vim-scripts
+Recommended packages:
+  uuid-runtime
+The following NEW packages will be installed:
+  default-libmysqlclient-dev file gdal-bin gdal-data hdf5-helpers libaec-dev libaec0 libarmadillo-dev libarmadillo8 libarpack2 libarpack2-dev
+  libblas-dev libblas3 libboost-dev libboost1.65-dev libdap-dev libdap25 libdapclient6v5 libdapserver7v5 libepsilon-dev libepsilon1
+  libfreetype6-dev libfreexl-dev libfreexl1 libfyba-dev libfyba0 libgdal-dev libgdal20 libgeos-3.6.2 libgeos-c1v5 libgeos-dev libgeotiff-dev
+  libgeotiff2 libgif-dev libhdf4-0-alt libhdf4-alt-dev libhdf5-100 libhdf5-cpp-100 libhdf5-dev libjbig-dev libjpeg-dev libjpeg-turbo8-dev
+  libjpeg8-dev libjson-c-dev libkml-dev libkmlbase1 libkmlconvenience1 libkmldom1 libkmlengine1 libkmlregionator1 libkmlxsd1 liblapack-dev
+  liblapack3 libltdl-dev liblzma-dev libmagic-mgc libmagic1 libminizip-dev libminizip1 libmysqlclient-dev libmysqlclient20 libnetcdf-dev
+  libnetcdf13 libodbc1 libogdi3.2 libogdi3.2-dev libopenjp2-7-dev libpng-dev libpng-tools libpoppler-dev libpoppler-private-dev libpq-dev
+  libpq5 libproj-dev libproj12 libpython3.6 libqhull-dev libqhull-r7 libqhull7 libspatialite-dev libspatialite7 libsqlite3-dev libsuperlu-dev
+  libsuperlu5 libsz2 libtiff-dev libtiff5-dev libtiffxx5 libtool libudunits2-0 libudunits2-data libudunits2-dev liburiparser-dev liburiparser1
+  libwebp-dev libwebpdemux2 libxerces-c-dev libxerces-c3.2 mysql-common odbcinst odbcinst1debian2 proj-bin proj-data unixodbc-dev uuid-dev vim
+  vim-common vim-runtime xxd
+The following packages will be upgraded:
+  libfreetype6 libjbig0 libjpeg-turbo8 liblzma5 libopenjp2-7 libpoppler-glib8 libpoppler73 libsqlite3-0 libtiff5 libuuid1 libwebp6 libwebpmux3
+12 upgraded, 109 newly installed, 0 to remove and 185 not upgraded.
+Need to get 62.8 MB of archives.
+After this operation, 383 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjpeg-turbo8 amd64 1.5.2-0ubuntu5.18.04.6 [111 kB]
+Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 liblzma5 amd64 5.2.2-1.3ubuntu0.1 [91.1 kB]
+Get:3 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libuuid1 amd64 2.31.1-0.4ubuntu3.7 [20.1 kB]
+Get:4 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmagic-mgc amd64 1:5.32-2ubuntu0.4 [184 kB]
+Get:5 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmagic1 amd64 1:5.32-2ubuntu0.4 [68.6 kB]
+Get:6 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 file amd64 1:5.32-2ubuntu0.4 [22.1 kB]
+Get:7 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libsqlite3-0 amd64 3.22.0-1ubuntu0.7 [499 kB]
+Get:8 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 xxd amd64 2:8.0.1453-1ubuntu1.13 [51.9 kB]
+Get:9 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-common all 2:8.0.1453-1ubuntu1.13 [73.1 kB]
+Get:10 http://archive.ubuntu.com/ubuntu bionic/main amd64 mysql-common all 5.8+1.0.4 [7,308 B]
+Get:11 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmysqlclient20 amd64 5.7.42-0ubuntu0.18.04.1 [730 kB]
+Get:12 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmysqlclient-dev amd64 5.7.42-0ubuntu0.18.04.1 [1,078 kB]
+Get:13 http://archive.ubuntu.com/ubuntu bionic/main amd64 default-libmysqlclient-dev amd64 1.0.4 [3,736 B]
+Get:14 http://archive.ubuntu.com/ubuntu bionic/universe amd64 gdal-data all 2.2.3+dfsg-2 [363 kB]
+Get:15 http://archive.ubuntu.com/ubuntu bionic/main amd64 libblas3 amd64 3.7.1-4ubuntu1 [140 kB]
+Get:16 http://archive.ubuntu.com/ubuntu bionic/main amd64 liblapack3 amd64 3.7.1-4ubuntu1 [2,112 kB]
+Get:17 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarpack2 amd64 3.5.0+real-2 [89.7 kB]
+Get:18 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsuperlu5 amd64 5.2.1+dfsg1-3 [161 kB]
+Err:19 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarmadillo8 amd64 1:8.400.0+dfsg-2
+  Connection failed [IP: 91.189.91.82 80]
+Get:20 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdap25 amd64 3.19.1-2build1 [426 kB]
+Err:21 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdapclient6v5 amd64 3.19.1-2build1
+  Connection failed [IP: 91.189.92.24 80]
+Get:22 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libepsilon1 amd64 0.9.2+dfsg-2 [41.2 kB]
+Get:23 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfreexl1 amd64 1.0.5-1 [33.4 kB]
+Get:24 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfyba0 amd64 4.1.1-3 [110 kB]
+Get:25 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-3.6.2 amd64 3.6.2-1build2 [476 kB]
+Get:26 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-c1v5 amd64 3.6.2-1build2 [54.9 kB]
+Err:27 http://archive.ubuntu.com/ubuntu bionic/universe amd64 proj-data all 4.9.3-2
+  Connection failed [IP: 91.189.91.83 80]
+Get:28 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libproj12 amd64 4.9.3-2 [159 kB]
+Get:29 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.18.04.1 [27.0 kB]
+Get:30 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff5 amd64 4.0.9-5ubuntu0.10 [154 kB]
+Err:31 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeotiff2 amd64 1.4.2-2build1
+  Connection failed [IP: 91.189.91.82 80]
+Get:32 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf4-0-alt amd64 4.2.13-2 [267 kB]
+Get:33 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libaec0 amd64 0.3.2-2 [18.1 kB]
+Get:34 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsz2 amd64 0.3.2-2 [5,114 B]
+Get:35 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-100 amd64 1.10.0-patch1+docs-4 [1,256 kB]
+Get:36 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libminizip1 amd64 1.1-8build1 [20.2 kB]
+Get:37 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 liburiparser1 amd64 0.8.4-1+deb9u2ubuntu0.1 [39.5 kB]
+Get:38 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlbase1 amd64 1.3.0-5 [44.9 kB]
+Get:39 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmldom1 amd64 1.3.0-5 [165 kB]
+Get:40 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlengine1 amd64 1.3.0-5 [73.7 kB]
+Get:41 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libnetcdf13 amd64 1:4.6.0-2build1 [333 kB]
+Get:42 http://archive.ubuntu.com/ubuntu bionic/main amd64 libodbc1 amd64 2.3.4-1.1ubuntu3 [183 kB]
+Err:43 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libogdi3.2 amd64 3.2.0+ds-2
+  Connection failed [IP: 91.189.91.83 80]
+Get:44 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libopenjp2-7 amd64 2.3.0-2+deb10u2build0.18.04.1 [145 kB]
+Get:45 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libfreetype6 amd64 2.8.1-2ubuntu2.2 [335 kB]
+Get:46 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-glib8 amd64 0.62.0-2ubuntu2.14 [108 kB]
+Get:47 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler73 amd64 0.62.0-2ubuntu2.14 [800 kB]
+Get:48 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq5 amd64 10.23-0ubuntu0.18.04.2 [107 kB]
+Get:49 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull7 amd64 2015.2-4 [152 kB]
+Get:50 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libspatialite7 amd64 4.3.0a-5build1 [1,224 kB]
+Get:51 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebp6 amd64 0.6.1-2ubuntu0.18.04.2 [186 kB]
+Get:52 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libxerces-c3.2 amd64 3.2.0+debian-2 [851 kB]
+Get:53 http://archive.ubuntu.com/ubuntu bionic/main amd64 odbcinst amd64 2.3.4-1.1ubuntu3 [12.4 kB]
+Err:54 http://archive.ubuntu.com/ubuntu bionic/main amd64 odbcinst1debian2 amd64 2.3.4-1.1ubuntu3
+  Connection failed [IP: 91.189.91.82 80]
+Get:55 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgdal20 amd64 2.2.3+dfsg-2 [5,099 kB]
+Get:56 http://archive.ubuntu.com/ubuntu bionic/universe amd64 gdal-bin amd64 2.2.3+dfsg-2 [168 kB]
+Err:57 http://archive.ubuntu.com/ubuntu bionic/universe amd64 hdf5-helpers amd64 1.10.0-patch1+docs-4
+  Connection failed [IP: 91.189.91.82 80]
+Get:58 http://archive.ubuntu.com/ubuntu bionic/main amd64 libblas-dev amd64 3.7.1-4ubuntu1 [143 kB]
+Get:59 http://archive.ubuntu.com/ubuntu bionic/main amd64 liblapack-dev amd64 3.7.1-4ubuntu1 [2,140 kB]
+Err:60 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarpack2-dev amd64 3.5.0+real-2
+  Connection failed [IP: 91.189.91.82 80]
+Get:61 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjpeg-turbo8-dev amd64 1.5.2-0ubuntu5.18.04.6 [225 kB]
+Get:62 http://archive.ubuntu.com/ubuntu bionic/main amd64 libjpeg8-dev amd64 8c-2ubuntu8 [1,552 B]
+Get:63 http://archive.ubuntu.com/ubuntu bionic/main amd64 libjpeg-dev amd64 8c-2ubuntu8 [1,546 B]
+Err:64 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libaec-dev amd64 0.3.2-2
+  Connection failed [IP: 185.125.190.83 80]
+Get:65 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-cpp-100 amd64 1.10.0-patch1+docs-4 [104 kB]
+Get:66 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-dev amd64 1.10.0-patch1+docs-4 [2,461 kB]
+Get:67 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsuperlu-dev amd64 5.2.1+dfsg1-3 [16.3 kB]
+Get:68 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarmadillo-dev amd64 1:8.400.0+dfsg-2 [340 kB]
+Get:69 http://archive.ubuntu.com/ubuntu bionic/main amd64 libboost1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [7,218 kB]
+Get:70 http://archive.ubuntu.com/ubuntu bionic/main amd64 libboost-dev amd64 1.65.1.0ubuntu1 [3,128 B]
+Get:71 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdapserver7v5 amd64 3.19.1-2build1 [22.2 kB]
+Get:72 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 uuid-dev amd64 2.31.1-0.4ubuntu3.7 [33.2 kB]
+Get:73 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdap-dev amd64 3.19.1-2build1 [710 kB]
+Get:74 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpng-dev amd64 1.6.34-1ubuntu0.18.04.2 [177 kB]
+Get:75 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libfreetype6-dev amd64 2.8.1-2ubuntu2.2 [2,539 kB]
+Get:76 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfyba-dev amd64 4.1.1-3 [436 kB]
+Get:77 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-dev amd64 3.6.2-1build2 [73.1 kB]
+Get:78 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libgif-dev amd64 5.1.4-2ubuntu0.1 [20.6 kB]
+Get:79 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlconvenience1 amd64 1.3.0-5 [43.1 kB]
+Get:80 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlregionator1 amd64 1.3.0-5 [19.0 kB]
+Get:81 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlxsd1 amd64 1.3.0-5 [29.5 kB]
+Get:82 http://archive.ubuntu.com/ubuntu bionic/main amd64 libltdl-dev amd64 2.4.6-2 [162 kB]
+Get:83 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libminizip-dev amd64 1.1-8build1 [26.7 kB]
+Get:84 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libnetcdf-dev amd64 1:4.6.0-2build1 [37.6 kB]
+Get:85 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpng-tools amd64 1.6.34-1ubuntu0.18.04.2 [25.6 kB]
+Get:86 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-dev amd64 0.62.0-2ubuntu2.14 [4,616 B]
+Get:87 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-private-dev amd64 0.62.0-2ubuntu2.14 [169 kB]
+Get:88 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq-dev amd64 10.23-0ubuntu0.18.04.2 [219 kB]
+Get:89 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython3.6 amd64 3.6.9-1~18.04ubuntu1.12 [1,414 kB]
+Err:90 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull-r7 amd64 2015.2-4
+  Connection failed [IP: 185.125.190.82 80]
+Err:91 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull-dev amd64 2015.2-4
+  Connection failed [IP: 91.189.91.81 80]
+Get:92 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libsqlite3-dev amd64 3.22.0-1ubuntu0.7 [633 kB]
+Get:93 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjbig-dev amd64 2.1-3.1ubuntu0.18.04.1 [25.3 kB]
+Get:94 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 liblzma-dev amd64 5.2.2-1.3ubuntu0.1 [145 kB]
+Ign:95 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiffxx5 amd64 4.0.9-5ubuntu0.10
+Get:95 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libtiffxx5 amd64 4.0.9-5ubuntu0.10 [5,804 B]
+Get:96 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff5-dev amd64 4.0.9-5ubuntu0.10 [275 kB]
+Get:97 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff-dev amd64 4.0.9-5ubuntu0.10 [2,260 B]
+Get:98 http://archive.ubuntu.com/ubuntu bionic/main amd64 libtool all 2.4.6-2 [194 kB]
+Get:99 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-data all 2.2.26-1 [18.7 kB]
+Get:100 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-0 amd64 2.2.26-1 [54.3 kB]
+Get:101 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-dev amd64 2.2.26-1 [362 kB]
+Get:102 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 liburiparser-dev amd64 0.8.4-1+deb9u2ubuntu0.1 [10.2 kB]
+Ign:103 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebpdemux2 amd64 0.6.1-2ubuntu0.18.04.2
+Get:103 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libwebpdemux2 amd64 0.6.1-2ubuntu0.18.04.2 [9,480 B]
+Get:104 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebpmux3 amd64 0.6.1-2ubuntu0.18.04.2 [19.6 kB]
+Get:105 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libxerces-c-dev amd64 3.2.0+debian-2 [1,627 kB]
+Get:106 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1.13 [5,439 kB]
+Get:107 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim amd64 2:8.0.1453-1ubuntu1.13 [1,156 kB]
+Get:108 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libepsilon-dev amd64 0.9.2+dfsg-2 [49.3 kB]
+Get:109 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfreexl-dev amd64 1.0.5-1 [30.9 kB]
+Get:110 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeotiff-dev amd64 1.4.2-2build1 [82.6 kB]
+Get:111 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf4-alt-dev amd64 4.2.13-2 [368 kB]
+Get:112 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjson-c-dev amd64 0.12.1-1.3ubuntu0.3 [31.9 kB]
+Get:113 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkml-dev amd64 1.3.0-5 [933 kB]
+Get:114 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libproj-dev amd64 4.9.3-2 [199 kB]
+Err:115 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libogdi3.2-dev amd64 3.2.0+ds-2
+  Connection failed [IP: 91.189.92.24 80]
+Get:116 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libopenjp2-7-dev amd64 2.3.0-2+deb10u2build0.18.04.1 [26.6 kB]
+Get:117 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libspatialite-dev amd64 4.3.0a-5build1 [1,323 kB]
+Get:118 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebp-dev amd64 0.6.1-2ubuntu0.18.04.2 [268 kB]
+Get:119 http://archive.ubuntu.com/ubuntu bionic/main amd64 unixodbc-dev amd64 2.3.4-1.1ubuntu3 [217 kB]
+Get:120 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgdal-dev amd64 2.2.3+dfsg-2 [6,369 kB]
+Get:121 http://archive.ubuntu.com/ubuntu bionic/universe amd64 proj-bin amd64 4.9.3-2 [32.3 kB]
+Fetched 57.6 MB in 42min 18s (22.7 kB/s)
+Unable to correct missing packages.
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/a/armadillo/libarmadillo8_8.400.0+dfsg-2_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libd/libdap/libdapclient6v5_3.19.1-2build1_amd64.deb  Connection failed [IP: 91.189.92.24 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/p/proj/proj-data_4.9.3-2_all.deb  Connection failed [IP: 91.189.91.83 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libg/libgeotiff-dfsg/libgeotiff2_1.4.2-2build1_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/o/ogdi-dfsg/libogdi3.2_3.2.0+ds-2_amd64.deb  Connection failed [IP: 91.189.91.83 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/main/u/unixodbc/odbcinst1debian2_2.3.4-1.1ubuntu3_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/h/hdf5/hdf5-helpers_1.10.0-patch1+docs-4_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/a/arpack/libarpack2-dev_3.5.0+real-2_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/liba/libaec/libaec-dev_0.3.2-2_amd64.deb  Connection failed [IP: 185.125.190.83 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qhull/libqhull-r7_2015.2-4_amd64.deb  Connection failed [IP: 185.125.190.8280]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qhull/libqhull-dev_2015.2-4_amd64.deb  Connection failed [IP: 91.189.91.81 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/o/ogdi-dfsg/libogdi3.2-dev_3.2.0+ds-2_amd64.deb  Connection failed [IP: 91.189.92.24 80]
+E: Aborting install.
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$ git pull
+Warning: Permanently added the ECDSA host key for IP address '140.82.112.4' to the list of known hosts.
+Enter passphrase for key '/home/hnelson3/.ssh/id_ed25519':
+Already up to date.
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$ bash setup-lhn-dual-envs.sh
+Checking GitHub for newer version of setup-lhn-dual-envs.sh...
+Already running the latest version.
+========== LHN Dual Environment Setup ==========
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Thu Apr 16 13:49:46 UTC 2026
+
+========== Part 1: Install SSH and Restore Keys ==========
+Restoring SSH keys from persistent storage (/home/hnelson3/work/Users/hnelson3/.ssh)...
+SSH keys restored successfully.
+Starting ssh-agent...
+Agent pid 1178
+Adding SSH key to agent (you'll be prompted for passphrase once)...
+Enter passphrase for /home/hnelson3/.ssh/id_ed25519:
+Identity added: /home/hnelson3/.ssh/id_ed25519 (harlananelson@gmaill.com)
+Testing GitHub SSH connectivity...
+Warning: Permanently added the ECDSA host key for IP address '140.82.113.3' to the list of known hosts.
+Hi harlananelson! You've successfully authenticated, but GitHub does not provide shell access.
+
+========== Part 2: System Updates ==========
+Updating apt package lists...
+Hit:1 http://repos.mesosphere.com/ubuntu xenial InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:3 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Reading package lists... Done
+Installing system dependencies...
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+build-essential is already the newest version (12.4ubuntu1).
+gfortran is already the newest version (4:7.4.0-1ubuntu2.3).
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  default-libmysqlclient-dev file gdal-data hdf5-helpers libaec-dev libaec0 libarmadillo-dev libarmadillo8 libarpack2 libarpack2-dev
+  libblas-dev libblas3 libboost-dev libboost1.65-dev libdap-dev libdap25 libdapclient6v5 libdapserver7v5 libepsilon-dev libepsilon1
+  libfreetype6 libfreexl-dev libfreexl1 libfyba-dev libfyba0 libgdal20 libgeos-3.6.2 libgeos-c1v5 libgeotiff-dev libgeotiff2 libgif-dev
+  libhdf4-0-alt libhdf4-alt-dev libhdf5-100 libhdf5-cpp-100 libhdf5-dev libjbig-dev libjbig0 libjpeg-dev libjpeg-turbo8 libjpeg-turbo8-dev
+  libjpeg8-dev libjson-c-dev libkml-dev libkmlbase1 libkmlconvenience1 libkmldom1 libkmlengine1 libkmlregionator1 libkmlxsd1 liblapack-dev
+  liblapack3 libltdl-dev liblzma-dev liblzma5 libmagic-mgc libmagic1 libminizip-dev libminizip1 libmysqlclient-dev libmysqlclient20
+  libnetcdf-dev libnetcdf13 libodbc1 libogdi3.2 libogdi3.2-dev libopenjp2-7 libopenjp2-7-dev libpng-tools libpoppler-dev libpoppler-glib8
+  libpoppler-private-dev libpoppler73 libpq-dev libpq5 libproj12 libpython3.6 libqhull-dev libqhull-r7 libqhull7 libspatialite-dev
+  libspatialite7 libsqlite3-0 libsqlite3-dev libsuperlu-dev libsuperlu5 libsz2 libtiff-dev libtiff5 libtiff5-dev libtiffxx5 libtool
+  libudunits2-0 libudunits2-data liburiparser-dev liburiparser1 libuuid1 libwebp-dev libwebp6 libwebpdemux2 libwebpmux3 libxerces-c-dev
+  libxerces-c3.2 mysql-common odbcinst odbcinst1debian2 proj-bin proj-data unixodbc-dev uuid-dev vim-common vim-runtime xxd
+Suggested packages:
+  libgdal-grass python-gdal libitpp-dev liblapack-doc libboost-doc libboost1.65-doc libboost-atomic1.65-dev libboost-chrono1.65-dev
+  libboost-container1.65-dev libboost-context1.65-dev libboost-coroutine1.65-dev libboost-date-time1.65-dev libboost-exception1.65-dev
+  libboost-fiber1.65-dev libboost-filesystem1.65-dev libboost-graph1.65-dev libboost-graph-parallel1.65-dev libboost-iostreams1.65-dev
+  libboost-locale1.65-dev libboost-log1.65-dev libboost-math1.65-dev libboost-mpi1.65-dev libboost-mpi-python1.65-dev libboost-numpy1.65-dev
+  libboost-program-options1.65-dev libboost-python1.65-dev libboost-random1.65-dev libboost-regex1.65-dev libboost-serialization1.65-dev
+  libboost-signals1.65-dev libboost-stacktrace1.65-dev libboost-system1.65-dev libboost-test1.65-dev libboost-thread1.65-dev
+  libboost-timer1.65-dev libboost-type-erasure1.65-dev libboost-wave1.65-dev libboost1.65-tools-dev libmpfrc++-dev libntl-dev libgdal-doc
+  libgeotiff-epsg geotiff-bin libhdf4-doc hdf4-tools libhdf5-doc libtool-doc liblzma-doc netcdf-bin netcdf-doc libmyodbc odbc-postgresql
+  tdsodbc unixodbc-bin ogdi-bin postgresql-doc-10 sqlite3-doc libsuperlu-doc gcj-jdk libxerces-c-doc ctags vim-doc vim-scripts
+Recommended packages:
+  uuid-runtime
+The following NEW packages will be installed:
+  default-libmysqlclient-dev file gdal-bin gdal-data hdf5-helpers libaec-dev libaec0 libarmadillo-dev libarmadillo8 libarpack2 libarpack2-dev
+  libblas-dev libblas3 libboost-dev libboost1.65-dev libdap-dev libdap25 libdapclient6v5 libdapserver7v5 libepsilon-dev libepsilon1
+  libfreetype6-dev libfreexl-dev libfreexl1 libfyba-dev libfyba0 libgdal-dev libgdal20 libgeos-3.6.2 libgeos-c1v5 libgeos-dev libgeotiff-dev
+  libgeotiff2 libgif-dev libhdf4-0-alt libhdf4-alt-dev libhdf5-100 libhdf5-cpp-100 libhdf5-dev libjbig-dev libjpeg-dev libjpeg-turbo8-dev
+  libjpeg8-dev libjson-c-dev libkml-dev libkmlbase1 libkmlconvenience1 libkmldom1 libkmlengine1 libkmlregionator1 libkmlxsd1 liblapack-dev
+  liblapack3 libltdl-dev liblzma-dev libmagic-mgc libmagic1 libminizip-dev libminizip1 libmysqlclient-dev libmysqlclient20 libnetcdf-dev
+  libnetcdf13 libodbc1 libogdi3.2 libogdi3.2-dev libopenjp2-7-dev libpng-dev libpng-tools libpoppler-dev libpoppler-private-dev libpq-dev
+  libpq5 libproj-dev libproj12 libpython3.6 libqhull-dev libqhull-r7 libqhull7 libspatialite-dev libspatialite7 libsqlite3-dev libsuperlu-dev
+  libsuperlu5 libsz2 libtiff-dev libtiff5-dev libtiffxx5 libtool libudunits2-0 libudunits2-data libudunits2-dev liburiparser-dev liburiparser1
+  libwebp-dev libwebpdemux2 libxerces-c-dev libxerces-c3.2 mysql-common odbcinst odbcinst1debian2 proj-bin proj-data unixodbc-dev uuid-dev vim
+  vim-common vim-runtime xxd
+The following packages will be upgraded:
+  libfreetype6 libjbig0 libjpeg-turbo8 liblzma5 libopenjp2-7 libpoppler-glib8 libpoppler73 libsqlite3-0 libtiff5 libuuid1 libwebp6 libwebpmux3
+12 upgraded, 109 newly installed, 0 to remove and 185 not upgraded.
+Need to get 62.8 MB of archives.
+After this operation, 383 MB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjpeg-turbo8 amd64 1.5.2-0ubuntu5.18.04.6 [111 kB]
+Get:2 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 liblzma5 amd64 5.2.2-1.3ubuntu0.1 [91.1 kB]
+Get:3 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libuuid1 amd64 2.31.1-0.4ubuntu3.7 [20.1 kB]
+Get:4 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmagic-mgc amd64 1:5.32-2ubuntu0.4 [184 kB]
+Ign:5 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmagic1 amd64 1:5.32-2ubuntu0.4
+Get:6 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 file amd64 1:5.32-2ubuntu0.4 [22.1 kB]
+Get:7 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libsqlite3-0 amd64 3.22.0-1ubuntu0.7 [499 kB]
+Get:8 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 xxd amd64 2:8.0.1453-1ubuntu1.13 [51.9 kB]
+Err:5 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libmagic1 amd64 1:5.32-2ubuntu0.4
+  Connection failed [IP: 185.125.190.81 80]
+Ign:9 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-common all 2:8.0.1453-1ubuntu1.13
+Get:9 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 vim-common all 2:8.0.1453-1ubuntu1.13 [73.1 kB]
+Get:10 http://archive.ubuntu.com/ubuntu bionic/main amd64 mysql-common all 5.8+1.0.4 [7,308 B]
+Get:11 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmysqlclient20 amd64 5.7.42-0ubuntu0.18.04.1 [730 kB]
+Get:12 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libmysqlclient-dev amd64 5.7.42-0ubuntu0.18.04.1 [1,078 kB]
+Get:13 http://archive.ubuntu.com/ubuntu bionic/main amd64 default-libmysqlclient-dev amd64 1.0.4 [3,736 B]
+Get:14 http://archive.ubuntu.com/ubuntu bionic/universe amd64 gdal-data all 2.2.3+dfsg-2 [363 kB]
+Get:15 http://archive.ubuntu.com/ubuntu bionic/main amd64 libblas3 amd64 3.7.1-4ubuntu1 [140 kB]
+Get:16 http://archive.ubuntu.com/ubuntu bionic/main amd64 liblapack3 amd64 3.7.1-4ubuntu1 [2,112 kB]
+Get:17 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarpack2 amd64 3.5.0+real-2 [89.7 kB]
+Get:18 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsuperlu5 amd64 5.2.1+dfsg1-3 [161 kB]
+Get:19 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarmadillo8 amd64 1:8.400.0+dfsg-2 [81.9 kB]
+Get:20 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdap25 amd64 3.19.1-2build1 [426 kB]
+Get:21 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdapclient6v5 amd64 3.19.1-2build1 [88.9 kB]
+Get:22 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libepsilon1 amd64 0.9.2+dfsg-2 [41.2 kB]
+Get:23 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfreexl1 amd64 1.0.5-1 [33.4 kB]
+Get:24 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfyba0 amd64 4.1.1-3 [110 kB]
+Get:25 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-3.6.2 amd64 3.6.2-1build2 [476 kB]
+Get:26 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-c1v5 amd64 3.6.2-1build2 [54.9 kB]
+Get:27 http://archive.ubuntu.com/ubuntu bionic/universe amd64 proj-data all 4.9.3-2 [4,020 kB]
+Get:28 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libproj12 amd64 4.9.3-2 [159 kB]
+Get:29 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjbig0 amd64 2.1-3.1ubuntu0.18.04.1 [27.0 kB]
+Get:30 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff5 amd64 4.0.9-5ubuntu0.10 [154 kB]
+Get:31 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeotiff2 amd64 1.4.2-2build1 [58.5 kB]
+Get:32 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf4-0-alt amd64 4.2.13-2 [267 kB]
+Get:33 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libaec0 amd64 0.3.2-2 [18.1 kB]
+Get:34 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsz2 amd64 0.3.2-2 [5,114 B]
+Err:35 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-100 amd64 1.10.0-patch1+docs-4
+  Connection failed [IP: 185.125.190.81 80]
+Err:36 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libminizip1 amd64 1.1-8build1
+  Connection failed [IP: 91.189.91.83 80]
+Get:37 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 liburiparser1 amd64 0.8.4-1+deb9u2ubuntu0.1 [39.5 kB]
+Get:38 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlbase1 amd64 1.3.0-5 [44.9 kB]
+Get:39 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmldom1 amd64 1.3.0-5 [165 kB]
+Err:40 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlengine1 amd64 1.3.0-5
+  Connection failed [IP: 91.189.91.82 80]
+Get:41 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libnetcdf13 amd64 1:4.6.0-2build1 [333 kB]
+Get:42 http://archive.ubuntu.com/ubuntu bionic/main amd64 libodbc1 amd64 2.3.4-1.1ubuntu3 [183 kB]
+Get:43 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libogdi3.2 amd64 3.2.0+ds-2 [213 kB]
+Get:44 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libopenjp2-7 amd64 2.3.0-2+deb10u2build0.18.04.1 [145 kB]
+Get:45 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libfreetype6 amd64 2.8.1-2ubuntu2.2 [335 kB]
+Ign:46 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-glib8 amd64 0.62.0-2ubuntu2.14
+Get:47 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler73 amd64 0.62.0-2ubuntu2.14 [800 kB]
+Get:48 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq5 amd64 10.23-0ubuntu0.18.04.2 [107 kB]
+Get:46 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-glib8 amd64 0.62.0-2ubuntu2.14 [108 kB]
+Get:49 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull7 amd64 2015.2-4 [152 kB]
+Get:50 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libspatialite7 amd64 4.3.0a-5build1 [1,224 kB]
+Get:51 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebp6 amd64 0.6.1-2ubuntu0.18.04.2 [186 kB]
+Err:52 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libxerces-c3.2 amd64 3.2.0+debian-2
+  Connection failed [IP: 91.189.91.82 80]
+Get:53 http://archive.ubuntu.com/ubuntu bionic/main amd64 odbcinst amd64 2.3.4-1.1ubuntu3 [12.4 kB]
+Get:54 http://archive.ubuntu.com/ubuntu bionic/main amd64 odbcinst1debian2 amd64 2.3.4-1.1ubuntu3 [40.4 kB]
+Get:55 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgdal20 amd64 2.2.3+dfsg-2 [5,099 kB]
+Get:56 http://archive.ubuntu.com/ubuntu bionic/universe amd64 gdal-bin amd64 2.2.3+dfsg-2 [168 kB]
+Get:57 http://archive.ubuntu.com/ubuntu bionic/universe amd64 hdf5-helpers amd64 1.10.0-patch1+docs-4 [12.3 kB]
+Get:58 http://archive.ubuntu.com/ubuntu bionic/main amd64 libblas-dev amd64 3.7.1-4ubuntu1 [143 kB]
+Get:59 http://archive.ubuntu.com/ubuntu bionic/main amd64 liblapack-dev amd64 3.7.1-4ubuntu1 [2,140 kB]
+Get:60 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarpack2-dev amd64 3.5.0+real-2 [97.3 kB]
+Get:61 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjpeg-turbo8-dev amd64 1.5.2-0ubuntu5.18.04.6 [225 kB]
+Get:62 http://archive.ubuntu.com/ubuntu bionic/main amd64 libjpeg8-dev amd64 8c-2ubuntu8 [1,552 B]
+Get:63 http://archive.ubuntu.com/ubuntu bionic/main amd64 libjpeg-dev amd64 8c-2ubuntu8 [1,546 B]
+Get:64 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libaec-dev amd64 0.3.2-2 [16.4 kB]
+Get:65 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-cpp-100 amd64 1.10.0-patch1+docs-4 [104 kB]
+Err:66 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf5-dev amd64 1.10.0-patch1+docs-4
+  Connection failed [IP: 185.125.190.83 80]
+Get:67 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libsuperlu-dev amd64 5.2.1+dfsg1-3 [16.3 kB]
+Get:68 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libarmadillo-dev amd64 1:8.400.0+dfsg-2 [340 kB]
+Get:69 http://archive.ubuntu.com/ubuntu bionic/main amd64 libboost1.65-dev amd64 1.65.1+dfsg-0ubuntu5 [7,218 kB]
+Get:70 http://archive.ubuntu.com/ubuntu bionic/main amd64 libboost-dev amd64 1.65.1.0ubuntu1 [3,128 B]
+Get:71 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdapserver7v5 amd64 3.19.1-2build1 [22.2 kB]
+Ign:72 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 uuid-dev amd64 2.31.1-0.4ubuntu3.7
+Get:72 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 uuid-dev amd64 2.31.1-0.4ubuntu3.7 [33.2 kB]
+Get:73 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libdap-dev amd64 3.19.1-2build1 [710 kB]
+Get:74 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpng-dev amd64 1.6.34-1ubuntu0.18.04.2 [177 kB]
+Get:75 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libfreetype6-dev amd64 2.8.1-2ubuntu2.2 [2,539 kB]
+Get:76 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfyba-dev amd64 4.1.1-3 [436 kB]
+Get:77 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeos-dev amd64 3.6.2-1build2 [73.1 kB]
+Get:78 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libgif-dev amd64 5.1.4-2ubuntu0.1 [20.6 kB]
+Get:79 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlconvenience1 amd64 1.3.0-5 [43.1 kB]
+Get:80 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlregionator1 amd64 1.3.0-5 [19.0 kB]
+Get:81 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkmlxsd1 amd64 1.3.0-5 [29.5 kB]
+Get:82 http://archive.ubuntu.com/ubuntu bionic/main amd64 libltdl-dev amd64 2.4.6-2 [162 kB]
+Get:83 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libminizip-dev amd64 1.1-8build1 [26.7 kB]
+Get:84 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libnetcdf-dev amd64 1:4.6.0-2build1 [37.6 kB]
+Get:85 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpng-tools amd64 1.6.34-1ubuntu0.18.04.2 [25.6 kB]
+Ign:86 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-dev amd64 0.62.0-2ubuntu2.14
+Get:86 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-dev amd64 0.62.0-2ubuntu2.14 [4,616 B]
+Ign:87 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-private-dev amd64 0.62.0-2ubuntu2.14
+Get:88 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpq-dev amd64 10.23-0ubuntu0.18.04.2 [219 kB]
+Get:89 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libpython3.6 amd64 3.6.9-1~18.04ubuntu1.12 [1,414 kB]
+Get:90 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull-r7 amd64 2015.2-4 [149 kB]
+Err:87 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libpoppler-private-dev amd64 0.62.0-2ubuntu2.14
+  Connection failed [IP: 91.189.92.24 80]
+Err:91 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libqhull-dev amd64 2015.2-4
+  Connection failed [IP: 91.189.92.23 80]
+Get:92 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libsqlite3-dev amd64 3.22.0-1ubuntu0.7 [633 kB]
+Ign:93 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjbig-dev amd64 2.1-3.1ubuntu0.18.04.1
+Get:94 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 liblzma-dev amd64 5.2.2-1.3ubuntu0.1 [145 kB]
+Get:93 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libjbig-dev amd64 2.1-3.1ubuntu0.18.04.1 [25.3 kB]
+Get:95 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiffxx5 amd64 4.0.9-5ubuntu0.10 [5,804 B]
+Ign:96 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff5-dev amd64 4.0.9-5ubuntu0.10
+Get:97 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff-dev amd64 4.0.9-5ubuntu0.10 [2,260 B]
+Get:98 http://archive.ubuntu.com/ubuntu bionic/main amd64 libtool all 2.4.6-2 [194 kB]
+Get:99 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-data all 2.2.26-1 [18.7 kB]
+Err:96 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 libtiff5-dev amd64 4.0.9-5ubuntu0.10
+  Connection failed [IP: 91.189.92.24 80]
+Get:100 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-0 amd64 2.2.26-1 [54.3 kB]
+Err:101 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libudunits2-dev amd64 2.2.26-1
+  Connection failed [IP: 91.189.91.81 80]
+Ign:102 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 liburiparser-dev amd64 0.8.4-1+deb9u2ubuntu0.1
+Get:103 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebpdemux2 amd64 0.6.1-2ubuntu0.18.04.2 [9,480 B]
+Get:104 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebpmux3 amd64 0.6.1-2ubuntu0.18.04.2 [19.6 kB]
+Err:102 http://security.ubuntu.com/ubuntu bionic-updates/universe amd64 liburiparser-dev amd64 0.8.4-1+deb9u2ubuntu0.1
+  Connection failed [IP: 185.125.190.81 80]
+Get:105 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libxerces-c-dev amd64 3.2.0+debian-2 [1,627 kB]
+Get:106 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim-runtime all 2:8.0.1453-1ubuntu1.13 [5,439 kB]
+Get:107 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 vim amd64 2:8.0.1453-1ubuntu1.13 [1,156 kB]
+Get:108 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libepsilon-dev amd64 0.9.2+dfsg-2 [49.3 kB]
+Get:109 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libfreexl-dev amd64 1.0.5-1 [30.9 kB]
+Get:110 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgeotiff-dev amd64 1.4.2-2build1 [82.6 kB]
+Get:111 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libhdf4-alt-dev amd64 4.2.13-2 [368 kB]
+Get:112 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libjson-c-dev amd64 0.12.1-1.3ubuntu0.3 [31.9 kB]
+Get:113 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libkml-dev amd64 1.3.0-5 [933 kB]
+Get:114 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libproj-dev amd64 4.9.3-2 [199 kB]
+Get:115 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libogdi3.2-dev amd64 3.2.0+ds-2 [23.6 kB]
+Get:116 http://archive.ubuntu.com/ubuntu bionic-updates/universe amd64 libopenjp2-7-dev amd64 2.3.0-2+deb10u2build0.18.04.1 [26.6 kB]
+Get:117 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libspatialite-dev amd64 4.3.0a-5build1 [1,323 kB]
+Get:118 http://archive.ubuntu.com/ubuntu bionic-updates/main amd64 libwebp-dev amd64 0.6.1-2ubuntu0.18.04.2 [268 kB]
+Get:119 http://archive.ubuntu.com/ubuntu bionic/main amd64 unixodbc-dev amd64 2.3.4-1.1ubuntu3 [217 kB]
+Get:120 http://archive.ubuntu.com/ubuntu bionic/universe amd64 libgdal-dev amd64 2.2.3+dfsg-2 [6,369 kB]
+Get:121 http://archive.ubuntu.com/ubuntu bionic/universe amd64 proj-bin amd64 4.9.3-2 [32.3 kB]
+Fetched 56.9 MB in 38min 41s (24.5 kB/s)
+Unable to correct missing packages.
+E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/f/file/libmagic1_5.32-2ubuntu0.4_amd64.deb  Connection failed [IP: 185.125.190.81 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/h/hdf5/libhdf5-100_1.10.0-patch1+docs-4_amd64.deb  Connection failed [IP: 185.125.190.81 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/m/minizip/libminizip1_1.1-8build1_amd64.deb  Connection failed [IP: 91.189.91.83 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/libk/libkml/libkmlengine1_1.3.0-5_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/x/xerces-c/libxerces-c3.2_3.2.0+debian-2_amd64.deb  Connection failed [IP: 91.189.91.82 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/h/hdf5/libhdf5-dev_1.10.0-patch1+docs-4_amd64.deb  Connection failed [IP: 185.125.190.83 80]
+E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/p/poppler/libpoppler-private-dev_0.62.0-2ubuntu2.14_amd64.deb  Connection failed[IP: 91.189.92.24 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/q/qhull/libqhull-dev_2015.2-4_amd64.deb  Connection failed [IP: 91.189.92.23 80]
+E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/t/tiff/libtiff5-dev_4.0.9-5ubuntu0.10_amd64.deb  Connection failed [IP: 91.189.92.24 80]
+E: Failed to fetch http://archive.ubuntu.com/ubuntu/pool/universe/u/udunits/libudunits2-dev_2.2.26-1_amd64.deb  Connection failed [IP: 91.189.91.81 80]
+E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/universe/u/uriparser/liburiparser-dev_0.8.4-1+deb9u2ubuntu0.1_amd64.deb  Connection failed [IP: 185.125.190.81 80]
+E: Aborting install.
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$
+hnelson3@ip-10-42-66-151:~/work/Users/hnelson3/updatebionic$
