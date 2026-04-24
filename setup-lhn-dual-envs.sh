@@ -723,14 +723,6 @@ if [ -z "$PY4J_ZIP" ]; then
   PY4J_ZIP="/usr/local/spark/python/lib/py4j-0.10.7-src.zip"
 fi
 
-# Kernel env var notes:
-#   PYSPARK_DRIVER_PYTHON -- runs on the Jupyter kernel-launch node where
-#       /opt/conda/bin/python exists (it's what launches ipykernel itself).
-#   PYSPARK_PYTHON -- runs on Spark EXECUTOR worker nodes, which don't have
-#       /opt/conda/. Using /opt/conda/bin/python here causes tasks to fail
-#       with "Cannot run program ...: No such file or directory". Use
-#       "python3" so workers resolve via PATH on each node.
-
 # Create kernel directory for pyspark-lhn-prod
 KERNEL_DIR_PROD="$HOME/.local/share/jupyter/kernels/pyspark-lhn-prod"
 mkdir -p "$KERNEL_DIR_PROD"
@@ -743,7 +735,7 @@ cat > "$KERNEL_DIR_PROD/kernel.json" << EOF
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
     "PYTHONPATH": "$LHN_PROD_CLONE:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
-    "PYSPARK_PYTHON": "python3",
+    "PYSPARK_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
   }
 }
@@ -762,7 +754,7 @@ cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
     "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
-    "PYSPARK_PYTHON": "python3",
+    "PYSPARK_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
   }
 }
