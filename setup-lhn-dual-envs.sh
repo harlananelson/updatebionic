@@ -723,6 +723,26 @@ if [ -z "$PY4J_ZIP" ]; then
   PY4J_ZIP="/usr/local/spark/python/lib/py4j-0.10.7-src.zip"
 fi
 
+# Kernel env notes (match the cluster-shipped /usr/local/share/jupyter/
+# kernels/pyspark kernel, which is known to work on HDL worker nodes):
+#
+#   PYSPARK_DRIVER_PYTHON = /opt/conda/bin/python
+#     The driver runs on the Jupyter kernel-launch node where
+#     /opt/conda/bin/python exists; this matches the ipykernel launcher.
+#
+#   PYSPARK_PYTHON = python3
+#     Executors run on Spark worker nodes which do NOT have /opt/conda/.
+#     They have `python3` on PATH (compatible with pyspark 2.4). Setting
+#     PYSPARK_PYTHON to an absolute driver-only path causes tasks to fail
+#     at worker spawn with "Cannot run program /opt/conda/bin/python:
+#     No such file or directory".
+#
+#   PYSPARK_SUBMIT_ARGS = "--master yarn --deploy-mode client pyspark-shell"
+#     Matches the system pyspark kernel. Forces yarn-client mode at
+#     Spark init so the SparkContext is built with the right executor
+#     env from the start (rather than inheriting whatever the bare
+#     kernel launch had).
+
 # Create kernel directory for pyspark-lhn-prod
 KERNEL_DIR_PROD="$HOME/.local/share/jupyter/kernels/pyspark-lhn-prod"
 mkdir -p "$KERNEL_DIR_PROD"
@@ -735,8 +755,9 @@ cat > "$KERNEL_DIR_PROD/kernel.json" << EOF
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
     "PYTHONPATH": "$LHN_PROD_CLONE:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
-    "PYSPARK_PYTHON": "/opt/conda/bin/python",
-    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
+    "PYSPARK_PYTHON": "python3",
+    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python",
+    "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell"
   }
 }
 EOF
@@ -754,8 +775,9 @@ cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
     "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
-    "PYSPARK_PYTHON": "/opt/conda/bin/python",
-    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python"
+    "PYSPARK_PYTHON": "python3",
+    "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python",
+    "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell"
   }
 }
 EOF
