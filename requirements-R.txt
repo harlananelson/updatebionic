@@ -40,3 +40,4 @@ r-glmnet
 r-data.tree
 r-diagrammer
 r-randomforestsrc
+r-psych
