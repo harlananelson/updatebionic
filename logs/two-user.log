@@ -1,0 +1,328 @@
+da.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkMenu.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkMenubutton.h.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkPlatDecls.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkPort.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkScale.h.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkScrollbar.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkSelect.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkText.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkUndo.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkUnixDefault.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkUnixInt.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkUnixPort.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tkUuid.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/Lerc_c_api.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/Lerc_types.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/histedit.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/ev++.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/ev.h.  Please remove this filemanually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/lzma.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/libssh2.h.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/libssh2_publickey.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/libssh2_sftp.h.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/crypt.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/pcre2.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/pcre2posix.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/com_err.h.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/gssapi.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/kdb.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/krad.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/krb5.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/profile.h.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/verto-module.h.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/verto.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tiff.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tiffconf.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tiffio.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tiffio.hxx.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/tiffvers.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/gmp.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/gmpxx.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/glpk.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/nlopt.h.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/include/nlopt.hpp.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/test-files/zstd/1/cf_test/CMakeLists.txt.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/activate.d/libglib_activate.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/activate.d/activate-r-base.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/activate.d/libxml2_activate.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/deactivate.d/libglib_deactivate.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/deactivate.d/deactivate-r-base.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/conda/deactivate.d/libxml2_deactivate.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/10-hinting-slight.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/10-scale-bitmap-fonts.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/10-sub-pixel-none.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/10-yes-antialias.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/11-lcdfilter-default.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/20-unhint-small-vera.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/30-metric-aliases.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/40-nonlatin.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/45-generic.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/45-latin.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/48-spacing.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/49-sansserif.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/50-user.conf.  Pleaseremove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/51-local.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/60-generic.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/60-latin.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/65-fonts-persian.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/65-nonlatin.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/69-unifont.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/70-no-bitmaps-except-emoji.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/80-delicious.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/90-synthetic.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/conf.d/README.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/fonts/fonts.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/request-key.conf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/etc/rhashrc.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/key.dns_resolver.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/request-key.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/gss-server.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kadmin.local.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kadmind.  Please remove this filemanually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kdb5_util.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kprop.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kpropd.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/kproplog.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/krb5-send-pr.  Please remove thisfile manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/krb5kdc.  Please remove this filemanually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/sim_server.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/sserver.  Please remove this filemanually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/sbin/uuserver.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/cmake/pcre2-config-version.cmake.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/cmake/pcre2-config.cmake.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man1/pcre2-config.1.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man1/pcre2grep.1.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man1/pcre2test.1.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_callout_enumerate.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_code_copy.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_code_copy_with_tables.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_code_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_compile.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_compile_context_copy.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_compile_context_create.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_compile_context_free.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_config.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_convert_context_copy.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_convert_context_create.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_convert_context_free.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_converted_pattern_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_dfa_match.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_general_context_copy.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_general_context_create.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_general_context_free.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_error_message.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_mark.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_match_data_heapframes_size.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_match_data_size.3.Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_ovector_count.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_ovector_pointer.3.Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_get_startchar.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_compile.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_free_unused_memory.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_match.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_stack_assign.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_stack_create.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_jit_stack_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_maketables.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_maketables_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match.3.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_context_copy.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_context_create.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_context_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_data_create.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_data_create_from_pattern.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_match_data_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_pattern_convert.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_pattern_info.3.  Pleaseremove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_serialize_decode.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_serialize_encode.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_serialize_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_serialize_get_number_of_codes.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_bsr.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_callout.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_character_tables.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_compile_extra_options.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_compile_recursion_guard.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_depth_limit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_glob_escape.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_glob_separator.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_heap_limit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_match_limit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_max_pattern_length.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_max_varlookbehind.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_newline.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_offset_limit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_parens_nest_limit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_recursion_limit.3.Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_recursion_memory_management.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_set_substitute_callout.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substitute.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_copy_byname.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_copy_bynumber.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_free.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_get_byname.3. Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_get_bynumber.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_length_byname.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_length_bynumber.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_list_free.3.Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_list_get.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_nametable_scan.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2_substring_number_from_name.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2api.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2build.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2callout.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2compat.3.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2convert.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2demo.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2jit.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2limits.3.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2matching.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2partial.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2pattern.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2perform.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2posix.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2sample.3.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2serialize.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2syntax.3.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/man/man3/pcre2unicode.3.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/install-tools/fixinc.sh.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/install-tools/fixincl.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/install-tools/mkheaders.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/install-tools/mkinstalldirs.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/plugin/gengtype.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/addr2line.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/ar.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/c++filt.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/cc1.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/cc1obj.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/cc1objplus.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/collect2.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/elfedit.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/gcc.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/ld.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/liblto_plugin.so.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/lto-wrapper.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/lto1.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/nm.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/objcopy.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/objdump.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/ranlib.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/readelf.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/size.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/strings.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/strip.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/f951.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gcc/x86_64-conda-linux-gnu/15.2.0/cc1plus.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/libexec/gio-launch-desktop.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/compiler_compat/README.  Please removethis file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/compiler_compat/ld.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/var/cache/fontconfig/.leave.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/home/conda/feedstock_root/build_artifacts/cmake_1776798925722/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/share/doc/cmake-4.3/cmcppdap/NOTICE.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/home/conda/feedstock_root/build_artifacts/cmake_1776798925722/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/share/doc/cmake-4.3/cmlibarchive/COPYING.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/home/conda/feedstock_root/build_artifacts/cmake_1776798925722/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/share/doc/cmake-4.3/cmsys/Copyright.txt.  Please remove this file manually (you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/home/conda/feedstock_root/build_artifacts/cmake_1776798925722/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/share/doc/cmake-4.3/CONTRIBUTORS.rst.  Please remove this file manually(you may need to reboot to free file handles)
+WARNING conda.gateways.disk.delete:unlink_or_rename_to_trash(188): Could not remove or rename /tmp/r_env/home/conda/feedstock_root/build_artifacts/cmake_1776798925722/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_place/share/doc/cmake-4.3/LICENSE.rst.  Please remove this file manually (youmay need to reboot to free file handles)
+
+CondaValueError: prefix already exists: /tmp/r_env
+
+Conda environment creation failed. Retrying... (Attempt 3 of 3)
+ERROR: Conda environment creation failed after 3 attempts.
+Continuing with lhn setup (R environment will not be available)...
+
+========== Part 6: Verify Prerequisites for lhn ==========
+Initializing old conda from /opt/conda...
+Verifying pyspark in base environment...
+pyspark version: 2.4.4
+Prerequisites verified successfully.
+
+========== Part 7: Verify/Update Source Repositories ==========
+
+--- Setting up PRODUCTION source (v0.1.0-monolithic) ---
+Removing existing production clone at /tmp/lhn_prod_src...
+rm: cannot remove '/tmp/lhn_prod_src/.git/branches': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/applypatch-msg.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/commit-msg.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/fsmonitor-watchman.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/post-update.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/pre-applypatch.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/pre-commit.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/pre-push.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/pre-rebase.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/pre-receive.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/prepare-commit-msg.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/hooks/update.sample': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/info/exclude': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/refs/heads/main': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/refs/heads/v0.1.0-monolithic': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/refs/tags': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/refs/remotes/origin/HEAD': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/HEAD': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/config': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/objects/pack/pack-a33f695839b71bc12e46679f634fcc49d4709251.pack': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/objects/pack/pack-a33f695839b71bc12e46679f634fcc49d4709251.idx': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/objects/info': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/packed-refs': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/logs/refs/remotes/origin/HEAD': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/logs/refs/heads/main': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/logs/refs/heads/v0.1.0-monolithic': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/logs/HEAD': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/index': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.git/FETCH_HEAD': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/__init__.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/cohort.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/cohort_matching.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/data_conversion.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/data_display.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/data_summary.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/data_transformation.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/database_operations.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/db.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/discern.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/excel_operations.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/extract.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/features.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/file_operations.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/function_parameters.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/header.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/introspection_utils.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/item.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/listTable.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/list_operations.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/metaTable_module.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/metadata_functions.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/notebook_interaction.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/pandas_utils.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/plot.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/process_directory.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/query.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/resource.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/shared_methods.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/spark_query.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/spark_utils.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/statisticalSummary.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/lhn/test_utils.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/.gitignore': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/CLAUDE.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/HISTORY.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/README.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/environment_spark.yaml': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/280-Disease-Classification_20260114_144919.txt': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/comorbidity_procedure_Codes_SCD_RWD.csv': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/how-control-files-are-used.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/initialize-resouces.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/lhn_config_diagrams.mermaid': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/lhn_config_reference.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/lhn_config_tutorial.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/lhn_package_decomposition.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/lhn_project_initialization_guide.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/the_config-files/000-config.yaml': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/the_config-files/README.md': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/the_config-files/config-RWD.yaml': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/implementation/the_config-files/config-global.yaml': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/process_directory.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/pyproject.toml': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/requirements.txt': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/setup.py': Permission denied
+rm: cannot remove '/tmp/lhn_prod_src/time_summary.ipynb': Permission denied
+hnelson3@ip-10-42-66-140:~/work/Users/hnelson3/updatebionic$

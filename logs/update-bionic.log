@@ -1,0 +1,109 @@
+esting if installed package can be loaded from temporary location
+** checking absolute paths in shared objects and dynamic libraries
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (vdiffr)
+* installing *source* package ‘proto’ ...
+** package ‘proto’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** demo
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (proto)
+ERROR: dependency ‘units’ is not available for package ‘sf’
+* removing ‘/tmp/r_env/lib/R/library/sf’
+ERROR: dependency ‘sf’ is not available for package ‘usmapdata’
+* removing ‘/tmp/r_env/lib/R/library/usmapdata’
+
+The downloaded source packages are in
+        ‘/tmp/Rtmph2hmTc/downloaded_packages’
+Updating HTML index of packages in '.Library'
+Making 'packages.html' ... done
+── R CMD build ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+✔  checking for file ‘/tmp/Rtmph2hmTc/remotes7747465ed0ba/pdil-usmap-e236150/DESCRIPTION’ (413ms)
+─  preparing ‘usmap’:
+✔  checking DESCRIPTION meta-information ...
+─  checking for LF line-endings in source and make files and shell scripts
+─  checking for empty or unneeded directories
+   Removed empty directory ‘usmap/man/figures’
+─  building ‘usmap_1.0.0.9000.tar.gz’
+   Warning: invalid uid value replaced by that for user 'nobody'
+
+ERROR: dependency ‘usmapdata’ is not available for package ‘usmap’
+* removing ‘/tmp/r_env/lib/R/library/usmap’
+Warning messages:
+1: In i.p(...) : installation of package ‘units’ had non-zero exit status
+2: In i.p(...) : installation of package ‘sf’ had non-zero exit status
+3: In i.p(...) :
+  installation of package ‘usmapdata’ had non-zero exit status
+4: In i.p(...) :
+  installation of package ‘/tmp/Rtmph2hmTc/file774763816b31/usmap_1.0.0.9000.tar.gz’ had non-zero exit status
+>
+>
+Registering R 4.4.0 kernel...
+
+R version 4.4.0 (2024-04-24) -- "Puppy Cup"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-conda-linux-gnu
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> IRkernel::installspec(name = 'r_env', displayname = 'R 4.4.0 (r_env)')
+>
+>
+R environment setup complete.
+
+========== Part 6: Verify Prerequisites for lhn ==========
+Initializing old conda from /opt/conda...
+Verifying pyspark in base environment...
+pyspark version: 2.4.4
+Prerequisites verified successfully.
+
+========== Part 7: Verify/Update Source Repositories ==========
+
+--- Setting up PRODUCTION source (v0.1.0-monolithic) ---
+Removing existing production clone at /tmp/lhn_prod_src...
+Cloning lhn repository for production to /tmp (fast)...
+Cloning into '/tmp/lhn_prod_src'...
+Warning: Permanently added the ECDSA host key for IP address '140.82.114.3' to the list of known hosts.
+remote: Enumerating objects: 512, done.
+remote: Counting objects: 100% (177/177), done.
+remote: Compressing objects: 100% (127/127), done.
+remote: Total 512 (delta 118), reused 100 (delta 50), pack-reused 335 (from 1)
+Receiving objects: 100% (512/512), 501.92 KiB | 8.09 MiB/s, done.
+Resolving deltas: 100% (300/300), done.
+Fetching origin
+Branch 'v0.1.0-monolithic' set up to track remote branch 'v0.1.0-monolithic' from 'origin'.
+Switched to a new branch 'v0.1.0-monolithic'
+Production clone checked out to v0.1.0-monolithic
+Available tags:
+v0.1.0
+v0.2.0-dev
+
+--- Verifying DEVELOPMENT sources (persistent storage) ---
+Found lhn at /home/ajones181/work/Users/hnelson3/lhn
+fatal: detected dubious ownership in repository at '/home/ajones181/work/Users/hnelson3/lhn'
+To add an exception for this directory, call:
+
+        git config --global --add safe.directory /home/ajones181/work/Users/hnelson3/lhn
+ajones181@ip-10-42-66-140:~/work/Users/hnelson3/updatebionic$0 -fdebug-prefix-map=/tmp/r_env=/usr/local/src/conda-prefix   -c
