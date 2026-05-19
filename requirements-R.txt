@@ -41,3 +41,11 @@ r-data.tree
 r-diagrammer
 r-randomforestsrc
 r-psych
+
+# Geospatial — install from conda-forge so they pull the conda builds of
+# udunits2 / gdal / geos / proj. The conda R toolchain does NOT see the
+# apt-installed -dev libraries, so CRAN source builds of units/sf fail
+# (see logs/update-bionic.log). setup-user.sh installs this file before the
+# GitHub usmapdata/usmap install, so once sf is present here that chain works.
+r-units
+r-sf
