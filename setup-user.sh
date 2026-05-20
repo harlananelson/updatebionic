@@ -209,6 +209,38 @@ else
     fi
 fi
 
+# ========== Auto-fetch sibling scripts (setup-system.sh, requirements*) ==========
+#
+# If a user bootstrapped via the curl one-liner (downloads only
+# setup-user.sh), the sibling files needed for a full setup aren't in
+# SCRIPT_DIR. Fetch them on-demand from the same GitHub branch.
+#
+# Without this, the script exited with
+#   ERROR: $SYSTEM_SCRIPT not found and system setup has not run today
+# and the user had no clear path forward except cloning the whole repo.
+SIBLING_FILES=(
+    "setup-system.sh"
+    "requirements.txt"
+    "requirements-python.txt"
+    "requirements-R.txt"
+    "environment-ml.yml"
+)
+for sibling in "${SIBLING_FILES[@]}"; do
+    sibling_path="$SCRIPT_DIR/$sibling"
+    if [ ! -f "$sibling_path" ]; then
+        url="https://raw.githubusercontent.com/${SELF_UPDATE_REPO}/${SELF_UPDATE_BRANCH}/${sibling}"
+        echo "Fetching missing sibling file: $sibling..."
+        if curl -sfL "$url" > "$sibling_path" 2>/dev/null && [ -s "$sibling_path" ]; then
+            echo "  → fetched to $sibling_path"
+            [ "$sibling" = "setup-system.sh" ] && chmod +x "$sibling_path"
+        else
+            rm -f "$sibling_path"  # remove zero-byte / partial download
+            echo "  WARNING: could not fetch $sibling from $url"
+            echo "           (network blip, or file moved/renamed in repo)"
+        fi
+    fi
+done
+
 echo "========== LHN Per-User Environment Setup =========="
 echo "User:             $CURRENT_USER"
 echo "Script directory: $SCRIPT_DIR"
