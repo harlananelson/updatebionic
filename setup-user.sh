@@ -62,15 +62,81 @@ if [ -f /opt/conda/etc/profile.d/conda.sh ]; then
     source /opt/conda/etc/profile.d/conda.sh
 fi
 
-# Sanity check: surface a clear warning if PATH is still missing critical
-# tools after the bootstrap. (Don't exit — setup-system.sh below will fix
-# this on first run; we just want the user to see a clear message.)
+# ========== Ensure ssh + git are available (no sudo path) ==========
+#
+# An intern without sudo can't run `apt-get install openssh-client` and
+# therefore can't depend on setup-system.sh having installed ssh into
+# /usr/bin. The PATH bootstrap above only helps if ssh exists SOMEWHERE
+# on the system; it doesn't install ssh.
+#
+# Fix: conda-install openssh + git into a per-user tools env. Conda is
+# always present at /opt/conda in the LHN Docker base image, doesn't
+# need sudo, and works regardless of whether the lead has run
+# setup-system.sh yet.
+#
+# This step is idempotent — once /tmp/setup-tools-<user> exists, subsequent
+# runs reuse it (a few seconds vs ~30s for a fresh create).
+
+# Pick the user's effective name early so we can suffix per-user paths.
+__USER_FOR_TOOLS="${SCD_USER:-${USER:-$(id -un)}}"
+SETUP_TOOLS_ENV="/tmp/setup-tools-${__USER_FOR_TOOLS}"
+
+if ! command -v ssh >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
+    echo ""
+    echo "ssh and/or git not on PATH — installing via conda (no sudo needed)..."
+
+    # Locate a conda binary we can use to bootstrap. Prefer the original
+    # Docker conda at /opt/conda; fall back to a previously-installed
+    # Miniconda at /tmp/miniconda if available.
+    CONDA_BIN=""
+    for candidate in /opt/conda/bin/conda /tmp/miniconda/bin/conda; do
+        if [ -x "$candidate" ]; then
+            CONDA_BIN="$candidate"
+            break
+        fi
+    done
+
+    if [ -z "$CONDA_BIN" ]; then
+        echo "FATAL: no conda found at /opt/conda/bin/conda or /tmp/miniconda/bin/conda."
+        echo "       The LHN Docker base image should ship with /opt/conda."
+        echo "       If you're on a non-standard image, ask the project lead."
+        exit 1
+    fi
+
+    if [ ! -d "$SETUP_TOOLS_ENV" ]; then
+        echo "  Creating $SETUP_TOOLS_ENV with openssh + git (~30s)..."
+        # --quiet keeps output clean; -c conda-forge for current openssh
+        if ! "$CONDA_BIN" create -y --quiet -p "$SETUP_TOOLS_ENV" \
+                -c conda-forge openssh git ca-certificates 2>&1 | tail -5; then
+            echo "FATAL: conda failed to create $SETUP_TOOLS_ENV."
+            echo "       Try: $CONDA_BIN create -y -p $SETUP_TOOLS_ENV -c conda-forge openssh git"
+            exit 1
+        fi
+    else
+        echo "  Reusing existing $SETUP_TOOLS_ENV (already has ssh + git)."
+    fi
+
+    # Put the tools env's bin FIRST so its ssh + git win over anything else.
+    export PATH="$SETUP_TOOLS_ENV/bin:$PATH"
+
+    if ! command -v ssh >/dev/null 2>&1; then
+        echo "FATAL: ssh still not on PATH after conda install."
+        echo "       Check $SETUP_TOOLS_ENV/bin contents:"
+        ls "$SETUP_TOOLS_ENV/bin" 2>/dev/null | head -10 || true
+        exit 1
+    fi
+
+    echo "  ssh now available: $(command -v ssh)"
+    echo "  git now available: $(command -v git)"
+    echo ""
+fi
+
+# Final sanity check — at this point ssh / git / curl MUST exist.
 for tool in ssh git curl; do
     if ! command -v "$tool" >/dev/null 2>&1; then
-        echo "WARNING: '$tool' is not on PATH after the bootstrap."
-        echo "         If this persists after setup-system.sh runs, check:"
-        echo "           echo \$PATH    # should contain /usr/bin"
-        echo "           which $tool   # should be /usr/bin/$tool"
+        echo "FATAL: '$tool' still not on PATH after bootstrap."
+        echo "       PATH=$PATH"
+        exit 1
     fi
 done
 
