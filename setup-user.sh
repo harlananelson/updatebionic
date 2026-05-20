@@ -35,6 +35,45 @@
 # Note: Not using -u (nounset) because conda activation scripts have unbound variables
 set -eo pipefail
 
+# ========== PATH bootstrap (Critical) ==========
+#
+# When an intern runs this script from a fresh JupyterHub terminal, their
+# default PATH may not include /usr/bin (where apt-installed tools like
+# ssh, git, sudo land via setup-system.sh) or /opt/conda/bin (where the
+# base conda lives). The result: `command -v ssh` returns nothing, the
+# SSH-key-restoration block silently no-ops, and the keyring step fails
+# because there's no ssh-agent to talk to.
+#
+# Project lead (e.g. Harlan) typically has a long-lived shell with conda
+# already active, so PATH already includes the tooling. An intern opening
+# her FIRST JupyterHub terminal doesn't.
+#
+# Make this script self-contained by always normalising PATH to include:
+#   - /opt/conda/bin                  (base Docker conda — has git, curl, etc.)
+#   - standard Linux system bin dirs  (where apt-installed tools live)
+#
+# Then source base conda's activation so `conda` + its env-management
+# functions are usable. This works whether the user opened a fresh shell
+# or had activated a conda env beforehand.
+export PATH="/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${PATH:-}"
+
+if [ -f /opt/conda/etc/profile.d/conda.sh ]; then
+    # shellcheck disable=SC1091
+    source /opt/conda/etc/profile.d/conda.sh
+fi
+
+# Sanity check: surface a clear warning if PATH is still missing critical
+# tools after the bootstrap. (Don't exit — setup-system.sh below will fix
+# this on first run; we just want the user to see a clear message.)
+for tool in ssh git curl; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "WARNING: '$tool' is not on PATH after the bootstrap."
+        echo "         If this persists after setup-system.sh runs, check:"
+        echo "           echo \$PATH    # should contain /usr/bin"
+        echo "           which $tool   # should be /usr/bin/$tool"
+    fi
+done
+
 # Configuration
 # Using SSH URL (more reliable for git operations)
 LHN_REPO_URL="git@github.com:harlananelson/lhn.git"
