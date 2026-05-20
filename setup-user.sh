@@ -168,8 +168,13 @@ OLD_CONDA_PATH="/opt/conda"
 MINICONDA_PATH="/tmp/miniconda"
 CONDA_PKGS_DIR="/tmp/conda-pkgs-$CURRENT_USER"
 
-# Shared system-setup sentinel (written by setup-system.sh)
-SENTINEL="/tmp/.lhn-system-ready"
+# Per-user system-setup sentinel (written by setup-system.sh).
+# Suffixed with $CURRENT_USER because each user has their own HDL
+# container — apt-installing ssh in the lead's container doesn't
+# install it in the intern's, so each user needs an independent
+# sentinel. Matches the per-user sentinel in setup-system.sh
+# (2026-05-20).
+SENTINEL="/tmp/.lhn-system-ready-$CURRENT_USER"
 
 # Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"

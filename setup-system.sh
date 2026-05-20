@@ -32,8 +32,22 @@ set -eo pipefail
 # ========== Configuration ==========
 OLD_CONDA_PATH="/opt/conda"
 MINICONDA_PATH="/tmp/miniconda"          # shared conda driver (wiped on reboot)
-SENTINEL="/tmp/.lhn-system-ready"        # holds the date of the last good run
-LOCKFILE="/tmp/lhn-setup-system.lock"    # serialises concurrent runs
+
+# Per-user sentinel + lockfile (2026-05-20).
+#
+# On HDL JupyterHub each user gets their own container — /usr/bin and
+# /tmp/ are per-container, so apt-installing ssh in the lead's container
+# does NOT install it in the intern's. If /tmp/ is somehow cross-visible
+# (or if a stale sentinel survives a partial earlier run), the script
+# previously short-circuited with "Nothing to do" even though the
+# current user's container still lacked ssh.
+#
+# Suffix sentinel + lockfile with $USER so each user must independently
+# trigger a real run in their own container. Same-day no-op behaviour
+# preserved within a user.
+__SETUP_USER="${SETUP_USER:-${USER:-$(id -un)}}"
+SENTINEL="/tmp/.lhn-system-ready-${__SETUP_USER}"        # per-user sentinel
+LOCKFILE="/tmp/lhn-setup-system.lock-${__SETUP_USER}"    # per-user lock
 
 # Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
