@@ -47,5 +47,12 @@ r-psych
 # apt-installed -dev libraries, so CRAN source builds of units/sf fail
 # (see logs/update-bionic.log). setup-user.sh installs this file before the
 # GitHub usmapdata/usmap install, so once sf is present here that chain works.
-r-units
-r-sf
+#
+# IMPORTANT (2026-05-21): r-sf + r-units pull libgdal-core / libxml2 versions
+# that conflict with r-base=4.4.0 in the main env-creation solve. We attempt
+# them in a SEPARATE solve in setup-user.sh Part 5 (after the main env exists)
+# so the conflict only kills geospatial, not the whole r_env. If the separate
+# solve also fails, usmap/usmapdata GitHub installs may fail too — but
+# everything non-geospatial works. Keep them OUT of the main spec list below.
+# r-units
+# r-sf

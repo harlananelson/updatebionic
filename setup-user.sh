@@ -514,6 +514,31 @@ if (.libPaths()[1] != "$R_ENV_PATH/lib/R/library") {
 }
 EOF
 
+    # ─── Geospatial R packages (separate, non-fatal solve) ────────────────
+    # r-sf and r-units pull libgdal-core / libxml2 versions that conflict
+    # with r-base=4.4.0 in the main env-creation solve (commented out in
+    # requirements-R.txt). Try them in a smaller follow-up solve here —
+    # the smaller spec set is much more likely to resolve. If it still
+    # fails, log a warning and continue: usmap/usmapdata GitHub installs
+    # may fail, but everything non-geospatial works.
+    echo ""
+    echo "Attempting separate geospatial R packages solve (r-sf, r-units)..."
+    if [ -x "$MICROMAMBA_BIN" ]; then
+        GEO_INSTALL=("$MICROMAMBA_BIN" "install" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+    else
+        GEO_INSTALL=(conda install -y -p "$R_ENV_PATH" -c conda-forge)
+    fi
+    if "${GEO_INSTALL[@]}" r-sf r-units; then
+        echo "  ✓ Geospatial R packages installed."
+    else
+        echo ""
+        echo "  ⚠  WARNING: r-sf / r-units install failed — conda-forge libgdal stack"
+        echo "             may be temporarily incompatible with r-base=4.4.0."
+        echo "             Consequences: GitHub usmap and usmapdata installs may"
+        echo "             also fail. Everything else (tidyverse, tidymodels,"
+        echo "             targets, survival, etc.) is unaffected."
+    fi
+
     # Install Python packages for R environment
     echo "Installing Python packages for R environment..."
     REQUIREMENTS_PYTHON="$SCRIPT_DIR/requirements-python.txt"
