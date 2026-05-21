@@ -168,6 +168,33 @@ echo "Updating pip in base conda..."
 # into that clone directly. Polluting the docker base just costs ~2 min
 # during setup and serves no consumer (base isn't registered as a kernel).
 
+# ========== Part 1.5: Install micromamba (fast solver) ==========
+#
+# /opt/conda ships with conda 4.7.12 — pre-libmamba, classic Python solver.
+# That solver explodes on the r_env solve in setup-user.sh Part 5 (40 r-*
+# packages, gives 13h+ ETA on r-utf8 conflict resolution).
+#
+# micromamba is a single ~10 MB static C++ binary that bundles libmamba.
+# It solves the same env in seconds and reports unsatisfiable specs
+# clearly instead of grinding through hypothetical resolutions.
+echo ""
+echo "========== Part 1.5: Install micromamba =========="
+
+MICROMAMBA_BIN="/usr/local/bin/micromamba"
+if [ -x "$MICROMAMBA_BIN" ]; then
+    echo "micromamba already installed at $MICROMAMBA_BIN ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
+else
+    echo "Installing micromamba (single static binary) → $MICROMAMBA_BIN..."
+    TMP_MM="/tmp/micromamba-install-$$"
+    mkdir -p "$TMP_MM"
+    curl -fsSL "https://micro.mamba.pm/api/micromamba/linux-64/latest" \
+        | tar -xj -C "$TMP_MM" bin/micromamba
+    sudo mv "$TMP_MM/bin/micromamba" "$MICROMAMBA_BIN"
+    sudo chmod +x "$MICROMAMBA_BIN"
+    rm -rf "$TMP_MM"
+    echo "Installed: $($MICROMAMBA_BIN --version 2>&1 | head -1)"
+fi
+
 # ========== Part 2: Install Quarto ==========
 echo ""
 echo "========== Part 2: Install Quarto =========="

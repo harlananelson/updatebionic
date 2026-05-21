@@ -463,7 +463,23 @@ else
     R_CONDA_SPECS="r-tidyverse r-devtools r-irkernel"
 fi
 
+# Pick a solver. micromamba (libmamba) is dramatically faster and gives
+# clear unsat errors instead of conda 4.7's hour-long conflict-search loops.
+# setup-system.sh installs it at /usr/local/bin/micromamba; fall back to
+# conda if it's missing (older container that hasn't re-run setup-system.sh).
+MICROMAMBA_BIN="/usr/local/bin/micromamba"
+if [ -x "$MICROMAMBA_BIN" ]; then
+    SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
+    # micromamba create takes the same flags as conda create, but env activation
+    # works through the existing conda since it's a conda-compatible layout.
+    SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+else
+    SOLVER_DESC="conda (slow classic solver — micromamba not found at $MICROMAMBA_BIN)"
+    SOLVE_CMD=(conda create -y -p "$R_ENV_PATH" -c conda-forge)
+fi
+
 echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION} + R packages (single-shot solve)..."
+echo "Solver: $SOLVER_DESC"
 RETRY_COUNT=0
 MAX_RETRIES=3
 until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
@@ -471,11 +487,11 @@ do
     # Note: -c conda-forge applies to ALL specs on this command line, including
     # the R-package set. r-rcpptoml is pinned here because the old code added
     # it in a separate `conda install` step (a second solve) for reticulate.
-    conda create -y -p "$R_ENV_PATH" -c conda-forge \
+    "${SOLVE_CMD[@]}" \
         python=${PYTHON_VERSION} r-base=${R_VERSION} cmake r-rcpptoml \
         $R_CONDA_SPECS && break
     RETRY_COUNT=$((RETRY_COUNT+1))
-    echo "Conda environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+    echo "Environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
     sleep 5
 done
 if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
