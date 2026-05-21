@@ -168,6 +168,21 @@ OLD_CONDA_PATH="/opt/conda"
 MINICONDA_PATH="/tmp/miniconda"
 CONDA_PKGS_DIR="/tmp/conda-pkgs-$CURRENT_USER"
 
+# ─── Optional builds ────────────────────────────────────────────────────────
+# lhn_prod is the v0.1.0-monolithic environment used by the OLD pipeline.
+# Most users only need lhn_dev (v0.2.0) + r_env, so lhn_prod is skipped by
+# default. Set BUILD_LHN_PROD=1 to opt back in.
+BUILD_LHN_PROD="${BUILD_LHN_PROD:-0}"
+
+# ─── Persistent pip cache ───────────────────────────────────────────────────
+# Container restarts wipe /tmp and /home/jovyan/.cache, so every setup-user
+# re-run otherwise re-downloads ~500 MB (pyspark 317 MB sdist, pyarrow 38 MB,
+# polars 56 MB, numpy + scipy + matplotlib, etc). Point pip's cache at
+# persistent storage so those downloads survive. The slow-disk read penalty
+# is paid only during install (already slow), not at runtime.
+export PIP_CACHE_DIR="${PIP_CACHE_DIR:-$PERSIST_BASE/.cache/pip}"
+mkdir -p "$PIP_CACHE_DIR" 2>/dev/null || true
+
 # Per-user system-setup sentinel (written by setup-system.sh).
 # Suffixed with $CURRENT_USER because each user has their own HDL
 # container — apt-installing ssh in the lead's container doesn't
@@ -433,12 +448,32 @@ if [ -d "$R_ENV_PATH" ]; then
     conda env remove -p "$R_ENV_PATH" -y 2>/dev/null || rm -rf "$R_ENV_PATH"
 fi
 
-echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION}..."
+# Read R conda specs from requirements-R.txt (strip comments + blank lines).
+# Combined into the conda create call below so all R packages are solved at
+# env-creation time — a single solve, not "create then add to existing env".
+# The two-step pattern (conda create r-base + conda install r-tidyverse ...)
+# triggers the classic Python solver's conflict-resolution explosion on
+# conda 4.7 (13+ hour ETA on r-utf8). One-shot conda create avoids it.
+REQUIREMENTS_R="$SCRIPT_DIR/requirements-R.txt"
+if [[ -f "$REQUIREMENTS_R" ]]; then
+    R_CONDA_SPECS=$(grep -v '^[[:space:]]*#' "$REQUIREMENTS_R" | grep -v '^[[:space:]]*$' | tr '\n' ' ')
+    echo "Including $(echo $R_CONDA_SPECS | wc -w) R packages from $REQUIREMENTS_R in env-creation solve."
+else
+    echo "Warning: $REQUIREMENTS_R not found. Falling back to a minimal R spec."
+    R_CONDA_SPECS="r-tidyverse r-devtools r-irkernel"
+fi
+
+echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION} + R packages (single-shot solve)..."
 RETRY_COUNT=0
 MAX_RETRIES=3
 until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
 do
-    conda create -y -p "$R_ENV_PATH" python=${PYTHON_VERSION} r-base=${R_VERSION} cmake && break
+    # Note: -c conda-forge applies to ALL specs on this command line, including
+    # the R-package set. r-rcpptoml is pinned here because the old code added
+    # it in a separate `conda install` step (a second solve) for reticulate.
+    conda create -y -p "$R_ENV_PATH" -c conda-forge \
+        python=${PYTHON_VERSION} r-base=${R_VERSION} cmake r-rcpptoml \
+        $R_CONDA_SPECS && break
     RETRY_COUNT=$((RETRY_COUNT+1))
     echo "Conda environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
     sleep 5
@@ -473,9 +508,9 @@ EOF
         python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
     fi
 
-    # Install nbformat/nbconvert so quarto render --execute works from r_env
-    echo "Installing nbformat and nbconvert (required by quarto render --execute)..."
-    python -m pip install nbformat nbconvert
+    # nbformat + nbconvert are already in requirements-python.txt — no
+    # second pip install needed. (Old script ran a redundant pass that
+    # printed ~30 lines of "Requirement already satisfied".)
 
     # Install txtarchive from persistent storage
     TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
@@ -491,19 +526,9 @@ EOF
     python -m pip install ipykernel
     python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
 
-    # Install R packages from conda
-    echo "Installing R packages via conda..."
-    REQUIREMENTS_R="$SCRIPT_DIR/requirements-R.txt"
-    if [[ -f "$REQUIREMENTS_R" ]]; then
-        conda install -y -c conda-forge --file "$REQUIREMENTS_R" || echo "Warning: Some R conda packages failed"
-    else
-        echo "Warning: $REQUIREMENTS_R not found. Installing critical R packages..."
-        conda install -y -c conda-forge r-tidyverse r-devtools r-irkernel || echo "Warning: Some R packages failed"
-    fi
-
-    # Pre-install RcppTOML via conda (dependency of reticulate)
-    echo "Installing RcppTOML via conda-forge..."
-    conda install -y -c conda-forge r-rcpptoml || echo "Warning: r-rcpptoml conda install failed"
+    # R packages from requirements-R.txt + r-rcpptoml were already installed
+    # in the single-shot `conda create` above. No second conda-install pass
+    # needed — which is the whole point of the single-shot solve.
 
     # Install R packages via CRAN
     echo "Installing R packages via CRAN..."
@@ -559,22 +584,28 @@ echo ""
 echo "========== Part 7: Verify/Update Source Repositories =========="
 
 # --- Production: Clone lhn to /tmp with v0.1.0-monolithic branch ---
-echo ""
-echo "--- Setting up PRODUCTION source (v0.1.0-monolithic) ---"
-if [[ -d "$LHN_PROD_CLONE" ]]; then
-    echo "Removing existing production clone at $LHN_PROD_CLONE..."
-    rm -rf "$LHN_PROD_CLONE"
-fi
+# Skipped when BUILD_LHN_PROD=0 (default) — Part 8 won't consume it.
+if [[ "$BUILD_LHN_PROD" == "1" ]]; then
+    echo ""
+    echo "--- Setting up PRODUCTION source (v0.1.0-monolithic) ---"
+    if [[ -d "$LHN_PROD_CLONE" ]]; then
+        echo "Removing existing production clone at $LHN_PROD_CLONE..."
+        rm -rf "$LHN_PROD_CLONE"
+    fi
 
-echo "Cloning lhn repository for production to /tmp (fast)..."
-git clone "$LHN_REPO_URL" "$LHN_PROD_CLONE"
-git config --global --add safe.directory "$LHN_PROD_CLONE" 2>/dev/null || true
-cd "$LHN_PROD_CLONE"
-git fetch --all --tags
-git checkout v0.1.0-monolithic
-echo "Production clone checked out to v0.1.0-monolithic"
-echo "Available tags:"
-git tag -l
+    echo "Cloning lhn repository for production to /tmp (fast)..."
+    git clone "$LHN_REPO_URL" "$LHN_PROD_CLONE"
+    git config --global --add safe.directory "$LHN_PROD_CLONE" 2>/dev/null || true
+    cd "$LHN_PROD_CLONE"
+    git fetch --all --tags
+    git checkout v0.1.0-monolithic
+    echo "Production clone checked out to v0.1.0-monolithic"
+    echo "Available tags:"
+    git tag -l
+else
+    echo ""
+    echo "--- Skipping PRODUCTION source clone (BUILD_LHN_PROD=$BUILD_LHN_PROD) ---"
+fi
 
 # --- Development: Use existing persistent directories ---
 echo ""
@@ -633,6 +664,16 @@ echo "Source repositories ready."
 # ========== Part 8: Create Production Environment (v0.1.0) ==========
 echo ""
 echo "========== Part 8: Create Production Environment (lhn_prod) =========="
+
+# lhn_prod (v0.1.0-monolithic) is only used by the OLD pipeline's
+# `pyspark-lhn-prod` kernel. Most users only need lhn_dev + r_env, so this
+# whole section is skipped by default. Set BUILD_LHN_PROD=1 to opt back in.
+if [[ "$BUILD_LHN_PROD" != "1" ]]; then
+    echo "Skipping lhn_prod build (BUILD_LHN_PROD=$BUILD_LHN_PROD)."
+    echo "  → Set BUILD_LHN_PROD=1 to enable. This saves ~5 min and ~1 GB."
+    echo "  → If you need the pyspark-lhn-prod kernel, re-run with:"
+    echo "      BUILD_LHN_PROD=1 bash $0"
+else
 
 # Remove existing environment if present
 if [[ -d "$PROD_ENV_PATH" ]]; then
@@ -706,6 +747,8 @@ echo "Verifying lhn installation..."
 python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lhn import failed"
 
 conda deactivate
+
+fi   # end BUILD_LHN_PROD guard (Part 8)
 
 # ========== Part 9: Create Development Environment (v0.2.0-dev) ==========
 echo ""

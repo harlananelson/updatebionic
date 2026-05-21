@@ -162,9 +162,11 @@ retry_cmd 3 30 "apt-get install" \
 echo "Updating pip in base conda..."
 "$OLD_CONDA_PATH/bin/python" -m pip install --upgrade pip
 
-# Install packages in base conda (needed by the pyspark-lhn-dev kernel)
-echo "Installing duckdb and plotnine in base conda..."
-"$OLD_CONDA_PATH/bin/python" -m pip install duckdb plotnine
+# NOTE: duckdb + plotnine are NOT installed into /opt/conda base here. The
+# pyspark-lhn-dev kernel runs from /tmp/lhn_dev-$USER (a clone of base), and
+# setup-user.sh installs duckdb (Part 9) and plotnine via requirements.txt
+# into that clone directly. Polluting the docker base just costs ~2 min
+# during setup and serves no consumer (base isn't registered as a kernel).
 
 # ========== Part 2: Install Quarto ==========
 echo ""
