@@ -7,7 +7,10 @@
 #
 # This script provisions, for the CURRENT user:
 #   1. SSH key restoration (from that user's persistent storage)
-#   2. R environment with Python 3.10 and R 4.4.0 (/tmp/r_env-<user>)
+#   2. R environment with Python 3.10 and R 4.4.0 (/tmp/r_env-<user>).
+#      If another user already built their /tmp/r_env-<other> on this node,
+#      it is cloned (fast) instead of solved from scratch. FORCE_R_ENV_SOLVE=1
+#      forces a fresh build.
 #   3. Two lhn conda environments for side-by-side testing:
 #      - lhn_prod: Production monolithic version (v0.1.0)
 #      - lhn_dev:  Development refactored version (v0.2.0-dev)
@@ -451,52 +454,86 @@ if [ -d "$R_ENV_PATH" ]; then
     conda env remove -p "$R_ENV_PATH" -y 2>/dev/null || rm -rf "$R_ENV_PATH"
 fi
 
-# Read R conda specs from requirements-R.txt (strip comments + blank lines).
-# Combined into the conda create call below so all R packages are solved at
-# env-creation time — a single solve, not "create then add to existing env".
-# The two-step pattern (conda create r-base + conda install r-tidyverse ...)
-# triggers the classic Python solver's conflict-resolution explosion on
-# conda 4.7 (13+ hour ETA on r-utf8). One-shot conda create avoids it.
-REQUIREMENTS_R="$SCRIPT_DIR/requirements-R.txt"
-if [[ -f "$REQUIREMENTS_R" ]]; then
-    R_CONDA_SPECS=$(grep -v '^[[:space:]]*#' "$REQUIREMENTS_R" | grep -v '^[[:space:]]*$' | tr '\n' ' ')
-    echo "Including $(echo $R_CONDA_SPECS | wc -w) R packages from $REQUIREMENTS_R in env-creation solve."
-else
-    echo "Warning: $REQUIREMENTS_R not found. Falling back to a minimal R spec."
-    R_CONDA_SPECS="r-tidyverse r-devtools r-irkernel"
-fi
-
-# Pick a solver. micromamba (libmamba) is dramatically faster and gives
-# clear unsat errors instead of conda 4.7's hour-long conflict-search loops.
-# setup-system.sh installs it at /usr/local/bin/micromamba; fall back to
-# conda if it's missing (older container that hasn't re-run setup-system.sh).
+# micromamba is used for the from-scratch solve below and the geospatial
+# follow-up further down; define its path once, up front.
 MICROMAMBA_BIN="/usr/local/bin/micromamba"
-if [ -x "$MICROMAMBA_BIN" ]; then
-    SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
-    # micromamba create takes the same flags as conda create, but env activation
-    # works through the existing conda since it's a conda-compatible layout.
-    SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
-else
-    SOLVER_DESC="conda (slow classic solver — micromamba not found at $MICROMAMBA_BIN)"
-    SOLVE_CMD=(conda create -y -p "$R_ENV_PATH" -c conda-forge)
-fi
-
-echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION} + R packages (single-shot solve)..."
-echo "Solver: $SOLVER_DESC"
 RETRY_COUNT=0
 MAX_RETRIES=3
-until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
-do
-    # Note: -c conda-forge applies to ALL specs on this command line, including
-    # the R-package set. r-rcpptoml is pinned here because the old code added
-    # it in a separate `conda install` step (a second solve) for reticulate.
-    "${SOLVE_CMD[@]}" \
-        python=${PYTHON_VERSION} r-base=${R_VERSION} cmake r-rcpptoml \
-        $R_CONDA_SPECS && break
-    RETRY_COUNT=$((RETRY_COUNT+1))
-    echo "Environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
-    sleep 5
-done
+
+# ── Reuse another user's r_env if one already exists on this shared node ──
+# Each user keeps their OWN /tmp/r_env-<user> (isolation — no mid-session
+# collisions if someone re-runs setup), but the env content is identical
+# across users and building it is expensive (micromamba solve + CRAN/GitHub
+# compile). If a sibling /tmp/r_env-<other> is already fully built, clone it:
+# a fast local copy that skips the solve AND every package-install step below
+# (geospatial, pip, CRAN, GitHub). `conda create --clone` copies the entire
+# env prefix, including the install.packages / remotes::install_github
+# libraries that live inside it. Set FORCE_R_ENV_SOLVE=1 to force a fresh
+# from-scratch build instead.
+CLONED_R_ENV=0
+if [ -z "${FORCE_R_ENV_SOLVE:-}" ]; then
+    for candidate in /tmp/r_env-*; do
+        [ "$candidate" = "$R_ENV_PATH" ] && continue
+        [ -x "$candidate/bin/R" ] || continue           # complete env only
+        [ -d "$candidate/lib/R/library" ] || continue   # R library populated
+        echo "Found a sibling R environment at $candidate (built by another user)."
+        echo "Cloning it to $R_ENV_PATH — skips the solve + CRAN/GitHub builds..."
+        if conda create -p "$R_ENV_PATH" --clone "$candidate" -y; then
+            CLONED_R_ENV=1
+            echo "  ✓ Cloned R environment from $candidate."
+        else
+            echo "  ⚠  Clone failed — falling back to a full from-scratch solve."
+            rm -rf "$R_ENV_PATH"
+        fi
+        break
+    done
+fi
+
+if [ "$CLONED_R_ENV" -eq 0 ]; then
+    # Read R conda specs from requirements-R.txt (strip comments + blank lines).
+    # Combined into the conda create call below so all R packages are solved at
+    # env-creation time — a single solve, not "create then add to existing env".
+    # The two-step pattern (conda create r-base + conda install r-tidyverse ...)
+    # triggers the classic Python solver's conflict-resolution explosion on
+    # conda 4.7 (13+ hour ETA on r-utf8). One-shot conda create avoids it.
+    REQUIREMENTS_R="$SCRIPT_DIR/requirements-R.txt"
+    if [[ -f "$REQUIREMENTS_R" ]]; then
+        R_CONDA_SPECS=$(grep -v '^[[:space:]]*#' "$REQUIREMENTS_R" | grep -v '^[[:space:]]*$' | tr '\n' ' ')
+        echo "Including $(echo $R_CONDA_SPECS | wc -w) R packages from $REQUIREMENTS_R in env-creation solve."
+    else
+        echo "Warning: $REQUIREMENTS_R not found. Falling back to a minimal R spec."
+        R_CONDA_SPECS="r-tidyverse r-devtools r-irkernel"
+    fi
+
+    # Pick a solver. micromamba (libmamba) is dramatically faster and gives
+    # clear unsat errors instead of conda 4.7's hour-long conflict-search loops.
+    # setup-system.sh installs it at /usr/local/bin/micromamba; fall back to
+    # conda if it's missing (older container that hasn't re-run setup-system.sh).
+    if [ -x "$MICROMAMBA_BIN" ]; then
+        SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
+        # micromamba create takes the same flags as conda create, but env activation
+        # works through the existing conda since it's a conda-compatible layout.
+        SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+    else
+        SOLVER_DESC="conda (slow classic solver — micromamba not found at $MICROMAMBA_BIN)"
+        SOLVE_CMD=(conda create -y -p "$R_ENV_PATH" -c conda-forge)
+    fi
+
+    echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION} + R packages (single-shot solve)..."
+    echo "Solver: $SOLVER_DESC"
+    until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
+    do
+        # Note: -c conda-forge applies to ALL specs on this command line, including
+        # the R-package set. r-rcpptoml is pinned here because the old code added
+        # it in a separate `conda install` step (a second solve) for reticulate.
+        "${SOLVE_CMD[@]}" \
+            python=${PYTHON_VERSION} r-base=${R_VERSION} cmake r-rcpptoml \
+            $R_CONDA_SPECS && break
+        RETRY_COUNT=$((RETRY_COUNT+1))
+        echo "Environment creation failed. Retrying... (Attempt $RETRY_COUNT of $MAX_RETRIES)"
+        sleep 5
+    done
+fi
 if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
     echo "ERROR: Conda environment creation failed after $MAX_RETRIES attempts."
     echo "Continuing with lhn setup (R environment will not be available)..."
@@ -517,77 +554,88 @@ if (.libPaths()[1] != "$R_ENV_PATH/lib/R/library") {
 }
 EOF
 
-    # ─── Geospatial R packages (separate, non-fatal solve) ────────────────
-    # r-sf and r-units pull libgdal-core / libxml2 versions that conflict
-    # with r-base=4.4.0 in the main env-creation solve (commented out in
-    # requirements-R.txt). Try them in a smaller follow-up solve here —
-    # the smaller spec set is much more likely to resolve. If it still
-    # fails, log a warning and continue: usmap/usmapdata GitHub installs
-    # may fail, but everything non-geospatial works.
-    echo ""
-    echo "Attempting separate geospatial R packages solve (r-sf, r-units)..."
-    if [ -x "$MICROMAMBA_BIN" ]; then
-        GEO_INSTALL=("$MICROMAMBA_BIN" "install" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
-    else
-        GEO_INSTALL=(conda install -y -p "$R_ENV_PATH" -c conda-forge)
-    fi
-    if "${GEO_INSTALL[@]}" r-sf r-units; then
-        echo "  ✓ Geospatial R packages installed."
-    else
+    # The expensive package-install steps below (geospatial conda solve,
+    # CRAN compile, GitHub compile) are skipped when the env was cloned from
+    # a sibling user — the clone already carries those libraries. The per-user
+    # Jupyter kernel registrations further down run either way, since kernels
+    # live in $HOME and are not part of the cloned env prefix.
+    if [ "$CLONED_R_ENV" -eq 0 ]; then
+        # ─── Geospatial R packages (separate, non-fatal solve) ────────────────
+        # r-sf and r-units pull libgdal-core / libxml2 versions that conflict
+        # with r-base=4.4.0 in the main env-creation solve (commented out in
+        # requirements-R.txt). Try them in a smaller follow-up solve here —
+        # the smaller spec set is much more likely to resolve. If it still
+        # fails, log a warning and continue: usmap/usmapdata GitHub installs
+        # may fail, but everything non-geospatial works.
         echo ""
-        echo "  ⚠  WARNING: r-sf / r-units install failed — conda-forge libgdal stack"
-        echo "             may be temporarily incompatible with r-base=4.4.0."
-        echo "             Consequences: GitHub usmap and usmapdata installs may"
-        echo "             also fail. Everything else (tidyverse, tidymodels,"
-        echo "             targets, survival, etc.) is unaffected."
-    fi
+        echo "Attempting separate geospatial R packages solve (r-sf, r-units)..."
+        if [ -x "$MICROMAMBA_BIN" ]; then
+            GEO_INSTALL=("$MICROMAMBA_BIN" "install" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+        else
+            GEO_INSTALL=(conda install -y -p "$R_ENV_PATH" -c conda-forge)
+        fi
+        if "${GEO_INSTALL[@]}" r-sf r-units; then
+            echo "  ✓ Geospatial R packages installed."
+        else
+            echo ""
+            echo "  ⚠  WARNING: r-sf / r-units install failed — conda-forge libgdal stack"
+            echo "             may be temporarily incompatible with r-base=4.4.0."
+            echo "             Consequences: GitHub usmap and usmapdata installs may"
+            echo "             also fail. Everything else (tidyverse, tidymodels,"
+            echo "             targets, survival, etc.) is unaffected."
+        fi
 
-    # Install Python packages for R environment
-    echo "Installing Python packages for R environment..."
-    REQUIREMENTS_PYTHON="$SCRIPT_DIR/requirements-python.txt"
-    if [[ -f "$REQUIREMENTS_PYTHON" ]]; then
-        python -m pip install -r "$REQUIREMENTS_PYTHON"
+        # Install Python packages for R environment
+        echo "Installing Python packages for R environment..."
+        REQUIREMENTS_PYTHON="$SCRIPT_DIR/requirements-python.txt"
+        if [[ -f "$REQUIREMENTS_PYTHON" ]]; then
+            python -m pip install -r "$REQUIREMENTS_PYTHON"
+        else
+            echo "Warning: $REQUIREMENTS_PYTHON not found. Installing critical packages..."
+            python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
+        fi
+
+        # nbformat + nbconvert are already in requirements-python.txt — no
+        # second pip install needed. (Old script ran a redundant pass that
+        # printed ~30 lines of "Requirement already satisfied".)
+
+        # Install txtarchive from persistent storage
+        TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
+        if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
+            echo "Installing txtarchive from $TXTARCHIVE_PERSIST..."
+            python -m pip install "$TXTARCHIVE_PERSIST"
+        else
+            echo "Warning: txtarchive not found at $TXTARCHIVE_PERSIST (skipping)"
+        fi
+
+        # R packages from requirements-R.txt + r-rcpptoml were already installed
+        # in the single-shot `conda create` above. No second conda-install pass
+        # needed — which is the whole point of the single-shot solve.
+
+        # Install R packages via CRAN
+        echo "Installing R packages via CRAN..."
+        R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "msm" "flexsurv" "mstate" "JMbayes2" "fdapace" "nlme" "TrialEmulation" "randomForestSRC" "timeROC" "data.tree" "DiagrammeR" "cmprsk" "doParallel" "mets" "plotrix" "Publish" "glmnet" "riskRegression" "timereg" "pec" "parameters" "skimr" "smd")
+        R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
+        R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
+        R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
+
+        # Install GitHub-only R packages
+        echo "Installing R packages from GitHub..."
+        R -e "if (!requireNamespace('treeshap', quietly=TRUE)) remotes::install_github('ModelOriented/treeshap', lib='$R_LIB_PATH')"
+        R -e "if (!requireNamespace('usmapdata', quietly=TRUE)) remotes::install_github('pdil/usmapdata', lib='$R_LIB_PATH', dependencies=TRUE)"
+        R -e "if (!requireNamespace('usmap', quietly=TRUE)) remotes::install_github('pdil/usmap', lib='$R_LIB_PATH', dependencies=TRUE)"
     else
-        echo "Warning: $REQUIREMENTS_PYTHON not found. Installing critical packages..."
-        python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine
+        echo "Cloned env already contains geospatial + Python + CRAN + GitHub packages; skipping rebuilds."
     fi
 
-    # nbformat + nbconvert are already in requirements-python.txt — no
-    # second pip install needed. (Old script ran a redundant pass that
-    # printed ~30 lines of "Requirement already satisfied".)
-
-    # Install txtarchive from persistent storage
-    TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
-    if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
-        echo "Installing txtarchive from $TXTARCHIVE_PERSIST..."
-        python -m pip install "$TXTARCHIVE_PERSIST"
-    else
-        echo "Warning: txtarchive not found at $TXTARCHIVE_PERSIST (skipping)"
-    fi
-
-    # Register Python kernel for R environment
+    # Register Python kernel for R environment (per-user; Jupyter kernels live
+    # in $HOME, not inside the env, so this runs whether the env was solved or
+    # cloned).
     echo "Registering Python 3.10 kernel..."
     python -m pip install ipykernel
     python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
 
-    # R packages from requirements-R.txt + r-rcpptoml were already installed
-    # in the single-shot `conda create` above. No second conda-install pass
-    # needed — which is the whole point of the single-shot solve.
-
-    # Install R packages via CRAN
-    echo "Installing R packages via CRAN..."
-    R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2" "lobstr" "butcher" "probably" "shades" "ggfittext" "gggenes" "kernelshap" "shapviz" "ggdag" "msm" "flexsurv" "mstate" "JMbayes2" "fdapace" "nlme" "TrialEmulation" "randomForestSRC" "timeROC" "data.tree" "DiagrammeR" "cmprsk" "doParallel" "mets" "plotrix" "Publish" "glmnet" "riskRegression" "timereg" "pec" "parameters" "skimr" "smd")
-    R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
-    R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
-    R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
-
-    # Install GitHub-only R packages
-    echo "Installing R packages from GitHub..."
-    R -e "if (!requireNamespace('treeshap', quietly=TRUE)) remotes::install_github('ModelOriented/treeshap', lib='$R_LIB_PATH')"
-    R -e "if (!requireNamespace('usmapdata', quietly=TRUE)) remotes::install_github('pdil/usmapdata', lib='$R_LIB_PATH', dependencies=TRUE)"
-    R -e "if (!requireNamespace('usmap', quietly=TRUE)) remotes::install_github('pdil/usmap', lib='$R_LIB_PATH', dependencies=TRUE)"
-
-    # Register R kernel
+    # Register R kernel (per-user).
     echo "Registering R ${R_VERSION} kernel..."
     R -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${R_VERSION} (r_env)')"
 
