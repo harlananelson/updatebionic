@@ -666,11 +666,22 @@ echo "Initializing old conda from $OLD_CONDA_PATH..."
 export HOST="${HOST:-$(hostname)}"
 source "$OLD_CONDA_PATH/etc/profile.d/conda.sh"
 
-# Verify pyspark is available in base
+# Verify pyspark is available in base.
+#
+# Call /opt/conda's interpreter by ABSOLUTE PATH, not a bare `python`.
+# `conda activate base` sets SPARK_HOME/PYTHONPATH (so `import pyspark` finds
+# /usr/local/spark/python), but it does not guarantee `python` resolves to
+# /opt/conda's Python 3.7 — Part 2 prepends the shared Miniconda 3.10 to PATH
+# ($MINICONDA_PATH/bin), and a user's shell startup state can leave a 3.10 env
+# active. pyspark 2.4.4 only imports under Python 3.7: under 3.8+ its bundled
+# cloudpickle dies with "TypeError: 'bytes' object cannot be interpreted as an
+# integer" (types.CodeType gained posonlyargcount in 3.8). Pinning the
+# interpreter makes this check deterministic across users.
 echo "Verifying pyspark in base environment..."
 conda activate base
-python -c "import pyspark; print(f'pyspark version: {pyspark.__version__}')" || {
+"$OLD_CONDA_PATH/bin/python" -c "import pyspark; print(f'pyspark version: {pyspark.__version__}')" || {
     echo "ERROR: pyspark not found in base environment"
+    echo "       (base interpreter: $OLD_CONDA_PATH/bin/python — $("$OLD_CONDA_PATH/bin/python" --version 2>&1))"
     exit 1
 }
 conda deactivate
