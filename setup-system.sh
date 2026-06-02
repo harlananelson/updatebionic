@@ -33,21 +33,21 @@ set -eo pipefail
 OLD_CONDA_PATH="/opt/conda"
 MINICONDA_PATH="/tmp/miniconda"          # shared conda driver (wiped on reboot)
 
-# Per-user sentinel + lockfile (2026-05-20).
+# Node-wide sentinel + lockfile (revert of 1b008cf).
 #
-# On HDL JupyterHub each user gets their own container — /usr/bin and
-# /tmp/ are per-container, so apt-installing ssh in the lead's container
-# does NOT install it in the intern's. If /tmp/ is somehow cross-visible
-# (or if a stale sentinel survives a partial earlier run), the script
-# previously short-circuited with "Nothing to do" even though the
-# current user's container still lacked ssh.
+# This node is SHARED across users: /tmp, /opt and /usr/local are visible to
+# everyone in the same container, so setup-system installs machine-wide items
+# ONCE and every user's setup-user then consumes them. The earlier per-$USER
+# suffix (commit 1b008cf) was added on the assumption that "each user gets
+# their own container" — that is not the case here. The per-user suffix made
+# an intern's setup-user unable to see the lead's completed run, so it
+# needlessly re-triggered a full system setup.
 #
-# Suffix sentinel + lockfile with $USER so each user must independently
-# trigger a real run in their own container. Same-day no-op behaviour
-# preserved within a user.
-__SETUP_USER="${SETUP_USER:-${USER:-$(id -un)}}"
-SENTINEL="/tmp/.lhn-system-ready-${__SETUP_USER}"        # per-user sentinel
-LOCKFILE="/tmp/lhn-setup-system.lock-${__SETUP_USER}"    # per-user lock
+# A single node-wide sentinel restores the intended "run once, everyone
+# benefits" behaviour. The lockfile is likewise node-wide so concurrent runs
+# by different users serialise against each other.
+SENTINEL="/tmp/.lhn-system-ready"            # node-wide sentinel
+LOCKFILE="/tmp/lhn-setup-system.lock"        # node-wide lock
 
 # Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
@@ -232,7 +232,9 @@ echo "Using Miniconda version compatible with Ubuntu 18.04"
 
 # ========== Mark system setup complete ==========
 echo "$TODAY" > "$SENTINEL"
-chmod 0644 "$SENTINEL" 2>/dev/null || true
+# World-writable so any user on the shared node can refresh it on a later day,
+# not just whoever created it first.
+chmod 0666 "$SENTINEL" 2>/dev/null || true
 
 echo ""
 echo "========== System (Shared) Setup Complete =========="

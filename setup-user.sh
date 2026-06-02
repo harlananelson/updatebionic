@@ -183,13 +183,16 @@ BUILD_LHN_PROD="${BUILD_LHN_PROD:-0}"
 export PIP_CACHE_DIR="${PIP_CACHE_DIR:-$PERSIST_BASE/.cache/pip}"
 mkdir -p "$PIP_CACHE_DIR" 2>/dev/null || true
 
-# Per-user system-setup sentinel (written by setup-system.sh).
-# Suffixed with $CURRENT_USER because each user has their own HDL
-# container — apt-installing ssh in the lead's container doesn't
-# install it in the intern's, so each user needs an independent
-# sentinel. Matches the per-user sentinel in setup-system.sh
-# (2026-05-20).
-SENTINEL="/tmp/.lhn-system-ready-$CURRENT_USER"
+# Node-wide system-setup sentinel (written by setup-system.sh).
+#
+# This node is SHARED: /tmp, /opt and /usr/local are visible to every user,
+# so setup-system only needs to run ONCE per node per day (by whoever runs it
+# first — typically the project lead). The sentinel is therefore node-wide,
+# NOT per-user. A previous $CURRENT_USER suffix (commit 1b008cf) meant an
+# intern's setup-user could not see the lead's completed run, so it tried to
+# re-run setup-system itself — the failure this revert fixes. Must match the
+# node-wide sentinel in setup-system.sh.
+SENTINEL="/tmp/.lhn-system-ready"
 
 # Resolve full path to this script (handles both sourced and direct execution)
 SCRIPT_PATH="${BASH_SOURCE[0]:-$0}"
