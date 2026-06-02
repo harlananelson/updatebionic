@@ -22,8 +22,10 @@
 #
 # Prerequisites:
 #   - Original Docker conda at /opt/conda with pyspark 2.4.x
-#   - The user's own repo clones under ~/work/Users/<username>/
-#     (lhn, spark_config_mapper) and SSH keys under .../<username>/.ssh
+#   - SSH keys under ~/work/Users/<username>/.ssh, and that key authorised on
+#     GitHub. Part 7 auto-clones lhn and spark_config_mapper into
+#     ~/work/Users/<username>/ if they are not already there, so a second user
+#     no longer needs to pre-stage those repos by hand — only working SSH.
 #
 # Usage:
 #   chmod +x setup-user.sh
@@ -144,8 +146,12 @@ for tool in ssh git curl; do
 done
 
 # Configuration
-# Using SSH URL (more reliable for git operations)
+# Using SSH URL (more reliable for git operations). Part 7 clones these into
+# the current user's persistent storage if they are not already present, so a
+# second user does not have to pre-stage repos by hand — they only need a
+# GitHub-authorised SSH key (the same one that let them clone updatebionic).
 LHN_REPO_URL="git@github.com:harlananelson/lhn.git"
+SPARK_CONFIG_REPO_URL="git@github.com:harlananelson/spark_config_mapper.git"
 
 # Current user — drives every per-user path so two people can run this script
 # on the same node without colliding. Override with SCD_USER if ever needed.
@@ -718,14 +724,22 @@ if [[ -d "$LHN_PERSIST" ]]; then
     git pull origin main
     echo "lhn updated to latest main branch"
 else
-    echo "ERROR: lhn not found at $LHN_PERSIST"
-    echo ""
-    echo "Per-user setup: each user keeps their own clones under"
-    echo "  $PERSIST_BASE"
-    echo "Clone the development repositories there, then re-run this script:"
-    echo "  git clone $LHN_REPO_URL $LHN_PERSIST"
-    echo "  (also clone spark_config_mapper into $SPARK_CONFIG_PERSIST)"
-    exit 1
+    echo "lhn not found at $LHN_PERSIST — cloning it (per-user persistent storage)..."
+    mkdir -p "$PERSIST_BASE"
+    if git clone "$LHN_REPO_URL" "$LHN_PERSIST"; then
+        git config --global --add safe.directory "$LHN_PERSIST" 2>/dev/null || true
+        cd "$LHN_PERSIST"
+        git checkout main 2>/dev/null || true
+        echo "Cloned lhn to $LHN_PERSIST (main branch)."
+    else
+        echo "ERROR: failed to clone lhn from $LHN_REPO_URL into $LHN_PERSIST."
+        echo ""
+        echo "This usually means the current user's SSH key lacks GitHub access."
+        echo "Verify with:  ssh -T git@github.com   (should greet the user's GitHub account)"
+        echo "Then re-run this script, or pre-clone manually:"
+        echo "  git clone $LHN_REPO_URL $LHN_PERSIST"
+        exit 1
+    fi
 fi
 
 # Verify spark_config_mapper exists
@@ -735,8 +749,16 @@ if [[ -d "$SPARK_CONFIG_PERSIST" ]]; then
     cd "$SPARK_CONFIG_PERSIST"
     git pull origin main 2>/dev/null || echo "  (pull skipped or failed)"
 else
-    echo "ERROR: spark_config_mapper not found at $SPARK_CONFIG_PERSIST"
-    exit 1
+    echo "spark_config_mapper not found at $SPARK_CONFIG_PERSIST — cloning it..."
+    mkdir -p "$PERSIST_BASE"
+    if git clone "$SPARK_CONFIG_REPO_URL" "$SPARK_CONFIG_PERSIST"; then
+        git config --global --add safe.directory "$SPARK_CONFIG_PERSIST" 2>/dev/null || true
+        echo "Cloned spark_config_mapper to $SPARK_CONFIG_PERSIST."
+    else
+        echo "ERROR: failed to clone spark_config_mapper from $SPARK_CONFIG_REPO_URL."
+        echo "Check the current user's GitHub SSH access (ssh -T git@github.com), then re-run."
+        exit 1
+    fi
 fi
 
 # Verify omop_concept_mapper exists
