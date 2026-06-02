@@ -666,21 +666,21 @@ echo "Initializing old conda from $OLD_CONDA_PATH..."
 export HOST="${HOST:-$(hostname)}"
 source "$OLD_CONDA_PATH/etc/profile.d/conda.sh"
 
-# Verify pyspark is available in base.
+# Verify pyspark is available in the Docker base environment.
 #
-# Call /opt/conda's interpreter by ABSOLUTE PATH, not a bare `python`.
-# `conda activate base` sets SPARK_HOME/PYTHONPATH (so `import pyspark` finds
-# /usr/local/spark/python), but it does not guarantee `python` resolves to
-# /opt/conda's Python 3.7 — Part 2 prepends the shared Miniconda 3.10 to PATH
-# ($MINICONDA_PATH/bin), and a user's shell startup state can leave a 3.10 env
-# active. pyspark 2.4.4 only imports under Python 3.7: under 3.8+ its bundled
-# cloudpickle dies with "TypeError: 'bytes' object cannot be interpreted as an
-# integer" (types.CodeType gained posonlyargcount in 3.8). Pinning the
-# interpreter makes this check deterministic across users.
+# Activate the Docker conda by its PREFIX ($OLD_CONDA_PATH), NOT the bare name
+# `base`. By this point we have installed and `conda shell.bash hook`-
+# initialised the shared Miniconda (/tmp/miniconda, Python 3.10), so `base`
+# resolves to MINICONDA's base, not the Docker /opt/conda base where
+# pyspark 2.4.4 lives. pyspark 2.4.4 only imports under Python 3.7: under 3.8+
+# its bundled cloudpickle dies with "TypeError: 'bytes' object cannot be
+# interpreted as an integer" (types.CodeType gained posonlyargcount in 3.8).
+# Activating the prefix names exactly which conda we mean; the interpreter is
+# also pinned to that prefix so the check can never silently use Miniconda 3.10.
 echo "Verifying pyspark in base environment..."
-conda activate base
+conda activate "$OLD_CONDA_PATH"
 "$OLD_CONDA_PATH/bin/python" -c "import pyspark; print(f'pyspark version: {pyspark.__version__}')" || {
-    echo "ERROR: pyspark not found in base environment"
+    echo "ERROR: pyspark not found in Docker base environment ($OLD_CONDA_PATH)"
     echo "       (base interpreter: $OLD_CONDA_PATH/bin/python — $("$OLD_CONDA_PATH/bin/python" --version 2>&1))"
     exit 1
 }
@@ -806,10 +806,13 @@ if [[ -d "$PROD_ENV_PATH" ]]; then
     conda env remove -p "$PROD_ENV_PATH" -y 2>/dev/null || rm -rf "$PROD_ENV_PATH"
 fi
 
-# Clone the base environment
-echo "Cloning base environment to $PROD_ENV_PATH..."
+# Clone the Docker base environment (Python 3.7 + pyspark 2.4.4).
+# Clone by PREFIX ($OLD_CONDA_PATH), not the bare name `base`: with Miniconda
+# active, `--clone base` would clone Miniconda 3.10 instead of the Docker base,
+# producing an lhn env that can't import pyspark 2.4.4.
+echo "Cloning Docker base environment ($OLD_CONDA_PATH) to $PROD_ENV_PATH..."
 echo "This may take a few minutes..."
-conda create -p "$PROD_ENV_PATH" --clone base -y
+"$OLD_CONDA_PATH/bin/conda" create -p "$PROD_ENV_PATH" --clone "$OLD_CONDA_PATH" -y
 
 # Activate and install lhn v0.1.0
 echo "Activating production environment..."
@@ -885,10 +888,13 @@ if [[ -d "$DEV_ENV_PATH" ]]; then
     conda env remove -p "$DEV_ENV_PATH" -y 2>/dev/null || rm -rf "$DEV_ENV_PATH"
 fi
 
-# Clone the base environment
-echo "Cloning base environment to $DEV_ENV_PATH..."
+# Clone the Docker base environment (Python 3.7 + pyspark 2.4.4).
+# Clone by PREFIX ($OLD_CONDA_PATH), not the bare name `base`: with Miniconda
+# active, `--clone base` would clone Miniconda 3.10 instead of the Docker base,
+# producing an lhn_dev env that can't import pyspark 2.4.4.
+echo "Cloning Docker base environment ($OLD_CONDA_PATH) to $DEV_ENV_PATH..."
 echo "This may take a few minutes..."
-conda create -p "$DEV_ENV_PATH" --clone base -y
+"$OLD_CONDA_PATH/bin/conda" create -p "$DEV_ENV_PATH" --clone "$OLD_CONDA_PATH" -y
 
 # Activate and install lhn v0.2.0-dev
 echo "Activating development environment..."
