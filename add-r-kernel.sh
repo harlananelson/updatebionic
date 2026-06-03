@@ -125,10 +125,13 @@ else
     python -m pip install numpy pandas scikit-learn matplotlib seaborn plotnine lifelines
 fi
 
-# Register Python kernel
-echo "Registering Python 3.10 kernel..."
-python -m pip install ipykernel
-python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
+# Register Python kernel using the r_env python explicitly (robust vs PATH)
+R_ENV_PYTHON="$R_ENV_PATH/bin/python"
+R_ENV_R="$R_ENV_PATH/bin/R"
+
+echo "Registering Python 3.10 kernel (using $R_ENV_PYTHON)..."
+"$R_ENV_PYTHON" -m pip install ipykernel
+"$R_ENV_PYTHON" -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
 
 # ========== Part 4: Install R Packages ==========
 echo ""
@@ -153,11 +156,37 @@ echo "Installing R packages via CRAN (this may take a while)..."
 R_PACKAGES_CRAN=("ggsurvfit" "themis" "estimability" "mvtnorm" "numDeriv" "emmeans" "Delta" "vip" "IRkernel" "reticulate" "visNetwork" "config" "sparklyr" "table1" "tableone" "equatiomatic" "svglite" "survRM2")
 R_CRAN_PACKAGES_QUOTED=$(printf "'%s'," "${R_PACKAGES_CRAN[@]}")
 R_CRAN_PACKAGES_QUOTED=${R_CRAN_PACKAGES_QUOTED%,}
-R -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
+"$R_ENV_R" -e ".libPaths(c('$R_LIB_PATH', .libPaths())); pkgs <- c(${R_CRAN_PACKAGES_QUOTED}); missing_pkgs <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]; if (length(missing_pkgs) > 0) { install.packages(missing_pkgs, lib='$R_LIB_PATH', repos='https://cloud.r-project.org') }"
 
-# Register R kernel
-echo "Registering R ${R_VERSION} kernel..."
-R -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${R_VERSION} (r_env)')"
+# Register R kernel using full path (robust registration + patch for reticulate)
+echo "Registering R ${R_VERSION} kernel (using $R_ENV_R)..."
+ACTUAL_R_VER=$("$R_ENV_R" --version 2>/dev/null | head -1 | sed 's/R version \([^ ]*\).*/\1/')
+[ -z "$ACTUAL_R_VER" ] && ACTUAL_R_VER="${R_VERSION}"
+"$R_ENV_R" -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${ACTUAL_R_VER} (r_env)')"
+
+# Patch the R kernel.json for reliable reticulate to the sibling python in r_env
+R_KERNEL_DIR="$HOME/.local/share/jupyter/kernels/r_env"
+if [ -f "$R_KERNEL_DIR/kernel.json" ]; then
+    python -c '
+import json, os, sys
+kpath = os.path.expanduser(sys.argv[1])
+r_env = sys.argv[2]
+try:
+    with open(kpath) as f: k = json.load(f)
+except Exception as e:
+    print("  (could not patch kernel.json:", e, ")")
+    sys.exit(0)
+k.setdefault("env", {})
+k["env"]["RETICULATE_PYTHON"] = r_env + "/bin/python"
+# Deliberately do NOT set PATH here. IRkernel writes no PATH, so setting it to
+# "<r_env>/bin" would make Jupyter launch the R kernel with ONLY that directory
+# on PATH (the kernel.json env replaces the inherited PATH), hiding system tools
+# the kernel shells out to (pandoc for knitr, git, gcc, etc.). RETICULATE_PYTHON
+# alone is sufficient to point reticulate at the modern Python 3.10 sibling.
+with open(kpath, "w") as f: json.dump(k, f, indent=2)
+print("  Patched r_env kernel.json with RETICULATE_PYTHON (reticulate -> modern Python 3.10 sibling).")
+' "$R_KERNEL_DIR" "$R_ENV_PATH" || true
+fi
 
 # ========== Part 5: Verify and Summary ==========
 echo ""

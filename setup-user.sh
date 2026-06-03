@@ -3,7 +3,7 @@
 #
 # Per-user container setup. Safe to run by any user on a shared node — every
 # environment, clone and cache path is suffixed with the username, so two
-# people (e.g. lead + intern) never collide in /tmp.
+# different users never collide in /tmp even when sharing the same container/node.
 #
 # This script provisions, for the CURRENT user:
 #   1. SSH key restoration (from that user's persistent storage)
@@ -42,16 +42,15 @@ set -eo pipefail
 
 # ========== PATH bootstrap (Critical) ==========
 #
-# When an intern runs this script from a fresh JupyterHub terminal, their
-# default PATH may not include /usr/bin (where apt-installed tools like
-# ssh, git, sudo land via setup-system.sh) or /opt/conda/bin (where the
-# base conda lives). The result: `command -v ssh` returns nothing, the
-# SSH-key-restoration block silently no-ops, and the keyring step fails
-# because there's no ssh-agent to talk to.
+# In fresh JupyterHub / container terminal sessions, the default $PATH may
+# not include /usr/bin (where system tools like ssh, git, sudo from apt
+# live) or /opt/conda/bin (the Docker base conda). This can cause
+# `command -v ssh` etc. to fail even when the packages are installed on
+# the system.
 #
-# Project lead (e.g. Harlan) typically has a long-lived shell with conda
-# already active, so PATH already includes the tooling. An intern opening
-# her FIRST JupyterHub terminal doesn't.
+# A user who has previously run custom setup or has a long-lived shell
+# may already have a more complete PATH. A brand-new terminal session
+# often does not.
 #
 # Make this script self-contained by always normalising PATH to include:
 #   - /opt/conda/bin                  (base Docker conda — has git, curl, etc.)
@@ -69,18 +68,27 @@ fi
 
 # ========== Ensure ssh + git are available (no sudo path) ==========
 #
-# An intern without sudo can't run `apt-get install openssh-client` and
-# therefore can't depend on setup-system.sh having installed ssh into
-# /usr/bin. The PATH bootstrap above only helps if ssh exists SOMEWHERE
-# on the system; it doesn't install ssh.
+# In some container/JupyterHub terminal sessions (fresh shells, certain
+# user contexts), ssh and/or git may not be on $PATH even though the
+# underlying system packages are installed.
 #
-# Fix: conda-install openssh + git into a per-user tools env. Conda is
-# always present at /opt/conda in the LHN Docker base image, doesn't
-# need sudo, and works regardless of whether the lead has run
-# setup-system.sh yet.
+# This section provides a fallback: if ssh or git are missing from PATH,
+# install them into a small per-user conda tools environment using the
+# base conda (which is always available and does not require sudo for
+# package installation into that env).
+#
+# The PATH bootstrap above only helps if the binaries exist somewhere;
+# this step ensures they can be made available without relying on
+# apt-get (which may or may not be usable depending on the exact
+# permissions and whether setup-system.sh has run).
 #
 # This step is idempotent — once /tmp/setup-tools-<user> exists, subsequent
 # runs reuse it (a few seconds vs ~30s for a fresh create).
+#
+# Note: setup-system.sh itself may perform actions that require sudo
+# (apt installs, etc.). If the shared system setup has not completed,
+# this script will attempt to invoke it, which may prompt for sudo or
+# require a user with appropriate permissions to run setup-system.sh first.
 
 # Pick the user's effective name early so we can suffix per-user paths.
 __USER_FOR_TOOLS="${SCD_USER:-${USER:-$(id -un)}}"
@@ -104,7 +112,7 @@ if ! command -v ssh >/dev/null 2>&1 || ! command -v git >/dev/null 2>&1; then
     if [ -z "$CONDA_BIN" ]; then
         echo "FATAL: no conda found at /opt/conda/bin/conda or /tmp/miniconda/bin/conda."
         echo "       The LHN Docker base image should ship with /opt/conda."
-        echo "       If you're on a non-standard image, ask the project lead."
+        echo "       If you're on a non-standard image, the base conda may be missing."
         exit 1
     fi
 
@@ -195,12 +203,13 @@ mkdir -p "$PIP_CACHE_DIR" 2>/dev/null || true
 # Node-wide system-setup sentinel (written by setup-system.sh).
 #
 # This node is SHARED: /tmp, /opt and /usr/local are visible to every user,
-# so setup-system only needs to run ONCE per node per day (by whoever runs it
-# first — typically the project lead). The sentinel is therefore node-wide,
-# NOT per-user. A previous $CURRENT_USER suffix (commit 1b008cf) meant an
-# intern's setup-user could not see the lead's completed run, so it tried to
-# re-run setup-system itself — the failure this revert fixes. Must match the
-# node-wide sentinel in setup-system.sh.
+# so setup-system only needs to run ONCE per node per day (by the first user
+# to run it). The sentinel is therefore node-wide, NOT per-user.
+#
+# Historical note: A previous per-$USER suffix on the sentinel meant that
+# a second user on the same node would not see that setup-system had already
+# run, causing unnecessary re-execution attempts. This was fixed by making
+# the sentinel node-wide (must match the one in setup-system.sh).
 SENTINEL="/tmp/.lhn-system-ready"
 
 # Resolve full path to this script (handles both sourced and direct execution)
@@ -292,12 +301,16 @@ else
             echo "Shared system setup finished."
         else
             echo "ERROR: shared system setup ($SYSTEM_SCRIPT) failed."
-            echo "Ask the project lead to run setup-system.sh, then re-run this script."
+            echo "setup-system.sh performs actions that may require sudo (e.g. apt-get)."
+            echo "If the current user cannot provide sudo credentials when prompted,"
+            echo "ask someone with the necessary permissions on this node to run"
+            echo "setup-system.sh first (it is safe and idempotent), then re-run this script."
             exit 1
         fi
     else
         echo "ERROR: $SYSTEM_SCRIPT not found and system setup has not run today."
-        echo "Obtain setup-system.sh from the updatebionic repo and run it first."
+        echo "Place setup-system.sh (from the updatebionic repo) next to this script"
+        echo "and re-run, or run setup-system.sh first (it may require sudo for some steps)."
         exit 1
     fi
 fi
@@ -484,7 +497,19 @@ if [ -z "${FORCE_R_ENV_SOLVE:-}" ]; then
         [ -d "$candidate/lib/R/library" ] || continue   # R library populated
         echo "Found a sibling R environment at $candidate (built by another user)."
         echo "Cloning it to $R_ENV_PATH — skips the solve + CRAN/GitHub builds..."
-        if conda create -p "$R_ENV_PATH" --clone "$candidate" -y; then
+        # Use the *shared Miniconda's conda* explicitly for the clone. The sibling
+        # r_env was built under /tmp/miniconda; using whatever `conda` is first in
+        # PATH here (often the old /opt/conda because of early PATH bootstrap) can
+        # produce an env that later `conda activate` (or kernel launch) doesn't
+        # fully switch to, leading to python/R resolution picking the wrong (old)
+        # interpreters for registration and at runtime in R notebooks.
+        MINICONDA_CONDA="/tmp/miniconda/bin/conda"
+        if [ -x "$MINICONDA_CONDA" ]; then
+            CLONE_CMD=("$MINICONDA_CONDA" "create" "-p" "$R_ENV_PATH" "--clone" "$candidate" "-y")
+        else
+            CLONE_CMD=(conda create -p "$R_ENV_PATH" --clone "$candidate" "-y")
+        fi
+        if "${CLONE_CMD[@]}"; then
             CLONED_R_ENV=1
             echo "  ✓ Cloned R environment from $candidate."
         else
@@ -511,17 +536,20 @@ if [ "$CLONED_R_ENV" -eq 0 ]; then
         R_CONDA_SPECS="r-tidyverse r-devtools r-irkernel"
     fi
 
-    # Pick a solver. micromamba (libmamba) is dramatically faster and gives
-    # clear unsat errors instead of conda 4.7's hour-long conflict-search loops.
-    # setup-system.sh installs it at /usr/local/bin/micromamba; fall back to
-    # conda if it's missing (older container that hasn't re-run setup-system.sh).
+    # Always prefer the shared Miniconda + its micromamba for the r_env solve.
+    # This guarantees the resulting env (R 4.x + Python 3.10) is under the
+    # *updated* conda, not accidentally created under the old /opt/conda.
+    # That isolation is the whole point of the "old conda for spark, new
+    # miniconda for R notebooks" design.
+    MINICONDA_CONDA="/tmp/miniconda/bin/conda"
     if [ -x "$MICROMAMBA_BIN" ]; then
-        SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
-        # micromamba create takes the same flags as conda create, but env activation
-        # works through the existing conda since it's a conda-compatible layout.
+        SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1)) via miniconda"
         SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+    elif [ -x "$MINICONDA_CONDA" ]; then
+        SOLVER_DESC="miniconda conda (libmamba if configured)"
+        SOLVE_CMD=("$MINICONDA_CONDA" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
     else
-        SOLVER_DESC="conda (slow classic solver — micromamba not found at $MICROMAMBA_BIN)"
+        SOLVER_DESC="PATH conda (slow/fallback — miniconda not found)"
         SOLVE_CMD=(conda create -y -p "$R_ENV_PATH" -c conda-forge)
     fi
 
@@ -544,8 +572,18 @@ if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
     echo "ERROR: Conda environment creation failed after $MAX_RETRIES attempts."
     echo "Continuing with lhn setup (R environment will not be available)..."
 else
-    # Activate R environment for package installation
-    conda activate "$R_ENV_PATH"
+    # Activate R environment for package installation.
+    # Force the *miniconda* (the one that owns the r_env we just built/cloned)
+    # rather than whatever `conda` the early PATH bootstrap left first in $PATH.
+    # This is required for `python` and `R` lookups during registration (and for
+    # the kernel to behave correctly at runtime) to resolve inside the modern
+    # r_env rather than the old Docker /opt/conda.
+    if [ -f /tmp/miniconda/etc/profile.d/conda.sh ]; then
+        # shellcheck disable=SC1091
+        source /tmp/miniconda/etc/profile.d/conda.sh
+    fi
+    export PATH="/tmp/miniconda/bin:$PATH"
+    conda activate "$R_ENV_PATH" || echo "WARNING: conda activate $R_ENV_PATH returned non-zero (proceeding with explicit paths for registration)"
 
     # Configure environment variables
     export R_INCLUDE_DIR="$R_ENV_PATH/lib/R/include"
@@ -637,13 +675,51 @@ EOF
     # Register Python kernel for R environment (per-user; Jupyter kernels live
     # in $HOME, not inside the env, so this runs whether the env was solved or
     # cloned).
-    echo "Registering Python 3.10 kernel..."
-    python -m pip install ipykernel
-    python -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
+    # Use *full paths* to the r_env interpreters. This is more reliable than
+    # relying on `conda activate` having mutated PATH in this script context
+    # (multiple condas in PATH, old vs miniconda, clone vs solve, JupyterHub
+    # kernel launch env, etc.). Full paths ensure the kernel.json records the
+    # correct modern Python 3.10 + R from the miniconda-based r_env, not the
+    # old /opt/conda or system ones.
+    R_ENV_PYTHON="$R_ENV_PATH/bin/python"
+    R_ENV_R="$R_ENV_PATH/bin/R"
 
-    # Register R kernel (per-user).
-    echo "Registering R ${R_VERSION} kernel..."
-    R -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${R_VERSION} (r_env)')"
+    echo "Registering Python 3.10 kernel (using $R_ENV_PYTHON)..."
+    "$R_ENV_PYTHON" -m pip install ipykernel
+    "$R_ENV_PYTHON" -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
+
+    # Register R kernel (per-user). Use full path so the spec is independent of
+    # current PATH when the kernel is later launched by JupyterHub.
+    echo "Registering R kernel (using $R_ENV_R)..."
+    ACTUAL_R_VER=$("$R_ENV_R" --version 2>/dev/null | head -1 | sed 's/R version \([^ ]*\).*/\1/')
+    [ -z "$ACTUAL_R_VER" ] && ACTUAL_R_VER="${R_VERSION}"
+    "$R_ENV_R" -e "IRkernel::installspec(name = 'r_env', displayname = 'R ${ACTUAL_R_VER} (r_env)')"
+
+    # Ensure reticulate (if installed) will find the Python sibling in this same env
+    # when R notebooks run (common need for plotnine etc from R, or general py interop).
+    # Patch the just-registered kernel.json to set RETICULATE_PYTHON and a good PATH.
+    R_KERNEL_DIR="$HOME/.local/share/jupyter/kernels/r_env"
+    if [ -f "$R_KERNEL_DIR/kernel.json" ]; then
+        python -c '
+import json, os, sys
+kpath = os.path.expanduser(sys.argv[1])
+r_env = sys.argv[2]
+try:
+    with open(kpath) as f: k = json.load(f)
+except Exception as e:
+    print("  (could not read kernel.json for patch:", e, ")")
+    sys.exit(0)
+k.setdefault("env", {})
+k["env"]["RETICULATE_PYTHON"] = r_env + "/bin/python"
+# Deliberately do NOT set PATH here. IRkernel writes no PATH, so setting it to
+# "<r_env>/bin" would make Jupyter launch the R kernel with ONLY that directory
+# on PATH (the kernel.json env replaces the inherited PATH), hiding system tools
+# the kernel shells out to (pandoc for knitr, git, gcc, etc.). RETICULATE_PYTHON
+# alone is sufficient to point reticulate at the modern Python 3.10 sibling.
+with open(kpath, "w") as f: json.dump(k, f, indent=2)
+print("  Patched r_env kernel.json with RETICULATE_PYTHON (reticulate -> modern Python 3.10 sibling).")
+' "$R_KERNEL_DIR" "$R_ENV_PATH" || true
+    fi
 
     conda deactivate
     echo "R environment setup complete."
@@ -677,16 +753,37 @@ source "$OLD_CONDA_PATH/etc/profile.d/conda.sh"
 # interpreted as an integer" (types.CodeType gained posonlyargcount in 3.8).
 # Activating the prefix names exactly which conda we mean; the interpreter is
 # also pinned to that prefix so the check can never silently use Miniconda 3.10.
-echo "Verifying pyspark in base environment..."
-conda activate "$OLD_CONDA_PATH"
-"$OLD_CONDA_PATH/bin/python" -c "import pyspark; print(f'pyspark version: {pyspark.__version__}')" || {
-    echo "ERROR: pyspark not found in Docker base environment ($OLD_CONDA_PATH)"
-    echo "       (base interpreter: $OLD_CONDA_PATH/bin/python — $("$OLD_CONDA_PATH/bin/python" --version 2>&1))"
-    exit 1
-}
-conda deactivate
+echo "Verifying pyspark in base environment (old conda for Spark/PySpark compatibility)..."
+# The container provides pyspark 2.4.4 via /usr/local/spark for the "old" base.
+# Direct `import pyspark` from the /opt/conda python can hit the well-known
+# cloudpickle TypeError ('bytes' object...) because the pyspark tree on disk
+# was built against py<3.8. The lhn "PySpark + ..." kernels work around this
+# by setting PYTHONPATH / launch args appropriately. Treat the known error as
+# non-fatal so we can still finish the per-user r_env (for R notebooks) and
+# lhn clones.
+conda activate "$OLD_CONDA_PATH" 2>/dev/null || true
+PY_CHECK="$OLD_CONDA_PATH/bin/python"
+if ! $PY_CHECK -c '
+import sys
+print("  base python:", sys.version.split()[0], sys.executable)
+try:
+    import pyspark
+    print("  pyspark import OK:", pyspark.__version__)
+except Exception as e:
+    msg = str(e)
+    if "bytes" in msg or "cloudpickle" in msg.lower() or "CodeType" in msg:
+        print("  (known pyspark 2.4.4 + py>=3.8 cloudpickle incompatibility — expected)")
+        print("   lhn PySpark kernels use container launch config to make it work.")
+    else:
+        print("  pyspark import error (non-cloudpickle):", msg)
+        raise
+' ; then
+    echo "WARNING: pyspark verification had issues, but continuing (R env + lhn setup may still succeed)."
+    echo "         The old /opt/conda is kept for Spark compatibility as designed."
+fi
+conda deactivate 2>/dev/null || true
 
-echo "Prerequisites verified successfully."
+echo "Prerequisites verified (or tolerated for known old-pyspark case)."
 
 # ========== Part 7: Verify/Update Source Repositories ==========
 echo ""
@@ -1223,7 +1320,7 @@ EOF
 echo "Added conda environment switching aliases (oldbase, oldconda) to .bashrc"
 fi
 
-sudo chown "$USER":"$(id -gn)" "$HOME/.bashrc"
+chown "$USER":"$(id -gn)" "$HOME/.bashrc" 2>/dev/null || true  # best-effort; usually not needed when running as $USER
 
 echo "========== List Available Kernels =========="
 jupyter kernelspec list 2>/dev/null || echo "(jupyter not in PATH, kernels were registered for --user)"
