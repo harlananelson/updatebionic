@@ -17,9 +17,10 @@
 #   - A daily sentinel (/tmp/.lhn-system-ready) makes a same-day re-run a
 #     fast no-op. Use FORCE_SYSTEM_SETUP=1 to override.
 #
-# Recommended workflow: the project lead runs this once each morning. If an
-# intern runs setup-user.sh before that, setup-user.sh invokes this script
-# automatically.
+# Recommended workflow: someone runs this once each morning (or the first
+# time a user runs setup-user.sh on a fresh container). setup-user.sh will
+# automatically invoke this script if the shared setup has not completed
+# for the current day.
 #
 # Usage:
 #   chmod +x setup-system.sh
@@ -39,9 +40,9 @@ MINICONDA_PATH="/tmp/miniconda"          # shared conda driver (wiped on reboot)
 # everyone in the same container, so setup-system installs machine-wide items
 # ONCE and every user's setup-user then consumes them. The earlier per-$USER
 # suffix (commit 1b008cf) was added on the assumption that "each user gets
-# their own container" — that is not the case here. The per-user suffix made
-# an intern's setup-user unable to see the lead's completed run, so it
-# needlessly re-triggered a full system setup.
+# their own container" — that is not the case here. The per-user suffix meant
+# a second user on the same node would not see that the shared setup had
+# already completed for the day, causing unnecessary re-execution.
 #
 # A single node-wide sentinel restores the intended "run once, everyone
 # benefits" behaviour. The lockfile is likewise node-wide so concurrent runs

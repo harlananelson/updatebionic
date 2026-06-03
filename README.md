@@ -1,4 +1,4 @@
-# LHN Container Setup — Lead + Intern Workflow
+# LHN Container Setup — Multi-User Shared Node Support
 
 Bootstrap scripts for the LHN (HealtheDataLab) Docker container on
 HDL JupyterHub. Provisions:
@@ -8,16 +8,20 @@ HDL JupyterHub. Provisions:
 - Two side-by-side LHN environments (`lhn_prod` v0.1.0 + `lhn_dev` v0.2.0-dev)
 - An R + Python analysis environment (R 4.4 + Python 3.10)
 
-Designed for **multi-user collaboration on a shared HDL node**: lead
-and intern can run the per-user script side by side without colliding,
-because every per-user path is suffixed with `<username>`.
+This setup was originally developed for single-user use. It is being
+extended and maintained to support multiple users sharing the same
+container/node safely.
+
+Every per-user path (environments, clones, caches, kernels) is suffixed
+with the username so concurrent users do not collide or interfere. The
+shared system setup (via setup-system.sh) runs once per node per day
+and benefits everyone.
 
 ---
 
-## TL;DR — for an intern starting today
+## TL;DR — Getting Started
 
-You don't need any of Harlan's files. From a fresh JupyterHub
-terminal:
+From a fresh JupyterHub terminal on a shared node:
 
 ```bash
 # One-line bootstrap (fetches the latest script + runs it):
@@ -25,12 +29,14 @@ curl -fsSL https://raw.githubusercontent.com/harlananelson/updatebionic/main/set
   > setup-user.sh && chmod +x setup-user.sh && ./setup-user.sh
 ```
 
-That's it. The script auto-detects you (`whoami`), creates
-per-user environments, restores your SSH keys if they're in
-persistent storage, and registers Jupyter kernels. If Harlan
-hasn't run `setup-system.sh` yet today, this script will trigger
-it (with `sudo` — you'll be prompted for a password if you have
-sudo rights; otherwise tell Harlan to run it).
+That's it. The script auto-detects the current user (via `whoami`),
+creates per-user environments and caches (username-suffixed for safe
+multi-user sharing on the node), restores SSH keys if present in
+persistent storage, and registers Jupyter kernels.
+
+If the shared system setup has not run yet today on this container,
+the script will invoke `setup-system.sh` (some steps may require sudo
+— you will be prompted if needed).
 
 ---
 
@@ -38,14 +44,13 @@ sudo rights; otherwise tell Harlan to run it).
 
 | Script | Who runs it | What it does | Frequency |
 |---|---|---|---|
-| **`setup-system.sh`** | Project lead (Harlan), with `sudo` | apt-installs system libs (GDAL, openssh-client, build tools), installs Quarto CLI to `/opt/quarto`, installs Miniconda to `/tmp/miniconda` | Once per day (idempotent; tracks daily sentinel at `/tmp/.lhn-system-ready`) |
-| **`setup-user.sh`** | Each user — lead or intern | Restores user's SSH keys, creates per-user conda envs (`lhn_prod-<user>`, `lhn_dev-<user>`, `r_env-<user>`), registers per-user Jupyter kernels | Once after the container restarts; also self-updates from GitHub on every run |
+| **`setup-system.sh`** | Any user (may require `sudo` for apt etc.) | apt-installs system libs (GDAL, openssh-client, build tools), installs Quarto CLI to `/opt/quarto`, installs Miniconda to `/tmp/miniconda` (shared across users on the node) | Once per day per node (idempotent; tracks daily sentinel at `/tmp/.lhn-system-ready`) |
+| **`setup-user.sh`** | Each user on the shared node | Restores the user's SSH keys from persistent storage, creates per-user conda environments and caches (username-suffixed for isolation on shared nodes: `lhn_prod-<user>`, etc.), registers the user's Jupyter kernels | Once after each container restart for that user; also self-updates from GitHub on every run |
 
 `setup-user.sh` automatically invokes `setup-system.sh` if the
-day's sentinel isn't present. So in practice:
-
-- **Lead** (one-time per morning): `bash setup-user.sh` — also handles system setup
-- **Intern** (one-time per morning): `bash setup-user.sh` — also handles system setup if lead hasn't already
+day's sentinel isn't present for the node. In a multi-user shared
+node scenario, the first user to run after a restart (or per day)
+will trigger the shared system setup. Subsequent users benefit from it.
 
 No special order required. The flock + sentinel mean both users
 can run their scripts concurrently and only the first will perform
@@ -72,12 +77,12 @@ To bypass (e.g., when debugging locally), set `SKIP_SELF_UPDATE=1`.
 
 ---
 
-## PATH bootstrap (for interns running from a fresh shell)
+## PATH bootstrap (for users running from a fresh shell on a shared node)
 
-A first-time JupyterHub terminal sometimes has a minimal `PATH` that
-doesn't include `/usr/bin` (where apt-installed `ssh`, `git`, `sudo`
-live). The lead's shell almost always has conda active, which keeps
-PATH normalised, but the intern's brand-new shell doesn't.
+A first-time (or new) JupyterHub terminal on the container sometimes
+has a minimal `PATH` that doesn't include `/usr/bin` (where apt-installed
+`ssh`, `git`, `sudo` live, courtesy of setup-system.sh) or the base
+conda. This is especially relevant when multiple users share a node.
 
 `setup-user.sh` normalises PATH at startup:
 
@@ -184,21 +189,20 @@ oldconda  # Make /opt/conda available on PATH without activating
 
 ---
 
-## Multi-user safety
+## Multi-user safety on a shared node
 
-The script is designed so the lead and intern can run it on the
-same shared node **without colliding**:
+This system was originally single-user. The scripts have been extended
+so that multiple users can safely share the same container/node.
 
-| Resource | How collision is avoided |
+| Resource | How isolation works for multiple users |
 |---|---|
-| Conda envs (`/tmp/lhn_prod`, `/tmp/lhn_dev`, `/tmp/r_env`) | Per-user suffix: `/tmp/lhn_prod-<u>` etc. |
+| Per-user conda envs (`/tmp/lhn_prod`, `/tmp/lhn_dev`, `/tmp/r_env`) | Username suffix: `/tmp/lhn_prod-<username>` etc. |
 | Source clones (`/tmp/lhn_prod_src`) | Per-user suffix: `/tmp/lhn_prod_src-<u>` |
 | Jupyter kernels | Registered to `~/.local/share/jupyter/kernels/` — separate per-user JupyterHub user |
 | `setup-system.sh` (shared work) | Daily sentinel + flock — first runner does the work, subsequent runners no-op |
 | Conda package cache | Per-user: `/tmp/conda-pkgs-<u>` |
 
-The lead's `lhn_dev` is at `/tmp/lhn_dev-hnelson3`. The intern's at
-`/tmp/lhn_dev-ajones181`. They don't share state.
+Example: User "hnelson3"'s `lhn_dev` lives at `/tmp/lhn_dev-hnelson3`; user "ajones181"'s at `/tmp/lhn_dev-ajones181`. They are completely independent and can coexist on the shared node.
 
 ---
 
@@ -240,8 +244,7 @@ echo $PATH       # should contain /usr/bin
 which ssh        # should be /usr/bin/ssh
 ```
 
-If `ssh` is genuinely not installed, run `setup-system.sh` (or ask
-the lead to run it):
+If `ssh` is genuinely not installed, run `setup-system.sh` (or ask a user with appropriate permissions to run it first on the node):
 
 ```bash
 bash setup-system.sh
@@ -256,8 +259,10 @@ user's home, file a bug.
 
 ### `setup-system.sh failed: needs sudo`
 
-You don't have sudo rights on this HDL node. Tell the lead to run
-`setup-system.sh` first; then re-run `setup-user.sh`.
+The current invocation does not have (or was not granted) sudo rights
+for the steps in `setup-system.sh`. Ask a user who can provide sudo
+on this node to run `setup-system.sh` first (it is idempotent and safe);
+then re-run `setup-user.sh`.
 
 ### Conda envs disappeared after container restart
 
@@ -321,5 +326,8 @@ You should have:
 - ✅ One-command rebuild when the container resets
 - ✅ Self-updating script — no manual git pull needed for script fixes
 
-Optimised for **daily, real-world LHN development across a lead +
-intern team on a shared HDL container**.
+Optimised for safe daily use by multiple people sharing the same
+LHN container/node (transition from original single-user design to
+multi-user shared support).
+
+See also `documentation/REASONING-DUAL-ENV-R-KERNELS.md` for the detailed design rationale, problem symptoms from real runs while extending to multi-user shared node support, and explanation of the changes to make the r_env / R Jupyter notebook side reliable while preserving the old conda for Spark/PySpark compatibility. The document is framed around the transition from original single-user design to support for multiple users sharing the container.
