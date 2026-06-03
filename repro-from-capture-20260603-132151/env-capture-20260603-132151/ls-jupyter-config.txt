@@ -1,0 +1,22 @@
+ls: cannot access '/root/.jupyter': Permission denied
+ls: cannot access '/home/hnelson3/.jupyter': No such file or directory
+/etc/jupyter:
+total 1724
+drwxr-xr-x 2 root root     116 Jun  3 11:52 configs
+-rw-rw-r-- 1 root root    4266 Oct 18  2023 edit.html
+-rw-rw-r-- 1 root root  107055 Oct 18  2023 emr-spark-goodies-2.13.0.jar
+-rw-rw-r-- 1 root root 1590364 Oct 18  2023 hadoop-mapreduce-client-core-2.8.5-amzn-6.jar
+-rw-rw-r-- 1 root root     135 Oct 18  2023 jupyter_notebook_config.py
+-rwxrwxr-x 1 root root     488 Oct 18  2023 kernel.json
+-rw-rw-r-- 1 root root   22441 Oct 18  2023 notebook.html
+-rw-rw-r-- 1 root root     406 Oct 18  2023 sparkmagic_kernel.json
+-rw-rw-r-- 1 root root     247 Oct 18  2023 sparkr_kernel.json
+-rw-rw-r-- 1 root root   10896 Oct 18  2023 tree.html
+
+/etc/jupyter/configs:
+total 20
+-rwxr-xr-x 1 jovyan 1000 1081 Jun  3 11:49 core-site.xml
+-rwxr-xr-x 1 jovyan 1000  351 Jun  3 11:49 hive-site.xml
+-rw-r--r-- 1 root   root 2642 Jun  3 13:17 KeyStore.jks
+-rwxr-xr-x 1 jovyan 1000 1141 Jun  3 11:49 spark-defaults.conf
+-rwxr-xr-x 1 jovyan 1000 1058 Jun  3 11:49 yarn-site.xml

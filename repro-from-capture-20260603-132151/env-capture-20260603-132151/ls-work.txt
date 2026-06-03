@@ -1,0 +1,24 @@
+find: ‘/etc/ssl/private’: Permission denied
+/home/hnelson3/work
+/home/jovyan/work
+find: ‘/proc/tty/driver’: Permission denied
+find: ‘/proc/1/fd’: Permission denied
+find: ‘/proc/1/map_files’: Permission denied
+find: ‘/proc/1/fdinfo’: Permission denied
+find: ‘/proc/1/ns’: Permission denied
+find: ‘/proc/7/fd’: Permission denied
+find: ‘/proc/7/map_files’: Permission denied
+find: ‘/proc/7/fdinfo’: Permission denied
+find: ‘/proc/7/ns’: Permission denied
+find: ‘/proc/162/fd’: Permission denied
+find: ‘/proc/162/map_files’: Permission denied
+find: ‘/proc/162/fdinfo’: Permission denied
+find: ‘/proc/162/ns’: Permission denied
+find: ‘/proc/168/fd’: Permission denied
+find: ‘/proc/168/map_files’: Permission denied
+find: ‘/proc/168/fdinfo’: Permission denied
+find: ‘/proc/168/ns’: Permission denied
+find: ‘/root’: Permission denied
+find: ‘/tmp/systemd-private-19552938a2dc44e2b9a233bd178b9686-chronyd.service-tfxyAf’: Permission denied
+find: ‘/tmp/openldap-tlsmc-certs--31E31F9ECCA04CB4D8A30839B764341ECB75E67485FF2CC424F567CF50620C6D’: Permission denied
+find: ‘/var/cache/ldconfig’: Permission denied

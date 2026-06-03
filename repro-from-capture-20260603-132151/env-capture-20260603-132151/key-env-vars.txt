@@ -1,0 +1,7 @@
+PATH=/opt/conda/bin:/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/hadoop/bin/
+PYTHONPATH=/usr/local/spark/python:/usr/local/spark/python/lib/py4j-0.10.7-src.zip
+SPARK_HOME=/usr/local/spark
+HADOOP_CONF_DIR=/etc/jupyter/configs
+CONDA_PREFIX=<unset>
+CONDA_DEFAULT_ENV=<unset>
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/

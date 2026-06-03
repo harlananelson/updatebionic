@@ -160,6 +160,7 @@ done
 # GitHub-authorised SSH key (the same one that let them clone updatebionic).
 LHN_REPO_URL="git@github.com:harlananelson/lhn.git"
 SPARK_CONFIG_REPO_URL="git@github.com:harlananelson/spark_config_mapper.git"
+TXTARCHIVE_REPO_URL="git@github.com:harlananelson/txtarchive.git"
 
 # Current user — drives every per-user path so two people can run this script
 # on the same node without colliding. Override with SCD_USER if ever needed.
@@ -643,14 +644,8 @@ EOF
         # second pip install needed. (Old script ran a redundant pass that
         # printed ~30 lines of "Requirement already satisfied".)
 
-        # Install txtarchive from persistent storage
-        TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
-        if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
-            echo "Installing txtarchive from $TXTARCHIVE_PERSIST..."
-            python -m pip install "$TXTARCHIVE_PERSIST"
-        else
-            echo "Warning: txtarchive not found at $TXTARCHIVE_PERSIST (skipping)"
-        fi
+        # (txtarchive install moved below, out of this from-scratch-only gate, so
+        # it also runs for cloned envs — see "Install txtarchive into r_env".)
 
         # R packages from requirements-R.txt + r-rcpptoml were already installed
         # in the single-shot `conda create` above. No second conda-install pass
@@ -683,6 +678,30 @@ EOF
     # old /opt/conda or system ones.
     R_ENV_PYTHON="$R_ENV_PATH/bin/python"
     R_ENV_R="$R_ENV_PATH/bin/R"
+
+    # Install txtarchive into the r_env Python. This runs whether the env was
+    # solved OR cloned — a cloned sibling env does not necessarily carry it, which
+    # is why it previously went missing. Clone the source into per-user persistent
+    # storage if absent (mirrors the lhn/spark_config_mapper clone-if-missing
+    # pattern), then pip-install with the *explicit* r_env python so it lands in
+    # this env and is importable from the "Python 3.10 (r_env)" kernel and from R
+    # via reticulate. Non-fatal: R notebooks still work if this fails.
+    TXTARCHIVE_PERSIST="$PERSIST_BASE/txtarchive"
+    if [[ ! -d "$TXTARCHIVE_PERSIST" ]]; then
+        echo "txtarchive not found at $TXTARCHIVE_PERSIST — cloning it..."
+        mkdir -p "$PERSIST_BASE"
+        if git clone "$TXTARCHIVE_REPO_URL" "$TXTARCHIVE_PERSIST"; then
+            git config --global --add safe.directory "$TXTARCHIVE_PERSIST" 2>/dev/null || true
+            echo "  ✓ Cloned txtarchive to $TXTARCHIVE_PERSIST."
+        else
+            echo "  WARNING: failed to clone txtarchive from $TXTARCHIVE_REPO_URL (skipping install)."
+        fi
+    fi
+    if [[ -d "$TXTARCHIVE_PERSIST" ]]; then
+        echo "Installing txtarchive into r_env (using $R_ENV_PYTHON)..."
+        "$R_ENV_PYTHON" -m pip install "$TXTARCHIVE_PERSIST" \
+            || echo "  WARNING: txtarchive pip install failed (continuing)."
+    fi
 
     echo "Registering Python 3.10 kernel (using $R_ENV_PYTHON)..."
     "$R_ENV_PYTHON" -m pip install ipykernel

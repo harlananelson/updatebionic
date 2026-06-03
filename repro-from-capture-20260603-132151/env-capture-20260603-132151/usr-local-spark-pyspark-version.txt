@@ -1,0 +1,2 @@
+pyspark from /usr/local/spark: 2.4.4
+location: /usr/local/spark/python/pyspark/__init__.py

@@ -1,0 +1,13 @@
+drwxr-xr-x 1 root   root  18 Oct 18  2023 /usr/local/bin
+drwxr-xr-x 2 root   root   6 Jan 12  2020 /usr/local/etc
+drwxr-xr-x 3 root   root  18 Oct 18  2023 /usr/local/foresight
+drwxr-xr-x 2 root   root   6 Jan 12  2020 /usr/local/games
+drwxr-xr-x 9 jovyan 1000 149 May 24  2022 /usr/local/hadoop
+drwxr-xr-x 2 root   root   6 Jan 12  2020 /usr/local/include
+drwxr-xr-x 1 root   root 307 Oct 18  2023 /usr/local/lib
+lrwxrwxrwx 1 root   root   9 Jan 12  2020 /usr/local/man -> share/man
+drwxr-xr-x 2 root   root  24 Jan 12  2020 /usr/local/sbin
+drwxr-xr-x 1 root   root  21 Oct 18  2023 /usr/local/share
+lrwxrwxrwx 1 root   root  25 Jan 30  2020 /usr/local/spark -> spark-2.4.4-bin-hadoop2.7
+drwxr-xr-x 1 root   root  18 Aug 27  2019 /usr/local/spark-2.4.4-bin-hadoop2.7
+drwxr-xr-x 2 root   root   6 Jan 12  2020 /usr/local/src

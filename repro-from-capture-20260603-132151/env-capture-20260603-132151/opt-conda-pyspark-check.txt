@@ -1,0 +1,5 @@
+Python: 3.7.6 | packaged by conda-forge | (default, Jun  1 2020, 18:57:50) 
+[GCC 7.5.0]
+pyspark version: 2.4.4
+pyspark location: /usr/local/spark/python/pyspark/__init__.py
+pandas version: 1.2.4

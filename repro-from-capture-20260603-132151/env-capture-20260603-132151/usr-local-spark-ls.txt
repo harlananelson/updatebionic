@@ -1,0 +1,2 @@
+lrwxrwxrwx 1 root root 25 Jan 30  2020 /usr/local/spark -> spark-2.4.4-bin-hadoop2.7
+drwxr-xr-x 1 root root 91 Oct 18  2023 /usr/local/spark/python

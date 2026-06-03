@@ -1,0 +1,4 @@
+Available kernels:
+  ir         /opt/conda/share/jupyter/kernels/ir
+  python3    /opt/conda/share/jupyter/kernels/python3
+  pyspark    /usr/local/share/jupyter/kernels/pyspark

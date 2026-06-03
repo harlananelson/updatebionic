@@ -1,0 +1,10 @@
+-rw-r--r-- 1 root         root           20 Jun  3 11:53 /tmp/api
+drwxr-xr-x 2 hnelson3     users        4096 Jun  3 13:22 /tmp/env-capture-20260603-132151
+drwxr-xr-x 2 root         root            6 Jun  3 13:17 /tmp/hsperfdata_root
+drwxr-xr-x 2 svcForesight svcForesight    6 Jun  3 13:17 /tmp/hsperfdata_svcForesight
+-rw------- 1 root         root          121 Jun  3 11:48 /tmp/motd.cHsAs
+-rw------- 1 root         root            0 Jun  3 11:48 /tmp/motd.partc80Le
+-rw------- 1 root         root            0 Jun  3 11:48 /tmp/motd.partkS7Ir
+-rw------- 1 root         root          121 Jun  3 11:48 /tmp/motd.UkNFf
+drw------- 3 root         root           35 Jun  3 11:49 /tmp/openldap-tlsmc-certs--31E31F9ECCA04CB4D8A30839B764341ECB75E67485FF2CC424F567CF50620C6D
+drwx------ 3 root         root           17 Jun  3 11:47 /tmp/systemd-private-19552938a2dc44e2b9a233bd178b9686-chronyd.service-tfxyAf
