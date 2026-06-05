@@ -220,9 +220,32 @@ if [ -d "$MINICONDA_PATH" ]; then
 else
     echo "Installing Miniconda to $MINICONDA_PATH..."
     # Pin to a Miniconda version compatible with GLIBC 2.27 (Ubuntu 18.04)
-    wget -q https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh -O /tmp/miniconda.sh
-    bash /tmp/miniconda.sh -b -p "$MINICONDA_PATH"
-    rm /tmp/miniconda.sh
+    MINICONDA_URL="https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh"
+    MINICONDA_INSTALLER="/tmp/miniconda.sh"
+
+    # Download with curl, NOT wget. On this Ubuntu 18.04 container wget is built
+    # against GnuTLS, which rejects the current Let's Encrypt chain on
+    # repo.anaconda.com as "expired" because the container's frozen ca-certificates
+    # bundle is stale (and the container is rebuilt daily, so it never updates).
+    # curl uses OpenSSL, which validates the same chain fine — confirmed by
+    # diagnose-miniconda.sh (curl HEAD -> HTTP 200, wget -> exit 5, 0 bytes).
+    # The retry + size check make a failed/truncated download LOUD instead of
+    # letting `set -eo pipefail` abort the whole setup silently.
+    retry_cmd 3 15 "miniconda download" \
+        curl -fSL --connect-timeout 30 --max-time 600 \
+        -o "$MINICONDA_INSTALLER" "$MINICONDA_URL"
+
+    INSTALLER_SIZE=$(stat -c '%s' "$MINICONDA_INSTALLER" 2>/dev/null || echo 0)
+    if [ "$INSTALLER_SIZE" -lt 50000000 ]; then
+        echo "ERROR: Miniconda installer is only ${INSTALLER_SIZE} bytes (expected ~134 MB)." >&2
+        echo "       The download from $MINICONDA_URL failed or was truncated." >&2
+        echo "       Run ./diagnose-miniconda.sh for a detailed report." >&2
+        rm -f "$MINICONDA_INSTALLER"
+        exit 1
+    fi
+
+    bash "$MINICONDA_INSTALLER" -b -p "$MINICONDA_PATH"
+    rm "$MINICONDA_INSTALLER"
 fi
 
 # Make the shared Miniconda readable/executable by every user on the node.
