@@ -1,0 +1,1833 @@
+Checking GitHub for newer version of setup-user.sh...
+Already running the latest version.
+========== LHN Per-User Environment Setup ==========
+User:             hnelson3
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 13:49:42 UTC 2026
+
+========== Ensuring shared system setup ==========
+Shared system setup already completed today (2026-06-05).
+Using per-user conda package cache: /tmp/conda-pkgs-hnelson3
+
+========== Part 1: Install SSH and Restore Keys ==========
+Restoring SSH keys from persistent storage (/home/hnelson3/work/Users/hnelson3/.ssh)...
+SSH keys restored successfully.
+Starting ssh-agent...
+Agent pid 15552
+Adding SSH key to agent (you'll be prompted for passphrase once)...
+Identity added: /home/hnelson3/.ssh/id_ed25519 (harlananelson@gmaill.com)
+Testing GitHub SSH connectivity...
+Warning: Permanently added the ECDSA host key for IP address '140.82.114.4' to the list of known hosts.
+Hi harlananelson! You've successfully authenticated, but GitHub does not provide shell access.
+
+========== Part 2: Initialise Miniconda (shared) ==========
+Configuring conda channels...
+Warning: 'conda-forge' already in 'channels' list, moving to the top
+Cleaning per-user conda cache...
+Cache location: /tmp/conda-pkgs-hnelson3
+Will remove the following tarballs:
+
+/tmp/conda-pkgs-hnelson3
+------------------------
+_libgcc_mutex-0.1-conda_forge.tar.bz2          3 KB
+_r-mutex-1.0.1-anacondar_1.tar.bz2             3 KB
+ca-certificates-2023.7.22-hbcca054_0.conda     146 KB
+ld_impl_linux-64-2.34-h53a641e_7.tar.bz2     616 KB
+libgfortran-ng-7.3.0-hdf63c60_4.tar.bz2      1.7 MB
+libstdcxx-ng-13.2.0-h7e041cc_2.conda         3.7 MB
+pandoc-2.9.1.1-0.tar.bz2                    16.6 MB
+binutils_impl_linux-64-2.34-h53a641e_7.tar.bz2     9.2 MB
+libgomp-13.2.0-h807b86a_2.conda              411 KB
+_openmp_mutex-4.5-0_gnu.tar.bz2              435 KB
+binutils_linux-64-2.34-hc952b39_18.tar.bz2      21 KB
+libgcc-ng-13.2.0-h807b86a_2.conda            753 KB
+brotli-1.0.7-he1b5a44_1000.tar.bz2           1.0 MB
+bzip2-1.0.8-h516909a_2.tar.bz2               396 KB
+c-ares-1.15.0-h516909a_1001.tar.bz2          100 KB
+double-conversion-3.1.5-he1b5a44_2.tar.bz2      85 KB
+fribidi-1.0.10-h36c2ea0_0.tar.bz2            112 KB
+gcc_impl_linux-64-7.3.0-habb00fd_1.conda    41.9 MB
+gettext-0.21.1-h27087fc_0.tar.bz2            4.1 MB
+gflags-2.2.2-he1b5a44_1002.tar.bz2           175 KB
+glog-0.4.0-he1b5a44_1.tar.bz2                104 KB
+gmp-6.2.0-he1b5a44_0.tar.bz2                 807 KB
+graphite2-1.3.13-h58526e2_1001.tar.bz2       102 KB
+icu-64.2-he1b5a44_1.tar.bz2                 12.6 MB
+jpeg-9e-h0b41bf4_3.conda                     235 KB
+libexpat-2.5.0-hcb278e6_1.conda               76 KB
+libffi-3.2.1-he1b5a44_1006.tar.bz2            46 KB
+libiconv-1.17-h166bdaf_0.tar.bz2             1.4 MB
+libllvm8-8.0.1-hc9558a2_0.tar.bz2           23.2 MB
+libopenblas-0.3.7-h5ec1e0e_6.tar.bz2         7.6 MB
+libsodium-1.0.17-h516909a_0.tar.bz2          330 KB
+libuuid-2.38.1-h0b41bf4_0.conda               33 KB
+libuv-1.34.0-h516909a_0.tar.bz2              922 KB
+lz4-c-1.8.3-he1b5a44_1001.tar.bz2            187 KB
+make-4.3-hd18ef5c_1.tar.bz2                  507 KB
+ncurses-6.1-hf484d3e_1002.tar.bz2            1.3 MB
+openssl-1.1.1w-hd590300_0.conda              1.9 MB
+pcre-8.45-h9c3ff4c_0.tar.bz2                 253 KB
+pixman-0.38.0-h516909a_1003.tar.bz2          594 KB
+pthread-stubs-0.4-h36c2ea0_1001.tar.bz2        5 KB
+re2-2020.01.01-he1b5a44_0.tar.bz2            422 KB
+sed-4.8-he412f7d_0.tar.bz2                   264 KB
+snappy-1.1.7-he1b5a44_1003.tar.bz2            39 KB
+tini-0.18.0-h14c3975_1001.tar.bz2             12 KB
+uriparser-0.9.3-he1b5a44_1.tar.bz2            49 KB
+xorg-kbproto-1.0.7-h7f98852_1002.tar.bz2      27 KB
+xorg-libice-1.1.1-hd590300_0.conda            57 KB
+xorg-libxau-1.0.11-hd590300_0.conda           14 KB
+xorg-libxdmcp-1.1.3-h7f98852_0.tar.bz2        19 KB
+xorg-renderproto-0.11.1-h7f98852_1002.tar.bz2       9 KB
+xorg-xextproto-7.3.0-h0b41bf4_1003.conda      30 KB
+xorg-xproto-7.0.31-h7f98852_1007.tar.bz2      73 KB
+xz-5.2.6-h166bdaf_0.tar.bz2                  409 KB
+yaml-0.2.2-h516909a_1.tar.bz2                 82 KB
+zlib-1.2.11-h516909a_1006.tar.bz2            105 KB
+boost-cpp-1.70.0-h8e57a91_2.tar.bz2         21.1 MB
+expat-2.5.0-hcb278e6_1.conda                 134 KB
+gcc_linux-64-7.3.0-h553295d_18.tar.bz2        22 KB
+gfortran_impl_linux-64-7.3.0-hdf63c60_1.conda     7.8 MB
+gxx_impl_linux-64-7.3.0-hdf63c60_1.conda    15.0 MB
+hdf5-1.10.5-nompi_h3c11f04_1104.tar.bz2      3.1 MB
+libblas-3.8.0-14_openblas.tar.bz2             10 KB
+libedit-3.1.20181209-hc058e9b_0.conda        163 KB
+libevent-2.1.10-h72c5cf5_0.tar.bz2           1.3 MB
+libglib-2.66.3-hbe7bbb4_0.tar.bz2            3.0 MB
+libpng-1.6.37-hed695b0_0.tar.bz2             343 KB
+libprotobuf-3.11.0-h8b12597_0.tar.bz2        4.8 MB
+libssh2-1.10.0-ha56f1ee_2.tar.bz2            233 KB
+libxcb-1.15-h0b41bf4_0.conda                 375 KB
+libxml2-2.9.10-hee79883_0.tar.bz2            1.3 MB
+mpfr-4.0.2-he80fd80_0.tar.bz2                673 KB
+nodejs-13.7.0-h10a4023_0.tar.bz2            13.6 MB
+pcre2-10.35-h032f7d1_2.tar.bz2               693 KB
+readline-8.0-h46ee950_1.tar.bz2              287 KB
+tk-8.6.10-hed695b0_0.tar.bz2                 3.2 MB
+xorg-libsm-1.2.4-h7391055_0.conda             27 KB
+zeromq-4.3.2-he1b5a44_2.tar.bz2              668 KB
+zstd-1.4.4-h3b9ef0a_1.tar.bz2                989 KB
+bwidget-1.9.14-ha770c72_1.tar.bz2            120 KB
+configurable-http-proxy-4.2.0-node13_he01fd0c_2.tar.bz2     878 KB
+freetype-2.10.4-h0708190_1.tar.bz2           890 KB
+gfortran_linux-64-7.3.0-h553295d_18.tar.bz2      21 KB
+grpc-cpp-1.25.0-h213be95_2.tar.bz2           5.1 MB
+gxx_linux-64-7.3.0-h553295d_18.tar.bz2        21 KB
+krb5-1.17.1-h2fd8d38_0.tar.bz2               1.5 MB
+libcblas-3.8.0-14_openblas.tar.bz2            10 KB
+libgit2-1.1.0-h0b03e73_0.tar.bz2             693 KB
+liblapack-3.8.0-14_openblas.tar.bz2           10 KB
+libtiff-4.1.0-hc3755c2_3.tar.bz2             568 KB
+mpc-1.1.0-h04dde30_1006.tar.bz2              149 KB
+sqlite-3.30.1-h7b6447c_0.conda               1.1 MB
+thrift-cpp-0.12.0-hf3afdfd_1004.tar.bz2      2.4 MB
+tktable-2.10-hb7b940f_3.tar.bz2               89 KB
+xorg-libx11-1.8.7-h8ee46fc_0.conda           809 KB
+fontconfig-2.14.0-h8e229c2_0.tar.bz2         305 KB
+gsl-2.6-he838d99_2.tar.bz2                   3.2 MB
+libcurl-7.71.1-hcdd3856_3.tar.bz2            302 KB
+liblapacke-3.8.0-14_openblas.tar.bz2          10 KB
+python-3.7.6-cpython_h8356626_6.tar.bz2     53.0 MB
+xorg-libxext-1.3.4-h0b41bf4_2.conda           49 KB
+xorg-libxrender-0.9.11-hd590300_0.conda       37 KB
+async_generator-1.10-py_0.tar.bz2             18 KB
+attrs-19.3.0-py_0.tar.bz2                     35 KB
+backcall-0.1.0-py_0.tar.bz2                   13 KB
+blas-2.14-openblas.tar.bz2                    10 KB
+blinker-1.4-py_1.tar.bz2                      13 KB
+certifi-2023.7.22-pyhd8ed1ab_0.conda         150 KB
+chardet-3.0.4-py37_1003.tar.bz2              167 KB
+click-7.0-py_0.tar.bz2                        61 KB
+cloudpickle-1.2.2-py_1.tar.bz2                23 KB
+curl-7.71.1-he644dc0_3.tar.bz2               140 KB
+cython-0.29.14-py37he1b5a44_0.tar.bz2        2.2 MB
+dask-core-2.9.2-py_0.tar.bz2                 588 KB
+decorator-4.4.1-py_0.tar.bz2                  11 KB
+defusedxml-0.6.0-py_0.tar.bz2                 22 KB
+dill-0.3.1.1-py37_0.tar.bz2                  114 KB
+entrypoints-0.3-py37_1000.tar.bz2             11 KB
+fastcache-1.1.0-py37h516909a_0.tar.bz2        29 KB
+fsspec-0.6.2-py_0.tar.bz2                     46 KB
+glib-2.66.3-h58526e2_0.tar.bz2               500 KB
+gmpy2-2.1.0b1-py37h04dde30_0.tar.bz2         205 KB
+heapdict-1.0.1-py_0.tar.bz2                    7 KB
+idna-2.8-py37_1000.tar.bz2                   100 KB
+ipython_genutils-0.2.0-py_1.tar.bz2           21 KB
+json5-0.8.5-py_0.tar.bz2                      24 KB
+kiwisolver-1.1.0-py37hc9558a2_0.tar.bz2       86 KB
+llvmlite-0.31.0-py37h8b12597_0.tar.bz2       325 KB
+locket-0.2.0-py_2.tar.bz2                      6 KB
+markupsafe-1.1.1-py37h516909a_0.tar.bz2       26 KB
+mistune-0.8.4-py37h516909a_1000.tar.bz2       53 KB
+more-itertools-8.2.0-py_0.tar.bz2             35 KB
+mpmath-1.1.0-py_0.tar.bz2                    432 KB
+msgpack-python-0.6.2-py37hc9558a2_0.tar.bz2      89 KB
+numpy-1.17.5-py37h95a1406_0.tar.bz2          5.1 MB
+olefile-0.46-py_0.tar.bz2                     31 KB
+pamela-1.0.0-py_0.tar.bz2                      9 KB
+pandocfilters-1.4.2-py_1.tar.bz2               9 KB
+parso-0.6.0-py_0.tar.bz2                      66 KB
+pickleshare-0.7.5-py37_1000.tar.bz2           12 KB
+prometheus_client-0.7.1-py_0.tar.bz2          38 KB
+psutil-5.6.7-py37h516909a_0.tar.bz2          323 KB
+ptyprocess-0.6.0-py_1001.tar.bz2              15 KB
+pycosat-0.6.3-py37h516909a_1002.tar.bz2      105 KB
+pycparser-2.19-py37_1.tar.bz2                171 KB
+pycurl-7.43.0.4-py37h16ce93b_0.tar.bz2        69 KB
+pyparsing-2.4.6-py_0.tar.bz2                  59 KB
+pysocks-1.7.1-py37_0.tar.bz2                  27 KB
+python-editor-1.0.4-py_0.tar.bz2               9 KB
+python-json-logger-0.1.11-py_0.tar.bz2         8 KB
+python_abi-3.7-2_cp37m.tar.bz2                 4 KB
+pytz-2019.3-py_0.tar.bz2                     237 KB
+pyyaml-5.3-py37h516909a_0.tar.bz2            184 KB
+pyzmq-18.1.1-py37h1768529_0.tar.bz2          517 KB
+ruamel.yaml.clib-0.2.0-py37h516909a_0.tar.bz2     155 KB
+ruamel_yaml-0.15.80-py37h516909a_1000.tar.bz2     268 KB
+send2trash-1.5.0-py_0.tar.bz2                 12 KB
+six-1.14.0-py37_0.tar.bz2                     23 KB
+sortedcontainers-2.1.0-py_0.tar.bz2           25 KB
+soupsieve-1.9.4-py37_0.tar.bz2                57 KB
+sqlalchemy-1.3.13-py37h516909a_0.tar.bz2     1.8 MB
+tblib-1.6.0-py_0.tar.bz2                      14 KB
+testpath-0.4.4-py_0.tar.bz2                   85 KB
+toolz-0.10.0-py_0.tar.bz2                     46 KB
+tornado-6.0.3-py37h516909a_0.tar.bz2         637 KB
+tqdm-4.42.0-py_0.tar.bz2                      47 KB
+wcwidth-0.1.8-py_0.tar.bz2                    19 KB
+webencodings-0.5.1-py_1.tar.bz2               12 KB
+xlrd-1.2.0-py_0.tar.bz2                      108 KB
+arrow-cpp-0.15.1-py37h982ac2c_6.tar.bz2     18.4 MB
+beautifulsoup4-4.8.2-py37_0.tar.bz2          157 KB
+cairo-1.16.0-hcf35c78_1003.tar.bz2           1.5 MB
+cffi-1.13.2-py37h8022711_0.tar.bz2           220 KB
+conda-package-handling-1.6.0-py37h516909a_1.tar.bz2     942 KB
+cycler-0.10.0-py_2.tar.bz2                     9 KB
+cytoolz-0.10.1-py37h516909a_0.tar.bz2        432 KB
+h5py-2.10.0-nompi_py37h513d04c_101.tar.bz2     1.2 MB
+jedi-0.16.0-py37_0.tar.bz2                   781 KB
+mako-1.1.0-py_0.tar.bz2                       57 KB
+packaging-20.1-py_0.tar.bz2                   31 KB
+partd-1.1.0-py_0.tar.bz2                      17 KB
+pexpect-4.8.0-py37_0.tar.bz2                  79 KB
+pillow-7.0.0-py37hefe7db6_0.tar.bz2          643 KB
+pyrsistent-0.15.7-py37h516909a_0.tar.bz2      89 KB
+python-dateutil-2.8.1-py_0.tar.bz2           220 KB
+pywavelets-1.1.1-py37hc1659b7_0.tar.bz2      4.4 MB
+scipy-1.4.1-py37h921218d_0.tar.bz2          18.8 MB
+setuptools-45.1.0-py37_0.tar.bz2             648 KB
+sympy-1.5.1-py37_1.tar.bz2                  10.2 MB
+terminado-0.8.3-py37_0.tar.bz2                23 KB
+traitlets-4.3.3-py37_0.tar.bz2               133 KB
+zict-1.0.0-py_0.tar.bz2                       10 KB
+alembic-1.3.3-py_0.tar.bz2                   108 KB
+bleach-3.1.0-py_0.tar.bz2                    110 KB
+cryptography-2.8-py37h72c5cf5_1.tar.bz2      625 KB
+distributed-2.10.0-py_0.tar.bz2              412 KB
+harfbuzz-2.4.0-h9f30f68_3.tar.bz2            1.5 MB
+imageio-2.6.1-py37_0.tar.bz2                 3.3 MB
+jinja2-2.11.0-py_0.tar.bz2                    94 KB
+joblib-0.14.1-py_0.tar.bz2                   198 KB
+jupyter_core-4.6.1-py37_0.tar.bz2             70 KB
+matplotlib-base-3.1.2-py37h250f245_1.tar.bz2     6.7 MB
+networkx-2.4-py_0.tar.bz2                    1.2 MB
+numba-0.48.0-py37hb3f55d8_0.tar.bz2          3.4 MB
+numexpr-2.7.1-py37hb3f55d8_0.tar.bz2         197 KB
+pandas-0.25.3-py37hb3f55d8_0.tar.bz2        11.4 MB
+parquet-cpp-1.5.1-2.tar.bz2                    3 KB
+patsy-0.5.1-py_0.tar.bz2                     187 KB
+protobuf-3.11.0-py37he1b5a44_0.tar.bz2       695 KB
+pygments-2.5.2-py_0.tar.bz2                  669 KB
+ruamel.yaml-0.16.6-py37h516909a_0.tar.bz2     166 KB
+wheel-0.34.1-py37_0.tar.bz2                   42 KB
+bokeh-1.4.0-py37_0.tar.bz2                  13.6 MB
+jupyter_client-5.3.4-py37_1.tar.bz2          131 KB
+pango-1.42.4-h7062337_4.tar.bz2              521 KB
+pip-20.0.2-py37_0.tar.bz2                    1.9 MB
+prompt_toolkit-3.0.3-py_0.tar.bz2            231 KB
+pyarrow-0.15.1-py37h8b68381_1.tar.bz2        3.2 MB
+pyjwt-1.7.1-py_0.tar.bz2                      17 KB
+pyopenssl-19.1.0-py37_0.tar.bz2               83 KB
+scikit-image-0.16.2-py37hb3f55d8_0.tar.bz2    25.0 MB
+scikit-learn-0.22.1-py37hcdab131_1.tar.bz2     7.1 MB
+statsmodels-0.11.0-py37h516909a_0.tar.bz2    10.1 MB
+vincent-0.4.4-py_1.tar.bz2                    28 KB
+certipy-0.1.3-py_0.tar.bz2                    17 KB
+dask-2.9.2-py_0.tar.bz2                        4 KB
+ipython-7.11.1-py37h5ca1d4c_0.tar.bz2        1.1 MB
+oauthlib-3.0.1-py_0.tar.bz2                   82 KB
+r-base-4.0.2-h95c6c4b_0.tar.bz2             23.6 MB
+seaborn-0.9.0-py_2.tar.bz2                   162 KB
+urllib3-1.25.7-py37_0.tar.bz2                159 KB
+ipykernel-5.1.4-py37h5ca1d4c_0.tar.bz2       160 KB
+r-abind-1.4_5-r40hc72bb7e_1003.tar.bz2        76 KB
+r-assertthat-0.2.1-r40hc72bb7e_2.tar.bz2      70 KB
+r-backports-1.4.1-r40hcfec24a_0.tar.bz2      110 KB
+r-base64enc-0.1_3-r40hcfec24a_1004.tar.bz2      44 KB
+r-bit-4.0.4-r40hcfec24a_0.tar.bz2            619 KB
+r-bitops-1.0_7-r40h06615bd_0.tar.bz2          44 KB
+r-boot-1.3_28-r40hc72bb7e_0.tar.bz2          632 KB
+r-brew-1.0_7-r40hc72bb7e_0.tar.bz2            69 KB
+r-brio-1.1.3-r40hcfec24a_0.tar.bz2            40 KB
+r-cardata-3.0_5-r40hc72bb7e_0.tar.bz2        1.8 MB
+r-clipr-0.8.0-r40hc72bb7e_0.tar.bz2           67 KB
+r-codetools-0.2_18-r40hc72bb7e_0.tar.bz2     106 KB
+r-colorspace-2.0_3-r40h06615bd_0.tar.bz2     2.5 MB
+r-commonmark-1.8.0-r40h06615bd_0.tar.bz2     150 KB
+r-cpp11-0.4.2-r40hc72bb7e_0.tar.bz2          251 KB
+r-crayon-1.4.2-r40hc72bb7e_0.tar.bz2         161 KB
+r-curl-4.3.2-r40hcfec24a_0.tar.bz2           777 KB
+r-data.table-1.14.2-r40hcfec24a_0.tar.bz2     1.9 MB
+r-dbi-1.1.3-r40hc72bb7e_0.tar.bz2            765 KB
+r-deoptimr-1.0_11-r40hc72bb7e_0.tar.bz2       58 KB
+r-dicedesign-1.9-r40hcfec24a_0.tar.bz2       346 KB
+r-digest-0.6.29-r40h03ef668_0.tar.bz2        208 KB
+r-evaluate-0.16-r40hc72bb7e_0.tar.bz2         85 KB
+r-fansi-1.0.3-r40h06615bd_0.tar.bz2          323 KB
+r-farver-2.1.1-r40h7525677_0.tar.bz2         1.4 MB
+r-fastmap-1.1.0-r40h03ef668_0.tar.bz2         69 KB
+r-foreign-0.8_82-r40hcfec24a_0.tar.bz2       273 KB
+r-fracdiff-1.5_1-r40hb699f27_1.tar.bz2       116 KB
+r-fs-1.5.2-r40h7525677_1.tar.bz2             554 KB
+r-generics-0.1.3-r40hc72bb7e_0.tar.bz2        93 KB
+r-git2r-0.28.0-r40hf628c3e_0.tar.bz2         894 KB
+r-gitcreds-0.1.2-r40hc72bb7e_0.tar.bz2        96 KB
+r-glue-1.6.2-r40h06615bd_0.tar.bz2           154 KB
+r-gower-1.0.0-r40hcfec24a_0.tar.bz2          176 KB
+r-gtable-0.3.1-r40hc72bb7e_0.tar.bz2         174 KB
+r-ini-0.3.1-r40hc72bb7e_1003.tar.bz2          30 KB
+r-iterators-1.0.14-r40hc72bb7e_0.tar.bz2     349 KB
+r-jsonlite-1.8.0-r40h06615bd_0.tar.bz2       960 KB
+r-kernsmooth-2.23_17-r40hfa343cc_1.tar.bz2     103 KB
+r-labeling-0.4.2-r40hc72bb7e_1.tar.bz2        67 KB
+r-lattice-0.20_45-r40hcfec24a_0.tar.bz2      1.1 MB
+r-lazyeval-0.2.2-r40hcfec24a_2.tar.bz2       165 KB
+r-listenv-0.8.0-r40hc72bb7e_1.tar.bz2        119 KB
+r-magrittr-2.0.3-r40h06615bd_0.tar.bz2       215 KB
+r-mass-7.3_58.1-r40h06615bd_0.tar.bz2        1.1 MB
+r-matrixstats-0.62.0-r40h06615bd_0.tar.bz2     467 KB
+r-mime-0.12-r40hcfec24a_0.tar.bz2             51 KB
+r-nloptr-1.2.2.2-r40h03ef668_0.tar.bz2       523 KB
+r-numderiv-2016.8_1.1-r40hc72bb7e_3.tar.bz2     126 KB
+r-parallelly-1.32.1-r40hc72bb7e_0.tar.bz2     317 KB
+r-pbdzmq-0.3_3.1-r40h7669aee_0.tar.bz2       375 KB
+r-pkgconfig-2.0.3-r40hc72bb7e_1.tar.bz2       25 KB
+r-plogr-0.2.0-r40hc72bb7e_1003.tar.bz2        20 KB
+r-praise-1.0.0-r40hc72bb7e_1005.tar.bz2       24 KB
+r-ps-1.7.1-r40h06615bd_0.tar.bz2             323 KB
+r-quadprog-1.5_8-r40hfa343cc_2.tar.bz2        46 KB
+r-r6-2.5.1-r40hc72bb7e_0.tar.bz2              89 KB
+r-randomforest-4.6_14-r40h9bbef5b_1003.tar.bz2     234 KB
+r-rappdirs-0.3.3-r40hcfec24a_0.tar.bz2        50 KB
+r-rcolorbrewer-1.1_3-r40h785f33e_0.tar.bz2      65 KB
+r-rcpp-1.0.9-r40h7525677_0.tar.bz2           2.0 MB
+r-rematch-1.0.1-r40hc72bb7e_1004.tar.bz2      20 KB
+r-remotes-2.4.2-r40hc72bb7e_0.tar.bz2        405 KB
+r-rjson-0.2.21-r40h7525677_1.tar.bz2         161 KB
+r-rlang-1.0.6-r40h7525677_0.tar.bz2          1.5 MB
+r-rpart-4.1.16-r40hcfec24a_0.tar.bz2         951 KB
+r-rstudioapi-0.14-r40hc72bb7e_0.tar.bz2      302 KB
+r-sourcetools-0.1.7-r40h03ef668_1002.tar.bz2      54 KB
+r-sparsem-1.78-r40h9bbef5b_1.tar.bz2         1.1 MB
+r-squarem-2021.1-r40hc72bb7e_0.tar.bz2       194 KB
+r-statmod-1.4.34-r40h6e990d7_1.tar.bz2       278 KB
+r-stringi-1.4.6-r40h0e574ca_2.tar.bz2        778 KB
+r-sys-3.4-r40hcfec24a_0.tar.bz2               48 KB
+r-timedate-4021.104-r40hc72bb7e_0.tar.bz2     1.6 MB
+r-utf8-1.2.2-r40hcfec24a_0.tar.bz2           162 KB
+r-uuid-1.1_0-r40h06615bd_0.tar.bz2            53 KB
+r-viridislite-0.4.1-r40hc72bb7e_0.tar.bz2     1.3 MB
+r-warp-0.2.0-r40hcfec24a_1.tar.bz2            73 KB
+r-whisker-0.4-r40hc72bb7e_1.tar.bz2           80 KB
+r-withr-2.5.0-r40hc72bb7e_0.tar.bz2          240 KB
+r-writexl-1.4.0-r40hcfec24a_0.tar.bz2        141 KB
+r-xfun-0.33-r40h7525677_0.tar.bz2            401 KB
+r-xtable-1.8_4-r40hc72bb7e_3.tar.bz2         699 KB
+r-yaml-2.3.5-r40h06615bd_0.tar.bz2           121 KB
+r-zip-2.2.1-r40h06615bd_0.tar.bz2            148 KB
+requests-2.22.0-py37_1.tar.bz2                84 KB
+r-askpass-1.1-r40hcfec24a_2.tar.bz2           28 KB
+r-bit64-4.0.5-r40hcfec24a_0.tar.bz2          506 KB
+r-cachem-1.0.6-r40hcfec24a_0.tar.bz2          72 KB
+r-class-7.3_20-r40hcfec24a_0.tar.bz2         107 KB
+r-cli-3.4.1-r40h7525677_0.tar.bz2            1.2 MB
+r-config-0.3.1-r40hc72bb7e_0.tar.bz2          95 KB
+r-diffobj-0.3.5-r40hcfec24a_0.tar.bz2        1.0 MB
+r-ellipsis-0.3.2-r40hcfec24a_0.tar.bz2        42 KB
+r-foreach-1.5.2-r40hc72bb7e_0.tar.bz2        134 KB
+r-forge-0.2.0-r40hc72bb7e_3.tar.bz2           51 KB
+r-globals-0.16.1-r40hc72bb7e_0.tar.bz2       121 KB
+r-gridextra-2.3-r40hc72bb7e_1003.tar.bz2     1.1 MB
+r-hexbin-1.28.1-r40h9bbef5b_1.tar.bz2        1.1 MB
+r-highr-0.9-r40hc72bb7e_0.tar.bz2             56 KB
+r-htmltools-0.5.3-r40h7525677_0.tar.bz2      351 KB
+r-laeken-0.5.2-r40hc72bb7e_0.tar.bz2         3.0 MB
+r-later-1.2.0-r40h03ef668_0.tar.bz2          145 KB
+r-lhs-1.1.5-r40h7525677_0.tar.bz2            425 KB
+r-lifecycle-1.0.2-r40hc72bb7e_0.tar.bz2      110 KB
+r-lubridate-1.8.0-r40h03ef668_0.tar.bz2      1.1 MB
+r-matrix-1.4_1-r40h0154571_0.tar.bz2         4.8 MB
+r-minqa-1.2.4-r40h6786f55_1005.tar.bz2       141 KB
+r-modelmetrics-1.2.2.2-r40h03ef668_1.tar.bz2     164 KB
+r-munsell-0.5.0-r40hc72bb7e_1004.tar.bz2     247 KB
+r-nlme-3.1_149-r40h9bbef5b_0.tar.bz2         2.3 MB
+r-nnet-7.3_17-r40hcfec24a_0.tar.bz2          132 KB
+r-openxlsx-4.2.5-r40h03ef668_0.tar.bz2       2.0 MB
+r-plyr-1.8.7-r40h7525677_0.tar.bz2           833 KB
+r-prettyunits-1.1.1-r40hc72bb7e_1.tar.bz2      41 KB
+r-processx-3.6.1-r40h06615bd_0.tar.bz2       305 KB
+r-progressr-0.11.0-r40hc72bb7e_0.tar.bz2     287 KB
+r-purrr-0.3.4-r40hcfec24a_1.tar.bz2          410 KB
+r-rcpparmadillo-0.11.1.1.0-r40h43535f1_0.tar.bz2     963 KB
+r-rcurl-1.98_1.2-r40hcdcec82_1.tar.bz2       960 KB
+r-rex-1.2.1-r40hc72bb7e_0.tar.bz2            133 KB
+r-robustbase-0.93_6-r40hbf399a0_1.tar.bz2     3.1 MB
+r-rprojroot-2.0.3-r40hc72bb7e_0.tar.bz2      115 KB
+r-sp-1.5_0-r40h06615bd_0.tar.bz2             1.8 MB
+r-stringr-1.4.1-r40hc72bb7e_0.tar.bz2        212 KB
+r-systemfonts-1.0.4-r40hef9c87a_0.tar.bz2     293 KB
+r-tinytex-0.42-r40hc72bb7e_0.tar.bz2         141 KB
+r-tzdb-0.3.0-r40h7525677_0.tar.bz2           519 KB
+r-xml2-1.3.3-r40h03ef668_0.tar.bz2           254 KB
+r-zoo-1.8_11-r40h06615bd_0.tar.bz2          1015 KB
+r-callr-3.7.2-r40hc72bb7e_0.tar.bz2          427 KB
+r-crosstalk-1.2.0-r40hc72bb7e_0.tar.bz2      374 KB
+r-desc-1.4.2-r40hc72bb7e_0.tar.bz2           332 KB
+r-e1071-1.7_4-r40h1b71b39_0.tar.bz2          825 KB
+r-future-1.28.0-r40hc72bb7e_0.tar.bz2        657 KB
+r-gdtools-0.2.4-r40h42e24d8_0.tar.bz2        141 KB
+r-gpfit-1.0_8-r40hc72bb7e_1.tar.bz2           88 KB
+r-htmlwidgets-1.5.4-r40hc72bb7e_0.tar.bz2     780 KB
+r-jquerylib-0.1.4-r40hc72bb7e_0.tar.bz2      365 KB
+r-knitr-1.40-r40hc72bb7e_0.tar.bz2           1.4 MB
+r-lmtest-0.9_38-r40h9bbef5b_0.tar.bz2        409 KB
+r-maptools-1.1_4-r40h06615bd_0.tar.bz2       2.2 MB
+r-matrixmodels-0.5_0-r40hc72bb7e_0.tar.bz2     450 KB
+r-memoise-2.0.1-r40hc72bb7e_0.tar.bz2         57 KB
+r-mgcv-1.8_40-r40h0154571_0.tar.bz2          3.0 MB
+r-openssl-2.0.3-r40hfaab4ff_0.tar.bz2        1.2 MB
+r-proc-1.18.0-r40h03ef668_0.tar.bz2          849 KB
+r-promises-1.2.0.1-r40h03ef668_0.tar.bz2     1.6 MB
+r-rcppeigen-0.3.3.9.2-r40h43535f1_0.tar.bz2     1.4 MB
+r-reshape2-1.4.4-r40h03ef668_1.tar.bz2       128 KB
+r-rversions-2.1.2-r40hc72bb7e_0.tar.bz2       72 KB
+r-sass-0.4.2-r40h7525677_0.tar.bz2           2.3 MB
+r-scales-1.2.1-r40hc72bb7e_0.tar.bz2         611 KB
+r-selectr-0.4_2-r40hc72bb7e_1.tar.bz2        467 KB
+r-sessioninfo-1.2.2-r40hc72bb7e_0.tar.bz2     198 KB
+r-survival-3.4_0-r40h06615bd_0.tar.bz2       5.9 MB
+r-urca-1.3_0-r40h9bbef5b_1005.tar.bz2        1.1 MB
+r-vctrs-0.4.1-r40h7525677_0.tar.bz2          1.2 MB
+r-xopen-1.0.0-r40hc72bb7e_1003.tar.bz2        28 KB
+r-xts-0.12.1-r40h06615bd_0.tar.bz2           906 KB
+r-blob-1.2.3-r40hc72bb7e_0.tar.bz2            64 KB
+r-bslib-0.4.0-r40hc72bb7e_0.tar.bz2          4.2 MB
+r-conflicted-1.1.0-r40hc72bb7e_0.tar.bz2      66 KB
+r-credentials-1.3.2-r40hc72bb7e_0.tar.bz2     183 KB
+r-dt-0.25-r40hc72bb7e_0.tar.bz2              1.4 MB
+r-furrr-0.3.1-r40hc72bb7e_0.tar.bz2         1009 KB
+r-future.apply-1.9.1-r40hc72bb7e_0.tar.bz2     165 KB
+r-hms-1.1.2-r40hc72bb7e_0.tar.bz2            108 KB
+r-httpuv-1.6.6-r40h7525677_0.tar.bz2         898 KB
+r-httr-1.4.4-r40hc72bb7e_0.tar.bz2           496 KB
+r-ids-1.0.1-r40hc72bb7e_1.tar.bz2            126 KB
+r-lme4-1.1_30-r40h7525677_0.tar.bz2          4.5 MB
+r-pillar-1.8.1-r40hc72bb7e_0.tar.bz2         672 KB
+r-pkgbuild-1.3.1-r40hc72bb7e_0.tar.bz2       162 KB
+r-pkgload-1.3.0-r40hc72bb7e_0.tar.bz2        191 KB
+r-r2d3-0.2.6-r40hc72bb7e_0.tar.bz2           1.7 MB
+r-ranger-0.14.1-r40h7525677_0.tar.bz2        439 KB
+r-rmarkdown-2.7-r40hc72bb7e_0.tar.bz2        3.1 MB
+r-slider-0.2.2-r40hcfec24a_0.tar.bz2         295 KB
+r-svglite-2.1.0-r40h03ef668_0.tar.bz2        224 KB
+r-tidyselect-1.1.2-r40hc72bb7e_0.tar.bz2     198 KB
+r-ttr-0.24.3-r40h06615bd_0.tar.bz2           531 KB
+r-vcd-1.4_10-r40hc72bb7e_0.tar.bz2           1.2 MB
+r-webshot-0.5.4-r40hc72bb7e_0.tar.bz2        202 KB
+r-covr-3.6.1-r40h7525677_0.tar.bz2           339 KB
+r-gargle-1.2.1-r40hc72bb7e_0.tar.bz2         486 KB
+r-gert-1.3.1-r40hbd84cd2_0.tar.bz2           194 KB
+r-gh-1.3.1-r40hc72bb7e_0.tar.bz2             102 KB
+r-lava-1.6.10-r40hc72bb7e_0.tar.bz2          2.9 MB
+r-progress-1.2.2-r40hc72bb7e_2.tar.bz2        91 KB
+r-quantmod-0.4.20-r40hc72bb7e_0.tar.bz2      1.0 MB
+r-rcmdcheck-1.4.0-r40h785f33e_0.tar.bz2      174 KB
+r-repr-1.1.4-r40h785f33e_0.tar.bz2           146 KB
+r-reprex-2.0.2-r40hc72bb7e_0.tar.bz2         499 KB
+r-roxygen2-7.1.1-r40h03ef668_0.tar.bz2       663 KB
+r-rsqlite-2.2.8-r40h03ef668_0.tar.bz2        1.1 MB
+r-shiny-1.6.0-r40hc72bb7e_0.tar.bz2          4.8 MB
+r-tibble-3.1.8-r40h06615bd_0.tar.bz2         695 KB
+r-cellranger-1.1.0-r40hc72bb7e_1004.tar.bz2     109 KB
+r-dplyr-1.0.10-r40h7525677_0.tar.bz2         1.1 MB
+r-forcats-0.5.2-r40hc72bb7e_0.tar.bz2        389 KB
+r-googledrive-2.0.0-r40hc72bb7e_0.tar.bz2     1.7 MB
+r-hardhat-1.2.0-r40hc72bb7e_0.tar.bz2        809 KB
+r-irdisplay-0.7-r40_1002.tar.bz2              35 KB
+r-nycflights13-1.0.2-r40hc72bb7e_0.tar.bz2     4.3 MB
+r-prodlim-2019.11.13-r40h03ef668_1.tar.bz2     413 KB
+r-rematch2-2.1.2-r40hc72bb7e_1.tar.bz2        52 KB
+r-rvest-1.0.3-r40hc72bb7e_0.tar.bz2          216 KB
+r-tseries-0.10_47-r40hfa343cc_4.tar.bz2      389 KB
+r-usethis-2.1.6-r40hc72bb7e_0.tar.bz2        782 KB
+r-vroom-1.5.7-r40h03ef668_0.tar.bz2          991 KB
+r-dbplyr-2.2.1-r40hc72bb7e_0.tar.bz2         996 KB
+r-dials-1.0.0-r40hc72bb7e_0.tar.bz2          379 KB
+r-dtplyr-1.2.2-r40hc72bb7e_0.tar.bz2         341 KB
+r-googlesheets4-1.0.1-r40h785f33e_0.tar.bz2     497 KB
+r-ipred-0.9_13-r40h06615bd_0.tar.bz2         394 KB
+r-irkernel-1.1.1-r40h6115d3f_0.tar.bz2       234 KB
+r-kableextra-1.3.4-r40hc72bb7e_0.tar.bz2     1.6 MB
+r-modeldata-1.0.1-r40hc72bb7e_0.tar.bz2      4.1 MB
+r-readr-2.1.2-r40h03ef668_0.tar.bz2          908 KB
+r-readxl-1.4.1-r40hf23e330_0.tar.bz2         841 KB
+r-tidyr-1.2.1-r40h7525677_0.tar.bz2          844 KB
+r-waldo-0.4.0-r40hc72bb7e_0.tar.bz2          109 KB
+r-yardstick-1.1.0-r40h06615bd_0.tar.bz2      851 KB
+r-haven-2.5.0-r40h7525677_0.tar.bz2          406 KB
+r-recipes-1.0.1-r40hc72bb7e_0.tar.bz2        1.4 MB
+r-rsample-1.1.0-r40hc72bb7e_0.tar.bz2        494 KB
+r-sparklyr-1.6.3-r40hc72bb7e_0.tar.bz2       4.9 MB
+r-testthat-3.1.4-r40h7525677_0.tar.bz2       1.6 MB
+r-devtools-2.4.3-r40hc72bb7e_0.tar.bz2       423 KB
+r-isoband-0.2.5-r40h03ef668_0.tar.bz2        1.8 MB
+r-rio-0.5.29-r40hc72bb7e_0.tar.bz2           522 KB
+r-ggplot2-3.3.6-r40hc72bb7e_0.tar.bz2        4.0 MB
+r-broom-1.0.1-r40hc72bb7e_0.tar.bz2          1.8 MB
+r-caret-6.0_93-r40h06615bd_0.tar.bz2         3.5 MB
+r-forecast-8.14-r40h6dc32e9_0.tar.bz2        1.5 MB
+r-ggridges-0.5.3-r40hc72bb7e_0.tar.bz2       2.1 MB
+r-parsnip-1.0.1-r40hc72bb7e_0.tar.bz2        1.4 MB
+r-patchwork-1.1.2-r40hc72bb7e_0.tar.bz2      3.1 MB
+r-upsetr-1.4.0-r40hc72bb7e_2.tar.bz2         4.0 MB
+r-conquer-1.3.0-r40hcec875b_0.tar.bz2        672 KB
+r-infer-1.0.3-r40hc72bb7e_0.tar.bz2          2.1 MB
+r-modelr-0.1.9-r40hc72bb7e_0.tar.bz2         220 KB
+r-pbkrtest-0.5.1-r40hc72bb7e_0.tar.bz2       357 KB
+r-workflows-1.1.0-r40hc72bb7e_0.tar.bz2      241 KB
+r-quantreg-5.73-r40hb7af6a2_0.tar.bz2        1.5 MB
+r-tidyverse-1.3.2-r40hc72bb7e_0.tar.bz2      438 KB
+r-tune-1.0.0-r40hc72bb7e_0.tar.bz2           1.6 MB
+r-car-3.1_0-r40hc72bb7e_0.tar.bz2            1.6 MB
+r-workflowsets-1.0.0-r40hc72bb7e_0.tar.bz2     2.6 MB
+r-tidymodels-0.1.4-r40hc72bb7e_0.tar.bz2      63 KB
+r-vim-6.2.2-r40h7525677_0.tar.bz2            2.6 MB
+importlib_metadata-1.5.0-py37_0.tar.bz2       42 KB
+inflect-4.0.0-py37_1.tar.bz2                  56 KB
+jsonschema-3.2.0-py37_0.tar.bz2               89 KB
+jaraco.itertools-5.0.0-py_0.tar.bz2           14 KB
+jupyter_telemetry-0.0.4-py_0.tar.bz2          11 KB
+nbformat-5.0.4-py_0.tar.bz2                   98 KB
+jupyterhub-base-1.1.0-py37_2.tar.bz2         1.7 MB
+nbconvert-5.6.1-py37_0.tar.bz2               487 KB
+zipp-2.1.0-py_0.tar.bz2                        9 KB
+jupyterhub-1.1.0-py37_2.tar.bz2                4 KB
+notebook-6.0.3-py37_0.tar.bz2                6.2 MB
+jupyterlab_server-1.0.6-py_0.tar.bz2          23 KB
+widgetsnbextension-3.5.1-py37_0.tar.bz2      1.8 MB
+ipywidgets-7.5.1-py_0.tar.bz2                101 KB
+jupyterlab-1.2.5-pyhf63ae98_0.conda          2.8 MB
+
+---------------------------------------------------
+Total:                                     691.8 MB
+
+Removed _libgcc_mutex-0.1-conda_forge.tar.bz2
+Removed _r-mutex-1.0.1-anacondar_1.tar.bz2
+Removed ca-certificates-2023.7.22-hbcca054_0.conda
+Removed ld_impl_linux-64-2.34-h53a641e_7.tar.bz2
+Removed libgfortran-ng-7.3.0-hdf63c60_4.tar.bz2
+Removed libstdcxx-ng-13.2.0-h7e041cc_2.conda
+Removed pandoc-2.9.1.1-0.tar.bz2
+Removed binutils_impl_linux-64-2.34-h53a641e_7.tar.bz2
+Removed libgomp-13.2.0-h807b86a_2.conda
+Removed _openmp_mutex-4.5-0_gnu.tar.bz2
+Removed binutils_linux-64-2.34-hc952b39_18.tar.bz2
+Removed libgcc-ng-13.2.0-h807b86a_2.conda
+Removed brotli-1.0.7-he1b5a44_1000.tar.bz2
+Removed bzip2-1.0.8-h516909a_2.tar.bz2
+Removed c-ares-1.15.0-h516909a_1001.tar.bz2
+Removed double-conversion-3.1.5-he1b5a44_2.tar.bz2
+Removed fribidi-1.0.10-h36c2ea0_0.tar.bz2
+Removed gcc_impl_linux-64-7.3.0-habb00fd_1.conda
+Removed gettext-0.21.1-h27087fc_0.tar.bz2
+Removed gflags-2.2.2-he1b5a44_1002.tar.bz2
+Removed glog-0.4.0-he1b5a44_1.tar.bz2
+Removed gmp-6.2.0-he1b5a44_0.tar.bz2
+Removed graphite2-1.3.13-h58526e2_1001.tar.bz2
+Removed icu-64.2-he1b5a44_1.tar.bz2
+Removed jpeg-9e-h0b41bf4_3.conda
+Removed libexpat-2.5.0-hcb278e6_1.conda
+Removed libffi-3.2.1-he1b5a44_1006.tar.bz2
+Removed libiconv-1.17-h166bdaf_0.tar.bz2
+Removed libllvm8-8.0.1-hc9558a2_0.tar.bz2
+Removed libopenblas-0.3.7-h5ec1e0e_6.tar.bz2
+Removed libsodium-1.0.17-h516909a_0.tar.bz2
+Removed libuuid-2.38.1-h0b41bf4_0.conda
+Removed libuv-1.34.0-h516909a_0.tar.bz2
+Removed lz4-c-1.8.3-he1b5a44_1001.tar.bz2
+Removed make-4.3-hd18ef5c_1.tar.bz2
+Removed ncurses-6.1-hf484d3e_1002.tar.bz2
+Removed openssl-1.1.1w-hd590300_0.conda
+Removed pcre-8.45-h9c3ff4c_0.tar.bz2
+Removed pixman-0.38.0-h516909a_1003.tar.bz2
+Removed pthread-stubs-0.4-h36c2ea0_1001.tar.bz2
+Removed re2-2020.01.01-he1b5a44_0.tar.bz2
+Removed sed-4.8-he412f7d_0.tar.bz2
+Removed snappy-1.1.7-he1b5a44_1003.tar.bz2
+Removed tini-0.18.0-h14c3975_1001.tar.bz2
+Removed uriparser-0.9.3-he1b5a44_1.tar.bz2
+Removed xorg-kbproto-1.0.7-h7f98852_1002.tar.bz2
+Removed xorg-libice-1.1.1-hd590300_0.conda
+Removed xorg-libxau-1.0.11-hd590300_0.conda
+Removed xorg-libxdmcp-1.1.3-h7f98852_0.tar.bz2
+Removed xorg-renderproto-0.11.1-h7f98852_1002.tar.bz2
+Removed xorg-xextproto-7.3.0-h0b41bf4_1003.conda
+Removed xorg-xproto-7.0.31-h7f98852_1007.tar.bz2
+Removed xz-5.2.6-h166bdaf_0.tar.bz2
+Removed yaml-0.2.2-h516909a_1.tar.bz2
+Removed zlib-1.2.11-h516909a_1006.tar.bz2
+Removed boost-cpp-1.70.0-h8e57a91_2.tar.bz2
+Removed expat-2.5.0-hcb278e6_1.conda
+Removed gcc_linux-64-7.3.0-h553295d_18.tar.bz2
+Removed gfortran_impl_linux-64-7.3.0-hdf63c60_1.conda
+Removed gxx_impl_linux-64-7.3.0-hdf63c60_1.conda
+Removed hdf5-1.10.5-nompi_h3c11f04_1104.tar.bz2
+Removed libblas-3.8.0-14_openblas.tar.bz2
+Removed libedit-3.1.20181209-hc058e9b_0.conda
+Removed libevent-2.1.10-h72c5cf5_0.tar.bz2
+Removed libglib-2.66.3-hbe7bbb4_0.tar.bz2
+Removed libpng-1.6.37-hed695b0_0.tar.bz2
+Removed libprotobuf-3.11.0-h8b12597_0.tar.bz2
+Removed libssh2-1.10.0-ha56f1ee_2.tar.bz2
+Removed libxcb-1.15-h0b41bf4_0.conda
+Removed libxml2-2.9.10-hee79883_0.tar.bz2
+Removed mpfr-4.0.2-he80fd80_0.tar.bz2
+Removed nodejs-13.7.0-h10a4023_0.tar.bz2
+Removed pcre2-10.35-h032f7d1_2.tar.bz2
+Removed readline-8.0-h46ee950_1.tar.bz2
+Removed tk-8.6.10-hed695b0_0.tar.bz2
+Removed xorg-libsm-1.2.4-h7391055_0.conda
+Removed zeromq-4.3.2-he1b5a44_2.tar.bz2
+Removed zstd-1.4.4-h3b9ef0a_1.tar.bz2
+Removed bwidget-1.9.14-ha770c72_1.tar.bz2
+Removed configurable-http-proxy-4.2.0-node13_he01fd0c_2.tar.bz2
+Removed freetype-2.10.4-h0708190_1.tar.bz2
+Removed gfortran_linux-64-7.3.0-h553295d_18.tar.bz2
+Removed grpc-cpp-1.25.0-h213be95_2.tar.bz2
+Removed gxx_linux-64-7.3.0-h553295d_18.tar.bz2
+Removed krb5-1.17.1-h2fd8d38_0.tar.bz2
+Removed libcblas-3.8.0-14_openblas.tar.bz2
+Removed libgit2-1.1.0-h0b03e73_0.tar.bz2
+Removed liblapack-3.8.0-14_openblas.tar.bz2
+Removed libtiff-4.1.0-hc3755c2_3.tar.bz2
+Removed mpc-1.1.0-h04dde30_1006.tar.bz2
+Removed sqlite-3.30.1-h7b6447c_0.conda
+Removed thrift-cpp-0.12.0-hf3afdfd_1004.tar.bz2
+Removed tktable-2.10-hb7b940f_3.tar.bz2
+Removed xorg-libx11-1.8.7-h8ee46fc_0.conda
+Removed fontconfig-2.14.0-h8e229c2_0.tar.bz2
+Removed gsl-2.6-he838d99_2.tar.bz2
+Removed libcurl-7.71.1-hcdd3856_3.tar.bz2
+Removed liblapacke-3.8.0-14_openblas.tar.bz2
+Removed python-3.7.6-cpython_h8356626_6.tar.bz2
+Removed xorg-libxext-1.3.4-h0b41bf4_2.conda
+Removed xorg-libxrender-0.9.11-hd590300_0.conda
+Removed async_generator-1.10-py_0.tar.bz2
+Removed attrs-19.3.0-py_0.tar.bz2
+Removed backcall-0.1.0-py_0.tar.bz2
+Removed blas-2.14-openblas.tar.bz2
+Removed blinker-1.4-py_1.tar.bz2
+Removed certifi-2023.7.22-pyhd8ed1ab_0.conda
+Removed chardet-3.0.4-py37_1003.tar.bz2
+Removed click-7.0-py_0.tar.bz2
+Removed cloudpickle-1.2.2-py_1.tar.bz2
+Removed curl-7.71.1-he644dc0_3.tar.bz2
+Removed cython-0.29.14-py37he1b5a44_0.tar.bz2
+Removed dask-core-2.9.2-py_0.tar.bz2
+Removed decorator-4.4.1-py_0.tar.bz2
+Removed defusedxml-0.6.0-py_0.tar.bz2
+Removed dill-0.3.1.1-py37_0.tar.bz2
+Removed entrypoints-0.3-py37_1000.tar.bz2
+Removed fastcache-1.1.0-py37h516909a_0.tar.bz2
+Removed fsspec-0.6.2-py_0.tar.bz2
+Removed glib-2.66.3-h58526e2_0.tar.bz2
+Removed gmpy2-2.1.0b1-py37h04dde30_0.tar.bz2
+Removed heapdict-1.0.1-py_0.tar.bz2
+Removed idna-2.8-py37_1000.tar.bz2
+Removed ipython_genutils-0.2.0-py_1.tar.bz2
+Removed json5-0.8.5-py_0.tar.bz2
+Removed kiwisolver-1.1.0-py37hc9558a2_0.tar.bz2
+Removed llvmlite-0.31.0-py37h8b12597_0.tar.bz2
+Removed locket-0.2.0-py_2.tar.bz2
+Removed markupsafe-1.1.1-py37h516909a_0.tar.bz2
+Removed mistune-0.8.4-py37h516909a_1000.tar.bz2
+Removed more-itertools-8.2.0-py_0.tar.bz2
+Removed mpmath-1.1.0-py_0.tar.bz2
+Removed msgpack-python-0.6.2-py37hc9558a2_0.tar.bz2
+Removed numpy-1.17.5-py37h95a1406_0.tar.bz2
+Removed olefile-0.46-py_0.tar.bz2
+Removed pamela-1.0.0-py_0.tar.bz2
+Removed pandocfilters-1.4.2-py_1.tar.bz2
+Removed parso-0.6.0-py_0.tar.bz2
+Removed pickleshare-0.7.5-py37_1000.tar.bz2
+Removed prometheus_client-0.7.1-py_0.tar.bz2
+Removed psutil-5.6.7-py37h516909a_0.tar.bz2
+Removed ptyprocess-0.6.0-py_1001.tar.bz2
+Removed pycosat-0.6.3-py37h516909a_1002.tar.bz2
+Removed pycparser-2.19-py37_1.tar.bz2
+Removed pycurl-7.43.0.4-py37h16ce93b_0.tar.bz2
+Removed pyparsing-2.4.6-py_0.tar.bz2
+Removed pysocks-1.7.1-py37_0.tar.bz2
+Removed python-editor-1.0.4-py_0.tar.bz2
+Removed python-json-logger-0.1.11-py_0.tar.bz2
+Removed python_abi-3.7-2_cp37m.tar.bz2
+Removed pytz-2019.3-py_0.tar.bz2
+Removed pyyaml-5.3-py37h516909a_0.tar.bz2
+Removed pyzmq-18.1.1-py37h1768529_0.tar.bz2
+Removed ruamel.yaml.clib-0.2.0-py37h516909a_0.tar.bz2
+Removed ruamel_yaml-0.15.80-py37h516909a_1000.tar.bz2
+Removed send2trash-1.5.0-py_0.tar.bz2
+Removed six-1.14.0-py37_0.tar.bz2
+Removed sortedcontainers-2.1.0-py_0.tar.bz2
+Removed soupsieve-1.9.4-py37_0.tar.bz2
+Removed sqlalchemy-1.3.13-py37h516909a_0.tar.bz2
+Removed tblib-1.6.0-py_0.tar.bz2
+Removed testpath-0.4.4-py_0.tar.bz2
+Removed toolz-0.10.0-py_0.tar.bz2
+Removed tornado-6.0.3-py37h516909a_0.tar.bz2
+Removed tqdm-4.42.0-py_0.tar.bz2
+Removed wcwidth-0.1.8-py_0.tar.bz2
+Removed webencodings-0.5.1-py_1.tar.bz2
+Removed xlrd-1.2.0-py_0.tar.bz2
+Removed arrow-cpp-0.15.1-py37h982ac2c_6.tar.bz2
+Removed beautifulsoup4-4.8.2-py37_0.tar.bz2
+Removed cairo-1.16.0-hcf35c78_1003.tar.bz2
+Removed cffi-1.13.2-py37h8022711_0.tar.bz2
+Removed conda-package-handling-1.6.0-py37h516909a_1.tar.bz2
+Removed cycler-0.10.0-py_2.tar.bz2
+Removed cytoolz-0.10.1-py37h516909a_0.tar.bz2
+Removed h5py-2.10.0-nompi_py37h513d04c_101.tar.bz2
+Removed jedi-0.16.0-py37_0.tar.bz2
+Removed mako-1.1.0-py_0.tar.bz2
+Removed packaging-20.1-py_0.tar.bz2
+Removed partd-1.1.0-py_0.tar.bz2
+Removed pexpect-4.8.0-py37_0.tar.bz2
+Removed pillow-7.0.0-py37hefe7db6_0.tar.bz2
+Removed pyrsistent-0.15.7-py37h516909a_0.tar.bz2
+Removed python-dateutil-2.8.1-py_0.tar.bz2
+Removed pywavelets-1.1.1-py37hc1659b7_0.tar.bz2
+Removed scipy-1.4.1-py37h921218d_0.tar.bz2
+Removed setuptools-45.1.0-py37_0.tar.bz2
+Removed sympy-1.5.1-py37_1.tar.bz2
+Removed terminado-0.8.3-py37_0.tar.bz2
+Removed traitlets-4.3.3-py37_0.tar.bz2
+Removed zict-1.0.0-py_0.tar.bz2
+Removed alembic-1.3.3-py_0.tar.bz2
+Removed bleach-3.1.0-py_0.tar.bz2
+Removed cryptography-2.8-py37h72c5cf5_1.tar.bz2
+Removed distributed-2.10.0-py_0.tar.bz2
+Removed harfbuzz-2.4.0-h9f30f68_3.tar.bz2
+Removed imageio-2.6.1-py37_0.tar.bz2
+Removed jinja2-2.11.0-py_0.tar.bz2
+Removed joblib-0.14.1-py_0.tar.bz2
+Removed jupyter_core-4.6.1-py37_0.tar.bz2
+Removed matplotlib-base-3.1.2-py37h250f245_1.tar.bz2
+Removed networkx-2.4-py_0.tar.bz2
+Removed numba-0.48.0-py37hb3f55d8_0.tar.bz2
+Removed numexpr-2.7.1-py37hb3f55d8_0.tar.bz2
+Removed pandas-0.25.3-py37hb3f55d8_0.tar.bz2
+Removed parquet-cpp-1.5.1-2.tar.bz2
+Removed patsy-0.5.1-py_0.tar.bz2
+Removed protobuf-3.11.0-py37he1b5a44_0.tar.bz2
+Removed pygments-2.5.2-py_0.tar.bz2
+Removed ruamel.yaml-0.16.6-py37h516909a_0.tar.bz2
+Removed wheel-0.34.1-py37_0.tar.bz2
+Removed bokeh-1.4.0-py37_0.tar.bz2
+Removed jupyter_client-5.3.4-py37_1.tar.bz2
+Removed pango-1.42.4-h7062337_4.tar.bz2
+Removed pip-20.0.2-py37_0.tar.bz2
+Removed prompt_toolkit-3.0.3-py_0.tar.bz2
+Removed pyarrow-0.15.1-py37h8b68381_1.tar.bz2
+Removed pyjwt-1.7.1-py_0.tar.bz2
+Removed pyopenssl-19.1.0-py37_0.tar.bz2
+Removed scikit-image-0.16.2-py37hb3f55d8_0.tar.bz2
+Removed scikit-learn-0.22.1-py37hcdab131_1.tar.bz2
+Removed statsmodels-0.11.0-py37h516909a_0.tar.bz2
+Removed vincent-0.4.4-py_1.tar.bz2
+Removed certipy-0.1.3-py_0.tar.bz2
+Removed dask-2.9.2-py_0.tar.bz2
+Removed ipython-7.11.1-py37h5ca1d4c_0.tar.bz2
+Removed oauthlib-3.0.1-py_0.tar.bz2
+Removed r-base-4.0.2-h95c6c4b_0.tar.bz2
+Removed seaborn-0.9.0-py_2.tar.bz2
+Removed urllib3-1.25.7-py37_0.tar.bz2
+Removed ipykernel-5.1.4-py37h5ca1d4c_0.tar.bz2
+Removed r-abind-1.4_5-r40hc72bb7e_1003.tar.bz2
+Removed r-assertthat-0.2.1-r40hc72bb7e_2.tar.bz2
+Removed r-backports-1.4.1-r40hcfec24a_0.tar.bz2
+Removed r-base64enc-0.1_3-r40hcfec24a_1004.tar.bz2
+Removed r-bit-4.0.4-r40hcfec24a_0.tar.bz2
+Removed r-bitops-1.0_7-r40h06615bd_0.tar.bz2
+Removed r-boot-1.3_28-r40hc72bb7e_0.tar.bz2
+Removed r-brew-1.0_7-r40hc72bb7e_0.tar.bz2
+Removed r-brio-1.1.3-r40hcfec24a_0.tar.bz2
+Removed r-cardata-3.0_5-r40hc72bb7e_0.tar.bz2
+Removed r-clipr-0.8.0-r40hc72bb7e_0.tar.bz2
+Removed r-codetools-0.2_18-r40hc72bb7e_0.tar.bz2
+Removed r-colorspace-2.0_3-r40h06615bd_0.tar.bz2
+Removed r-commonmark-1.8.0-r40h06615bd_0.tar.bz2
+Removed r-cpp11-0.4.2-r40hc72bb7e_0.tar.bz2
+Removed r-crayon-1.4.2-r40hc72bb7e_0.tar.bz2
+Removed r-curl-4.3.2-r40hcfec24a_0.tar.bz2
+Removed r-data.table-1.14.2-r40hcfec24a_0.tar.bz2
+Removed r-dbi-1.1.3-r40hc72bb7e_0.tar.bz2
+Removed r-deoptimr-1.0_11-r40hc72bb7e_0.tar.bz2
+Removed r-dicedesign-1.9-r40hcfec24a_0.tar.bz2
+Removed r-digest-0.6.29-r40h03ef668_0.tar.bz2
+Removed r-evaluate-0.16-r40hc72bb7e_0.tar.bz2
+Removed r-fansi-1.0.3-r40h06615bd_0.tar.bz2
+Removed r-farver-2.1.1-r40h7525677_0.tar.bz2
+Removed r-fastmap-1.1.0-r40h03ef668_0.tar.bz2
+Removed r-foreign-0.8_82-r40hcfec24a_0.tar.bz2
+Removed r-fracdiff-1.5_1-r40hb699f27_1.tar.bz2
+Removed r-fs-1.5.2-r40h7525677_1.tar.bz2
+Removed r-generics-0.1.3-r40hc72bb7e_0.tar.bz2
+Removed r-git2r-0.28.0-r40hf628c3e_0.tar.bz2
+Removed r-gitcreds-0.1.2-r40hc72bb7e_0.tar.bz2
+Removed r-glue-1.6.2-r40h06615bd_0.tar.bz2
+Removed r-gower-1.0.0-r40hcfec24a_0.tar.bz2
+Removed r-gtable-0.3.1-r40hc72bb7e_0.tar.bz2
+Removed r-ini-0.3.1-r40hc72bb7e_1003.tar.bz2
+Removed r-iterators-1.0.14-r40hc72bb7e_0.tar.bz2
+Removed r-jsonlite-1.8.0-r40h06615bd_0.tar.bz2
+Removed r-kernsmooth-2.23_17-r40hfa343cc_1.tar.bz2
+Removed r-labeling-0.4.2-r40hc72bb7e_1.tar.bz2
+Removed r-lattice-0.20_45-r40hcfec24a_0.tar.bz2
+Removed r-lazyeval-0.2.2-r40hcfec24a_2.tar.bz2
+Removed r-listenv-0.8.0-r40hc72bb7e_1.tar.bz2
+Removed r-magrittr-2.0.3-r40h06615bd_0.tar.bz2
+Removed r-mass-7.3_58.1-r40h06615bd_0.tar.bz2
+Removed r-matrixstats-0.62.0-r40h06615bd_0.tar.bz2
+Removed r-mime-0.12-r40hcfec24a_0.tar.bz2
+Removed r-nloptr-1.2.2.2-r40h03ef668_0.tar.bz2
+Removed r-numderiv-2016.8_1.1-r40hc72bb7e_3.tar.bz2
+Removed r-parallelly-1.32.1-r40hc72bb7e_0.tar.bz2
+Removed r-pbdzmq-0.3_3.1-r40h7669aee_0.tar.bz2
+Removed r-pkgconfig-2.0.3-r40hc72bb7e_1.tar.bz2
+Removed r-plogr-0.2.0-r40hc72bb7e_1003.tar.bz2
+Removed r-praise-1.0.0-r40hc72bb7e_1005.tar.bz2
+Removed r-ps-1.7.1-r40h06615bd_0.tar.bz2
+Removed r-quadprog-1.5_8-r40hfa343cc_2.tar.bz2
+Removed r-r6-2.5.1-r40hc72bb7e_0.tar.bz2
+Removed r-randomforest-4.6_14-r40h9bbef5b_1003.tar.bz2
+Removed r-rappdirs-0.3.3-r40hcfec24a_0.tar.bz2
+Removed r-rcolorbrewer-1.1_3-r40h785f33e_0.tar.bz2
+Removed r-rcpp-1.0.9-r40h7525677_0.tar.bz2
+Removed r-rematch-1.0.1-r40hc72bb7e_1004.tar.bz2
+Removed r-remotes-2.4.2-r40hc72bb7e_0.tar.bz2
+Removed r-rjson-0.2.21-r40h7525677_1.tar.bz2
+Removed r-rlang-1.0.6-r40h7525677_0.tar.bz2
+Removed r-rpart-4.1.16-r40hcfec24a_0.tar.bz2
+Removed r-rstudioapi-0.14-r40hc72bb7e_0.tar.bz2
+Removed r-sourcetools-0.1.7-r40h03ef668_1002.tar.bz2
+Removed r-sparsem-1.78-r40h9bbef5b_1.tar.bz2
+Removed r-squarem-2021.1-r40hc72bb7e_0.tar.bz2
+Removed r-statmod-1.4.34-r40h6e990d7_1.tar.bz2
+Removed r-stringi-1.4.6-r40h0e574ca_2.tar.bz2
+Removed r-sys-3.4-r40hcfec24a_0.tar.bz2
+Removed r-timedate-4021.104-r40hc72bb7e_0.tar.bz2
+Removed r-utf8-1.2.2-r40hcfec24a_0.tar.bz2
+Removed r-uuid-1.1_0-r40h06615bd_0.tar.bz2
+Removed r-viridislite-0.4.1-r40hc72bb7e_0.tar.bz2
+Removed r-warp-0.2.0-r40hcfec24a_1.tar.bz2
+Removed r-whisker-0.4-r40hc72bb7e_1.tar.bz2
+Removed r-withr-2.5.0-r40hc72bb7e_0.tar.bz2
+Removed r-writexl-1.4.0-r40hcfec24a_0.tar.bz2
+Removed r-xfun-0.33-r40h7525677_0.tar.bz2
+Removed r-xtable-1.8_4-r40hc72bb7e_3.tar.bz2
+Removed r-yaml-2.3.5-r40h06615bd_0.tar.bz2
+Removed r-zip-2.2.1-r40h06615bd_0.tar.bz2
+Removed requests-2.22.0-py37_1.tar.bz2
+Removed r-askpass-1.1-r40hcfec24a_2.tar.bz2
+Removed r-bit64-4.0.5-r40hcfec24a_0.tar.bz2
+Removed r-cachem-1.0.6-r40hcfec24a_0.tar.bz2
+Removed r-class-7.3_20-r40hcfec24a_0.tar.bz2
+Removed r-cli-3.4.1-r40h7525677_0.tar.bz2
+Removed r-config-0.3.1-r40hc72bb7e_0.tar.bz2
+Removed r-diffobj-0.3.5-r40hcfec24a_0.tar.bz2
+Removed r-ellipsis-0.3.2-r40hcfec24a_0.tar.bz2
+Removed r-foreach-1.5.2-r40hc72bb7e_0.tar.bz2
+Removed r-forge-0.2.0-r40hc72bb7e_3.tar.bz2
+Removed r-globals-0.16.1-r40hc72bb7e_0.tar.bz2
+Removed r-gridextra-2.3-r40hc72bb7e_1003.tar.bz2
+Removed r-hexbin-1.28.1-r40h9bbef5b_1.tar.bz2
+Removed r-highr-0.9-r40hc72bb7e_0.tar.bz2
+Removed r-htmltools-0.5.3-r40h7525677_0.tar.bz2
+Removed r-laeken-0.5.2-r40hc72bb7e_0.tar.bz2
+Removed r-later-1.2.0-r40h03ef668_0.tar.bz2
+Removed r-lhs-1.1.5-r40h7525677_0.tar.bz2
+Removed r-lifecycle-1.0.2-r40hc72bb7e_0.tar.bz2
+Removed r-lubridate-1.8.0-r40h03ef668_0.tar.bz2
+Removed r-matrix-1.4_1-r40h0154571_0.tar.bz2
+Removed r-minqa-1.2.4-r40h6786f55_1005.tar.bz2
+Removed r-modelmetrics-1.2.2.2-r40h03ef668_1.tar.bz2
+Removed r-munsell-0.5.0-r40hc72bb7e_1004.tar.bz2
+Removed r-nlme-3.1_149-r40h9bbef5b_0.tar.bz2
+Removed r-nnet-7.3_17-r40hcfec24a_0.tar.bz2
+Removed r-openxlsx-4.2.5-r40h03ef668_0.tar.bz2
+Removed r-plyr-1.8.7-r40h7525677_0.tar.bz2
+Removed r-prettyunits-1.1.1-r40hc72bb7e_1.tar.bz2
+Removed r-processx-3.6.1-r40h06615bd_0.tar.bz2
+Removed r-progressr-0.11.0-r40hc72bb7e_0.tar.bz2
+Removed r-purrr-0.3.4-r40hcfec24a_1.tar.bz2
+Removed r-rcpparmadillo-0.11.1.1.0-r40h43535f1_0.tar.bz2
+Removed r-rcurl-1.98_1.2-r40hcdcec82_1.tar.bz2
+Removed r-rex-1.2.1-r40hc72bb7e_0.tar.bz2
+Removed r-robustbase-0.93_6-r40hbf399a0_1.tar.bz2
+Removed r-rprojroot-2.0.3-r40hc72bb7e_0.tar.bz2
+Removed r-sp-1.5_0-r40h06615bd_0.tar.bz2
+Removed r-stringr-1.4.1-r40hc72bb7e_0.tar.bz2
+Removed r-systemfonts-1.0.4-r40hef9c87a_0.tar.bz2
+Removed r-tinytex-0.42-r40hc72bb7e_0.tar.bz2
+Removed r-tzdb-0.3.0-r40h7525677_0.tar.bz2
+Removed r-xml2-1.3.3-r40h03ef668_0.tar.bz2
+Removed r-zoo-1.8_11-r40h06615bd_0.tar.bz2
+Removed r-callr-3.7.2-r40hc72bb7e_0.tar.bz2
+Removed r-crosstalk-1.2.0-r40hc72bb7e_0.tar.bz2
+Removed r-desc-1.4.2-r40hc72bb7e_0.tar.bz2
+Removed r-e1071-1.7_4-r40h1b71b39_0.tar.bz2
+Removed r-future-1.28.0-r40hc72bb7e_0.tar.bz2
+Removed r-gdtools-0.2.4-r40h42e24d8_0.tar.bz2
+Removed r-gpfit-1.0_8-r40hc72bb7e_1.tar.bz2
+Removed r-htmlwidgets-1.5.4-r40hc72bb7e_0.tar.bz2
+Removed r-jquerylib-0.1.4-r40hc72bb7e_0.tar.bz2
+Removed r-knitr-1.40-r40hc72bb7e_0.tar.bz2
+Removed r-lmtest-0.9_38-r40h9bbef5b_0.tar.bz2
+Removed r-maptools-1.1_4-r40h06615bd_0.tar.bz2
+Removed r-matrixmodels-0.5_0-r40hc72bb7e_0.tar.bz2
+Removed r-memoise-2.0.1-r40hc72bb7e_0.tar.bz2
+Removed r-mgcv-1.8_40-r40h0154571_0.tar.bz2
+Removed r-openssl-2.0.3-r40hfaab4ff_0.tar.bz2
+Removed r-proc-1.18.0-r40h03ef668_0.tar.bz2
+Removed r-promises-1.2.0.1-r40h03ef668_0.tar.bz2
+Removed r-rcppeigen-0.3.3.9.2-r40h43535f1_0.tar.bz2
+Removed r-reshape2-1.4.4-r40h03ef668_1.tar.bz2
+Removed r-rversions-2.1.2-r40hc72bb7e_0.tar.bz2
+Removed r-sass-0.4.2-r40h7525677_0.tar.bz2
+Removed r-scales-1.2.1-r40hc72bb7e_0.tar.bz2
+Removed r-selectr-0.4_2-r40hc72bb7e_1.tar.bz2
+Removed r-sessioninfo-1.2.2-r40hc72bb7e_0.tar.bz2
+Removed r-survival-3.4_0-r40h06615bd_0.tar.bz2
+Removed r-urca-1.3_0-r40h9bbef5b_1005.tar.bz2
+Removed r-vctrs-0.4.1-r40h7525677_0.tar.bz2
+Removed r-xopen-1.0.0-r40hc72bb7e_1003.tar.bz2
+Removed r-xts-0.12.1-r40h06615bd_0.tar.bz2
+Removed r-blob-1.2.3-r40hc72bb7e_0.tar.bz2
+Removed r-bslib-0.4.0-r40hc72bb7e_0.tar.bz2
+Removed r-conflicted-1.1.0-r40hc72bb7e_0.tar.bz2
+Removed r-credentials-1.3.2-r40hc72bb7e_0.tar.bz2
+Removed r-dt-0.25-r40hc72bb7e_0.tar.bz2
+Removed r-furrr-0.3.1-r40hc72bb7e_0.tar.bz2
+Removed r-future.apply-1.9.1-r40hc72bb7e_0.tar.bz2
+Removed r-hms-1.1.2-r40hc72bb7e_0.tar.bz2
+Removed r-httpuv-1.6.6-r40h7525677_0.tar.bz2
+Removed r-httr-1.4.4-r40hc72bb7e_0.tar.bz2
+Removed r-ids-1.0.1-r40hc72bb7e_1.tar.bz2
+Removed r-lme4-1.1_30-r40h7525677_0.tar.bz2
+Removed r-pillar-1.8.1-r40hc72bb7e_0.tar.bz2
+Removed r-pkgbuild-1.3.1-r40hc72bb7e_0.tar.bz2
+Removed r-pkgload-1.3.0-r40hc72bb7e_0.tar.bz2
+Removed r-r2d3-0.2.6-r40hc72bb7e_0.tar.bz2
+Removed r-ranger-0.14.1-r40h7525677_0.tar.bz2
+Removed r-rmarkdown-2.7-r40hc72bb7e_0.tar.bz2
+Removed r-slider-0.2.2-r40hcfec24a_0.tar.bz2
+Removed r-svglite-2.1.0-r40h03ef668_0.tar.bz2
+Removed r-tidyselect-1.1.2-r40hc72bb7e_0.tar.bz2
+Removed r-ttr-0.24.3-r40h06615bd_0.tar.bz2
+Removed r-vcd-1.4_10-r40hc72bb7e_0.tar.bz2
+Removed r-webshot-0.5.4-r40hc72bb7e_0.tar.bz2
+Removed r-covr-3.6.1-r40h7525677_0.tar.bz2
+Removed r-gargle-1.2.1-r40hc72bb7e_0.tar.bz2
+Removed r-gert-1.3.1-r40hbd84cd2_0.tar.bz2
+Removed r-gh-1.3.1-r40hc72bb7e_0.tar.bz2
+Removed r-lava-1.6.10-r40hc72bb7e_0.tar.bz2
+Removed r-progress-1.2.2-r40hc72bb7e_2.tar.bz2
+Removed r-quantmod-0.4.20-r40hc72bb7e_0.tar.bz2
+Removed r-rcmdcheck-1.4.0-r40h785f33e_0.tar.bz2
+Removed r-repr-1.1.4-r40h785f33e_0.tar.bz2
+Removed r-reprex-2.0.2-r40hc72bb7e_0.tar.bz2
+Removed r-roxygen2-7.1.1-r40h03ef668_0.tar.bz2
+Removed r-rsqlite-2.2.8-r40h03ef668_0.tar.bz2
+Removed r-shiny-1.6.0-r40hc72bb7e_0.tar.bz2
+Removed r-tibble-3.1.8-r40h06615bd_0.tar.bz2
+Removed r-cellranger-1.1.0-r40hc72bb7e_1004.tar.bz2
+Removed r-dplyr-1.0.10-r40h7525677_0.tar.bz2
+Removed r-forcats-0.5.2-r40hc72bb7e_0.tar.bz2
+Removed r-googledrive-2.0.0-r40hc72bb7e_0.tar.bz2
+Removed r-hardhat-1.2.0-r40hc72bb7e_0.tar.bz2
+Removed r-irdisplay-0.7-r40_1002.tar.bz2
+Removed r-nycflights13-1.0.2-r40hc72bb7e_0.tar.bz2
+Removed r-prodlim-2019.11.13-r40h03ef668_1.tar.bz2
+Removed r-rematch2-2.1.2-r40hc72bb7e_1.tar.bz2
+Removed r-rvest-1.0.3-r40hc72bb7e_0.tar.bz2
+Removed r-tseries-0.10_47-r40hfa343cc_4.tar.bz2
+Removed r-usethis-2.1.6-r40hc72bb7e_0.tar.bz2
+Removed r-vroom-1.5.7-r40h03ef668_0.tar.bz2
+Removed r-dbplyr-2.2.1-r40hc72bb7e_0.tar.bz2
+Removed r-dials-1.0.0-r40hc72bb7e_0.tar.bz2
+Removed r-dtplyr-1.2.2-r40hc72bb7e_0.tar.bz2
+Removed r-googlesheets4-1.0.1-r40h785f33e_0.tar.bz2
+Removed r-ipred-0.9_13-r40h06615bd_0.tar.bz2
+Removed r-irkernel-1.1.1-r40h6115d3f_0.tar.bz2
+Removed r-kableextra-1.3.4-r40hc72bb7e_0.tar.bz2
+Removed r-modeldata-1.0.1-r40hc72bb7e_0.tar.bz2
+Removed r-readr-2.1.2-r40h03ef668_0.tar.bz2
+Removed r-readxl-1.4.1-r40hf23e330_0.tar.bz2
+Removed r-tidyr-1.2.1-r40h7525677_0.tar.bz2
+Removed r-waldo-0.4.0-r40hc72bb7e_0.tar.bz2
+Removed r-yardstick-1.1.0-r40h06615bd_0.tar.bz2
+Removed r-haven-2.5.0-r40h7525677_0.tar.bz2
+Removed r-recipes-1.0.1-r40hc72bb7e_0.tar.bz2
+Removed r-rsample-1.1.0-r40hc72bb7e_0.tar.bz2
+Removed r-sparklyr-1.6.3-r40hc72bb7e_0.tar.bz2
+Removed r-testthat-3.1.4-r40h7525677_0.tar.bz2
+Removed r-devtools-2.4.3-r40hc72bb7e_0.tar.bz2
+Removed r-isoband-0.2.5-r40h03ef668_0.tar.bz2
+Removed r-rio-0.5.29-r40hc72bb7e_0.tar.bz2
+Removed r-ggplot2-3.3.6-r40hc72bb7e_0.tar.bz2
+Removed r-broom-1.0.1-r40hc72bb7e_0.tar.bz2
+Removed r-caret-6.0_93-r40h06615bd_0.tar.bz2
+Removed r-forecast-8.14-r40h6dc32e9_0.tar.bz2
+Removed r-ggridges-0.5.3-r40hc72bb7e_0.tar.bz2
+Removed r-parsnip-1.0.1-r40hc72bb7e_0.tar.bz2
+Removed r-patchwork-1.1.2-r40hc72bb7e_0.tar.bz2
+Removed r-upsetr-1.4.0-r40hc72bb7e_2.tar.bz2
+Removed r-conquer-1.3.0-r40hcec875b_0.tar.bz2
+Removed r-infer-1.0.3-r40hc72bb7e_0.tar.bz2
+Removed r-modelr-0.1.9-r40hc72bb7e_0.tar.bz2
+Removed r-pbkrtest-0.5.1-r40hc72bb7e_0.tar.bz2
+Removed r-workflows-1.1.0-r40hc72bb7e_0.tar.bz2
+Removed r-quantreg-5.73-r40hb7af6a2_0.tar.bz2
+Removed r-tidyverse-1.3.2-r40hc72bb7e_0.tar.bz2
+Removed r-tune-1.0.0-r40hc72bb7e_0.tar.bz2
+Removed r-car-3.1_0-r40hc72bb7e_0.tar.bz2
+Removed r-workflowsets-1.0.0-r40hc72bb7e_0.tar.bz2
+Removed r-tidymodels-0.1.4-r40hc72bb7e_0.tar.bz2
+Removed r-vim-6.2.2-r40h7525677_0.tar.bz2
+Removed importlib_metadata-1.5.0-py37_0.tar.bz2
+Removed inflect-4.0.0-py37_1.tar.bz2
+Removed jsonschema-3.2.0-py37_0.tar.bz2
+Removed jaraco.itertools-5.0.0-py_0.tar.bz2
+Removed jupyter_telemetry-0.0.4-py_0.tar.bz2
+Removed nbformat-5.0.4-py_0.tar.bz2
+Removed jupyterhub-base-1.1.0-py37_2.tar.bz2
+Removed nbconvert-5.6.1-py37_0.tar.bz2
+Removed zipp-2.1.0-py_0.tar.bz2
+Removed jupyterhub-1.1.0-py37_2.tar.bz2
+Removed notebook-6.0.3-py37_0.tar.bz2
+Removed jupyterlab_server-1.0.6-py_0.tar.bz2
+Removed widgetsnbextension-3.5.1-py37_0.tar.bz2
+Removed ipywidgets-7.5.1-py_0.tar.bz2
+Removed jupyterlab-1.2.5-pyhf63ae98_0.conda
+Cache location: /tmp/conda-pkgs-hnelson3
+Will remove the following packages:
+/tmp/conda-pkgs-hnelson3
+------------------------
+
+_libgcc_mutex-0.1-conda_forge                  6 KB
+_r-mutex-1.0.1-anacondar_1                     9 KB
+_openmp_mutex-4.5-0_gnu                      490 KB
+pthread-stubs-0.4-h36c2ea0_1001               14 KB
+libblas-3.8.0-14_openblas                     36 KB
+libcblas-3.8.0-14_openblas                    36 KB
+liblapack-3.8.0-14_openblas                   36 KB
+liblapacke-3.8.0-14_openblas                  36 KB
+blas-2.14-openblas                            39 KB
+click-7.0-py_0                               282 KB
+numpy-1.17.5-py37h95a1406_0                 20.9 MB
+python_abi-3.7-2_cp37m                        11 KB
+pytz-2019.3-py_0                             1.1 MB
+six-1.14.0-py37_0                             75 KB
+packaging-20.1-py_0                          127 KB
+python-dateutil-2.8.1-py_0                   447 KB
+scipy-1.4.1-py37h921218d_0                  64.2 MB
+pandas-0.25.3-py37hb3f55d8_0                46.1 MB
+parquet-cpp-1.5.1-2                            8 KB
+patsy-0.5.1-py_0                             765 KB
+pip-20.0.2-py37_0                            7.5 MB/opt/conda/lib/python3.7/site-packages/boto3/compat.py:82: PythonDeprecationWarning: Boto3 will no longer support Python 3.7 starting December 13, 2023. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.8 or later. More information can be found here: https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/
+  warnings.warn(warning, PythonDeprecationWarning)
+
+statsmodels-0.11.0-py37h516909a_0           38.1 MB
+dask-2.9.2-py_0                               11 KB
+jupyterhub-1.1.0-py37_2                       12 KB
+
+---------------------------------------------------
+Total:                                     180.2 MB
+
+removing _libgcc_mutex-0.1-conda_forge
+removing _r-mutex-1.0.1-anacondar_1
+removing _openmp_mutex-4.5-0_gnu
+removing pthread-stubs-0.4-h36c2ea0_1001
+removing libblas-3.8.0-14_openblas
+removing libcblas-3.8.0-14_openblas
+removing liblapack-3.8.0-14_openblas
+removing liblapacke-3.8.0-14_openblas
+removing blas-2.14-openblas
+removing click-7.0-py_0
+removing numpy-1.17.5-py37h95a1406_0
+removing python_abi-3.7-2_cp37m
+removing pytz-2019.3-py_0
+removing six-1.14.0-py37_0
+removing packaging-20.1-py_0
+removing python-dateutil-2.8.1-py_0
+removing scipy-1.4.1-py37h921218d_0
+removing pandas-0.25.3-py37hb3f55d8_0
+removing parquet-cpp-1.5.1-2
+removing patsy-0.5.1-py_0
+removing pip-20.0.2-py37_0
+removing statsmodels-0.11.0-py37h516909a_0
+removing dask-2.9.2-py_0
+removing jupyterhub-1.1.0-py37_2
+
+========== Part 5: Create R Environment ==========
+Including 38 R packages from /home/hnelson3/work/Users/hnelson3/updatebionic/requirements-R.txt in env-creation solve.
+Creating R 4.4.0 environment with Python 3.10 + R packages (single-shot solve)...
+Solver: micromamba (2.8.0) via miniconda
+warning  libmamba 'repo.anaconda.com', a commercial channel hosted by Anaconda.com, is used.
+    
+warning  libmamba Please make sure you understand Anaconda Terms of Services.
+    
+warning  libmamba See: https://legal.anaconda.com/policies/en/
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+Fetch Shard Index for conda-forge/linux-64                                                      ⧖ Starting
+Fetch Shard Index for conda-forge/linux-64                                                ✔ Done (0.1 sec)
+Fetch Shard Index for conda-forge/noarch                                                        ⧖ Starting
+Fetch Shard Index for conda-forge/noarch                                                  ✔ Done (0.1 sec)
+Fetching and Parsing Packages' Shards                                                           ⧖ Starting
+Fetching and Parsing Packages' Shards                                                     ✔ Done (0.7 sec)
+critical libmamba Multiple errors occurred:
+    Download error (60) SSL peer certificate or SSH remote key was not OK [https://repo.anaconda.com/pkgs/r/noarch/repodata.json]
+    SSL certificate OpenSSL verify result: certificate has expired (10)
+    Subdir pkgs/main/noarch not loaded!
+    Subdir pkgs/r/noarch not loaded!
+    If you run into this error repeatedly, your package cache may be corrupted.
+    Please try running `mamba clean -a` to remove this cache before retrying the operation.
+    
+    If you still are having issues, please report the error on `mamba-org/mamba`'s issue tracker:
+    https://github.com/mamba-org/mamba/issues/new?assignees=&labels=&projects=&template=bug.yml
+Environment creation failed. Retrying... (Attempt 1 of 3)
+warning  libmamba 'repo.anaconda.com', a commercial channel hosted by Anaconda.com, is used.
+    
+warning  libmamba Please make sure you understand Anaconda Terms of Services.
+    
+warning  libmamba See: https://legal.anaconda.com/policies/en/
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+Using Cached Shard Index for conda-forge/linux-64                                                   ✔ Done
+Using Cached Shard Index for conda-forge/noarch                                                     ✔ Done
+Fetching and Parsing Packages' Shards                                                           ⧖ Starting
+Fetching and Parsing Packages' Shards                                                     ✔ Done (0.7 sec)
+critical libmamba Multiple errors occurred:
+    Download error (60) SSL peer certificate or SSH remote key was not OK [https://repo.anaconda.com/pkgs/main/noarch/repodata.json]
+    SSL certificate OpenSSL verify result: certificate has expired (10)
+    Subdir pkgs/main/noarch not loaded!
+    Subdir pkgs/r/noarch not loaded!
+    If you run into this error repeatedly, your package cache may be corrupted.
+    Please try running `mamba clean -a` to remove this cache before retrying the operation.
+    
+    If you still are having issues, please report the error on `mamba-org/mamba`'s issue tracker:
+    https://github.com/mamba-org/mamba/issues/new?assignees=&labels=&projects=&template=bug.yml
+Environment creation failed. Retrying... (Attempt 2 of 3)
+warning  libmamba 'repo.anaconda.com', a commercial channel hosted by Anaconda.com, is used.
+    
+warning  libmamba Please make sure you understand Anaconda Terms of Services.
+    
+warning  libmamba See: https://legal.anaconda.com/policies/en/
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+warning  libmamba Retrying in 2 seconds
+Using Cached Shard Index for conda-forge/linux-64                                                   ✔ Done
+Using Cached Shard Index for conda-forge/noarch                                                     ✔ Done
+Fetching and Parsing Packages' Shards                                                           ⧖ Starting
+Fetching and Parsing Packages' Shards                                                     ✔ Done (0.7 sec)
+critical libmamba Multiple errors occurred:
+    Download error (60) SSL peer certificate or SSH remote key was not OK [https://repo.anaconda.com/pkgs/r/noarch/repodata.json]
+    SSL certificate OpenSSL verify result: certificate has expired (10)
+    Subdir pkgs/main/noarch not loaded!
+    Subdir pkgs/r/noarch not loaded!
+    If you run into this error repeatedly, your package cache may be corrupted.
+    Please try running `mamba clean -a` to remove this cache before retrying the operation.
+    
+    If you still are having issues, please report the error on `mamba-org/mamba`'s issue tracker:
+    https://github.com/mamba-org/mamba/issues/new?assignees=&labels=&projects=&template=bug.yml
+Environment creation failed. Retrying... (Attempt 3 of 3)
+ERROR: Conda environment creation failed after 3 attempts.
+Continuing with lhn setup (R environment will not be available)...
+
+========== Part 6: Verify Prerequisites for lhn ==========
+Initializing old conda from /opt/conda...
+Verifying pyspark in base environment (old conda for Spark/PySpark compatibility)...
+  base python: 3.7.6 /opt/conda/bin/python
+  pyspark import OK: 2.4.4
+Prerequisites verified (or tolerated for known old-pyspark case).
+
+========== Part 7: Verify/Update Source Repositories ==========
+
+--- Skipping PRODUCTION source clone (BUILD_LHN_PROD=0) ---
+
+--- Verifying DEVELOPMENT sources (persistent storage) ---
+Found lhn at /home/hnelson3/work/Users/hnelson3/lhn
+Fetching origin
+From https://github.com/harlananelson/lhn
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+lhn updated to latest main branch
+Found spark_config_mapper at /home/hnelson3/work/Users/hnelson3/spark_config_mapper
+Already up to date.
+Found omop_concept_mapper at /home/hnelson3/work/Users/hnelson3/omop_concept_mapper
+Already up to date.
+
+Source repositories ready.
+
+========== Part 8: Create Production Environment (lhn_prod) ==========
+Skipping lhn_prod build (BUILD_LHN_PROD=0).
+  → Set BUILD_LHN_PROD=1 to enable. This saves ~5 min and ~1 GB.
+  → If you need the pyspark-lhn-prod kernel, re-run with:
+      BUILD_LHN_PROD=1 bash setup-user.sh
+
+========== Part 9: Create Development Environment (lhn_dev) ==========
+Removing existing development environment...
+Cloning Docker base environment (/opt/conda) to /tmp/lhn_dev-hnelson3...
+This may take a few minutes...
+Source:      /opt/conda
+Destination: /tmp/lhn_dev-hnelson3
+The following packages cannot be cloned out of the root environment:
+ - conda-forge::conda-4.7.12-py37_1
+Packages: 498
+Files: 38714
+
+Downloading and Extracting Packages
+
+_libgcc_mutex-0.1    |            |   0% 
+_libgcc_mutex-0.1    | ########## | 100% 
+
+_r-mutex-1.0.1       |            |   0% 
+_r-mutex-1.0.1       | ########## | 100% 
+
+_openmp_mutex-4.5    |            |   0% 
+_openmp_mutex-4.5    | ########## | 100% 
+
+pthread-stubs-0.4    |            |   0% 
+pthread-stubs-0.4    | ########## | 100% 
+
+libblas-3.8.0        |            |   0% 
+libblas-3.8.0        | ########## | 100% 
+
+libcblas-3.8.0       |            |   0% 
+libcblas-3.8.0       | ########## | 100% 
+
+liblapack-3.8.0      |            |   0% 
+liblapack-3.8.0      | ########## | 100% 
+
+liblapacke-3.8.0     |            |   0% 
+liblapacke-3.8.0     | ########## | 100% 
+
+blas-2.14            |            |   0% 
+blas-2.14            | ########## | 100% 
+
+click-7.0            |            |   0% 
+click-7.0            | ########## | 100% 
+
+numpy-1.17.5         |            |   0% 
+numpy-1.17.5         | ########## | 100% 
+
+python_abi-3.7       |            |   0% 
+python_abi-3.7       | ########## | 100% 
+
+pytz-2019.3          |            |   0% 
+pytz-2019.3          | ########## | 100% 
+
+six-1.14.0           |            |   0% 
+six-1.14.0           | ########## | 100% 
+
+packaging-20.1       |            |   0% 
+packaging-20.1       | ########## | 100% 
+
+python-dateutil-2.8. |            |   0% 
+python-dateutil-2.8. | ########## | 100% 
+
+scipy-1.4.1          |            |   0% 
+scipy-1.4.1          | #######9   |  79% 
+scipy-1.4.1          | ########## | 100% 
+
+pandas-0.25.3        |            |   0% 
+pandas-0.25.3        | ########## | 100% 
+
+parquet-cpp-1.5.1    |            |   0% 
+parquet-cpp-1.5.1    | ########## | 100% 
+
+patsy-0.5.1          |            |   0% 
+patsy-0.5.1          | ########## | 100% 
+
+pip-20.0.2           |            |   0% 
+pip-20.0.2           | ########## | 100% 
+
+statsmodels-0.11.0   |            |   0% 
+statsmodels-0.11.0   | ########## | 100% 
+
+dask-2.9.2           |            |   0% 
+dask-2.9.2           | ########## | 100% 
+
+jupyterhub-1.1.0     |            |   0% 
+jupyterhub-1.1.0     | ########## | 100% 
+Preparing transaction: ...working... done
+Verifying transaction: ...working... done
+Executing transaction: ...working... b'Enabling notebook extension jupyter-js-widgets/extension...\n      - Validating: \x1b[32mOK\x1b[0m\n'
+done
+/opt/conda/lib/python3.7/site-packages/boto3/compat.py:82: PythonDeprecationWarning: Boto3 will no longer support Python 3.7 starting December 13, 2023. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.8 or later. More information can be found here: https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/
+  warnings.warn(warning, PythonDeprecationWarning)
+#
+# To activate this environment, use
+#
+#     $ conda activate /tmp/lhn_dev-hnelson3
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+Activating development environment...
+Removing corrupted pip installation from cloned environment...
+Installing fresh pip via get-pip.py...
+Collecting pip<24.1
+  Downloading pip-24.0-py3-none-any.whl.metadata (3.6 kB)
+Downloading pip-24.0-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 2.4 MB/s eta 0:00:00
+Installing collected packages: pip
+Successfully installed pip-24.0
+Upgrading pip to support modern package formats...
+Requirement already satisfied: pip in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (24.0)
+Fixing corrupted pandas installation...
+Found existing installation: pandas 0.25.3
+Uninstalling pandas-0.25.3:
+  Successfully uninstalled pandas-0.25.3
+Files removed: 197
+Installing pandas 0.25.3 fresh (for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pandas==0.25.3) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pandas==0.25.3) (2019.3)
+Requirement already satisfied: numpy>=1.13.3 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pandas==0.25.3) (1.17.5)
+Requirement already satisfied: six>=1.5 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from python-dateutil>=2.6.1->pandas==0.25.3) (1.14.0)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 131.8 MB/s eta 0:00:00
+Installing collected packages: pandas
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.2.4
+    Uninstalling pandas-1.2.4:
+      Successfully uninstalled pandas-1.2.4
+Successfully installed pandas-0.25.3
+Installing dependencies for refactored lhn from persistent storage...
+Installing spark_config_mapper from /home/hnelson3/work/Users/hnelson3/spark_config_mapper...
+  (Using --no-deps to avoid pandas version conflict with pyspark 2.4.4)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/spark_config_mapper
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: spark-config-mapper
+  Building editable for spark-config-mapper (pyproject.toml): started
+  Building editable for spark-config-mapper (pyproject.toml): finished with status 'done'
+  Created wheel for spark-config-mapper: filename=spark_config_mapper-0.1.0-0.editable-py3-none-any.whl size=5096 sha256=aafc8575cfbc7ddf4387b6892cafef61216fd1bad9f8237802a1f4594c719612
+  Stored in directory: /tmp/pip-ephem-wheel-cache-osnxnxlw/wheels/a9/86/5d/41da808220424a712ee82ddc922b831da5e6889190bb1678eb
+Successfully built spark-config-mapper
+Installing collected packages: spark-config-mapper
+Successfully installed spark-config-mapper-0.1.0
+Installing omop_concept_mapper from /home/hnelson3/work/Users/hnelson3/omop_concept_mapper...
+  (Using --no-deps to avoid pandas version conflict)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/omop_concept_mapper
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: omop-concept-mapper
+  Building editable for omop-concept-mapper (pyproject.toml): started
+  Building editable for omop-concept-mapper (pyproject.toml): finished with status 'done'
+  Created wheel for omop-concept-mapper: filename=omop_concept_mapper-0.1.0-0.editable-py3-none-any.whl size=4948 sha256=836195974cdb873a03a86e3bdbab4ed63c8cb4f047f0cfd2ab54cafe7c45f787
+  Stored in directory: /tmp/pip-ephem-wheel-cache-v7vmz_w5/wheels/63/96/49/b52089d164aab01ae5b6509b5c67632643629ba97a77763b42
+Successfully built omop-concept-mapper
+Installing collected packages: omop-concept-mapper
+Successfully installed omop-concept-mapper-0.1.0
+Installing lhn v0.2.0-dev (refactored) from /home/hnelson3/work/Users/hnelson3/lhn...
+  (Using --no-deps to avoid pandas version conflict with pyspark 2.4.4)
+Obtaining file:///home/hnelson3/work/Users/hnelson3/lhn
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: lhn
+  Building editable for lhn (pyproject.toml): started
+  Building editable for lhn (pyproject.toml): finished with status 'done'
+  Created wheel for lhn: filename=lhn-0.2.1.dev0-0.editable-py3-none-any.whl size=4707 sha256=ff60caaa37b0c826deb687ba2ff4583020b0396851c9d3e6a9c7738e37e16478
+  Stored in directory: /tmp/pip-ephem-wheel-cache-u7s0uz1p/wheels/40/05/cc/4dea4d09c52516c2074d46aca396600adf8e75c735740ea73c
+Successfully built lhn
+Installing collected packages: lhn
+Successfully installed lhn-0.2.1.dev0
+Installing additional Python packages (plotnine, lifelines, etc.)...
+Requirement already satisfied: patsy in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (0.5.1)
+Requirement already satisfied: numpy in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2)) (1.17.5)
+Requirement already satisfied: scipy in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3)) (1.4.1)
+Requirement already satisfied: pandas in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (0.25.3)
+Collecting plotnine (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading plotnine-0.8.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting lifelines (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading lifelines-0.27.8-py3-none-any.whl.metadata (3.3 kB)
+Collecting geopandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading geopandas-0.10.2-py2.py3-none-any.whl.metadata (935 bytes)
+Collecting jupyterlab-quarto (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 8))
+  Downloading jupyterlab_quarto-0.1.45-py3-none-any.whl.metadata (5.8 kB)
+Collecting duckdb==0.10.3 (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 9))
+  Downloading duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (763 bytes)
+Collecting polars (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Downloading polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+Requirement already satisfied: six in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from patsy->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1)) (1.14.0)
+Requirement already satisfied: python-dateutil>=2.6.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2.8.1)
+Requirement already satisfied: pytz>=2017.2 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4)) (2019.3)
+Collecting mizani>=0.7.3 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading mizani-0.7.3-py3-none-any.whl.metadata (677 bytes)
+Requirement already satisfied: matplotlib>=3.1.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (3.1.2)
+Collecting numpy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 2))
+  Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting scipy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 3))
+  Downloading scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.2 kB)
+Collecting statsmodels>=0.12.1 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.5 kB)
+Collecting pandas (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 4))
+  Downloading pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (12 kB)
+Collecting descartes>=1.1.0 (from plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading descartes-1.1.0-py3-none-any.whl.metadata (2.4 kB)
+Collecting autograd>=1.5 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading autograd-1.6.2-py3-none-any.whl.metadata (706 bytes)
+Collecting autograd-gamma>=0.3 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading autograd-gamma-0.5.0.tar.gz (4.0 kB)
+  Preparing metadata (setup.py): started
+  Preparing metadata (setup.py): finished with status 'done'
+Collecting formulaic>=0.2.2 (from lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading formulaic-1.1.1-py3-none-any.whl.metadata (6.9 kB)
+Collecting shapely>=1.6 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.9 kB)
+Collecting fiona>=1.8 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl.metadata (50 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.2/50.2 kB 48.1 kB/s eta 0:00:00
+Collecting pyproj>=2.2.0 (from geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl.metadata (22 kB)
+Collecting typing_extensions>=4.0.1 (from polars->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 10))
+  Downloading typing_extensions-4.7.1-py3-none-any.whl.metadata (3.1 kB)
+Requirement already satisfied: future>=0.15.2 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from autograd>=1.5->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6)) (0.18.3)
+Requirement already satisfied: attrs>=19.2.0 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (19.3.0)
+Requirement already satisfied: certifi in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2023.7.22)
+Collecting click~=8.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading click-8.1.8-py3-none-any.whl.metadata (2.3 kB)
+Collecting click-plugins>=1.0 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading click_plugins-1.1.1.2-py2.py3-none-any.whl.metadata (6.5 kB)
+Collecting cligj>=0.5 (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7))
+  Downloading cligj-0.7.2-py3-none-any.whl.metadata (5.0 kB)
+Requirement already satisfied: importlib-metadata in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (1.5.0)
+Collecting astor>=0.8 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading astor-0.8.1-py2.py3-none-any.whl.metadata (4.2 kB)
+Collecting cached-property>=1.3.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading cached_property-1.5.2-py2.py3-none-any.whl.metadata (11 kB)
+Collecting graphlib-backport>=1.0.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading graphlib_backport-1.1.0-py3-none-any.whl.metadata (4.4 kB)
+Collecting interface-meta>=1.2.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading interface_meta-1.3.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting wrapt>=1.0 (from formulaic>=0.2.2->lifelines->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 6))
+  Downloading wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+Requirement already satisfied: cycler>=0.10 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (0.10.0)
+Requirement already satisfied: kiwisolver>=1.0.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (1.1.0)
+Requirement already satisfied: pyparsing!=2.0.4,!=2.1.2,!=2.1.6,>=2.0.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (2.4.6)
+Collecting palettable (from mizani>=0.7.3->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading palettable-3.3.3-py2.py3-none-any.whl.metadata (3.3 kB)
+Collecting patsy (from -r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 1))
+  Downloading patsy-1.0.2-py2.py3-none-any.whl.metadata (3.6 kB)
+Collecting packaging>=21.3 (from statsmodels>=0.12.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5))
+  Downloading packaging-24.0-py3-none-any.whl.metadata (3.2 kB)
+Requirement already satisfied: setuptools in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from kiwisolver>=1.0.1->matplotlib>=3.1.1->plotnine->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 5)) (45.1.0.post20200119)
+Requirement already satisfied: zipp>=0.5 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from importlib-metadata->fiona>=1.8->geopandas->-r /home/hnelson3/work/Users/hnelson3/updatebionic/requirements.txt (line 7)) (2.1.0)
+Downloading duckdb-0.10.3-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.5/18.5 MB 5.9 MB/s eta 0:00:00
+Downloading plotnine-0.8.0-py3-none-any.whl (4.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 4.4 MB/s eta 0:00:00
+Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 6.6 MB/s eta 0:00:00
+Downloading scipy-1.7.3-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (38.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.1/38.1 MB 4.9 MB/s eta 0:00:00
+Downloading pandas-1.3.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (11.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 7.4 MB/s eta 0:00:00
+Downloading lifelines-0.27.8-py3-none-any.whl (350 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 350.7/350.7 kB 332.2 kB/s eta 0:00:00
+Downloading geopandas-0.10.2-py2.py3-none-any.whl (1.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 1.1 MB/s eta 0:00:00
+Downloading jupyterlab_quarto-0.1.45-py3-none-any.whl (3.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.2/3.2 MB 2.7 MB/s eta 0:00:00
+Downloading polars-0.18.4-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.9/18.9 MB 6.7 MB/s eta 0:00:00
+Downloading autograd-1.6.2-py3-none-any.whl (49 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.3/49.3 kB 40.1 kB/s eta 0:00:00
+Downloading descartes-1.1.0-py3-none-any.whl (5.8 kB)
+Downloading fiona-1.9.6-cp37-cp37m-manylinux2014_x86_64.whl (15.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.6/15.6 MB 6.8 MB/s eta 0:00:00
+Downloading formulaic-1.1.1-py3-none-any.whl (115 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 115.7/115.7 kB 120.0 kB/s eta 0:00:00
+Downloading mizani-0.7.3-py3-none-any.whl (63 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 63.1/63.1 kB 55.8 kB/s eta 0:00:00
+Downloading pyproj-3.2.1-cp37-cp37m-manylinux2010_x86_64.whl (6.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 5.4 MB/s eta 0:00:00
+Downloading shapely-2.0.7-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 1.7 MB/s eta 0:00:00
+Downloading statsmodels-0.13.5-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (9.9 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.9/9.9 MB 7.6 MB/s eta 0:00:00
+Downloading patsy-1.0.2-py2.py3-none-any.whl (233 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 233.3/233.3 kB 226.0 kB/s eta 0:00:00
+Downloading typing_extensions-4.7.1-py3-none-any.whl (33 kB)
+Downloading astor-0.8.1-py2.py3-none-any.whl (27 kB)
+Downloading cached_property-1.5.2-py2.py3-none-any.whl (7.6 kB)
+Downloading click-8.1.8-py3-none-any.whl (98 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 98.2/98.2 kB 92.2 kB/s eta 0:00:00
+Downloading click_plugins-1.1.1.2-py2.py3-none-any.whl (11 kB)
+Downloading cligj-0.7.2-py3-none-any.whl (7.1 kB)
+Downloading graphlib_backport-1.1.0-py3-none-any.whl (7.1 kB)
+Downloading interface_meta-1.3.0-py3-none-any.whl (14 kB)
+Downloading packaging-24.0-py3-none-any.whl (53 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.5/53.5 kB 46.9 kB/s eta 0:00:00
+Downloading wrapt-1.16.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl (77 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 77.5/77.5 kB 75.2 kB/s eta 0:00:00
+Downloading palettable-3.3.3-py2.py3-none-any.whl (332 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 332.3/332.3 kB 360.0 kB/s eta 0:00:00
+Building wheels for collected packages: autograd-gamma
+  Building wheel for autograd-gamma (setup.py): started
+  Building wheel for autograd-gamma (setup.py): finished with status 'done'
+  Created wheel for autograd-gamma: filename=autograd_gamma-0.5.0-py3-none-any.whl size=4033 sha256=4bae5278dd5951ca5e5b424a57bb80de1fdd697c74455b3c4c60e62e33260831
+  Stored in directory: /home/hnelson3/work/Users/hnelson3/.cache/pip/wheels/9f/01/ee/1331593abb5725ff7d8c1333aee93a50a1c29d6ddda9665c9f
+Successfully built autograd-gamma
+Installing collected packages: cached-property, wrapt, typing_extensions, pyproj, palettable, packaging, numpy, jupyterlab-quarto, interface-meta, graphlib-backport, duckdb, astor, shapely, scipy, polars, patsy, pandas, click, autograd, statsmodels, mizani, formulaic, descartes, cligj, click-plugins, autograd-gamma, plotnine, lifelines, fiona, geopandas
+  Attempting uninstall: packaging
+    Found existing installation: packaging 20.1
+    Uninstalling packaging-20.1:
+      Successfully uninstalled packaging-20.1
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.17.5
+    Uninstalling numpy-1.17.5:
+      Successfully uninstalled numpy-1.17.5
+  Attempting uninstall: scipy
+    Found existing installation: scipy 1.4.1
+    Uninstalling scipy-1.4.1:
+      Successfully uninstalled scipy-1.4.1
+  Attempting uninstall: patsy
+    Found existing installation: patsy 0.5.1
+    Uninstalling patsy-0.5.1:
+      Successfully uninstalled patsy-0.5.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 0.25.3
+    Uninstalling pandas-0.25.3:
+      Successfully uninstalled pandas-0.25.3
+  Attempting uninstall: click
+    Found existing installation: Click 7.0
+    Uninstalling Click-7.0:
+      Successfully uninstalled Click-7.0
+  Attempting uninstall: statsmodels
+    Found existing installation: statsmodels 0.11.0
+    Uninstalling statsmodels-0.11.0:
+      Successfully uninstalled statsmodels-0.11.0
+Successfully installed astor-0.8.1 autograd-1.6.2 autograd-gamma-0.5.0 cached-property-1.5.2 click-8.1.8 click-plugins-1.1.1.2 cligj-0.7.2 descartes-1.1.0 duckdb-0.10.3 fiona-1.9.6 formulaic-1.1.1 geopandas-0.10.2 graphlib-backport-1.1.0 interface-meta-1.3.0 jupyterlab-quarto-0.1.45 lifelines-0.27.8 mizani-0.7.3 numpy-1.21.6 packaging-24.0 palettable-3.3.3 pandas-1.3.5 patsy-1.0.2 plotnine-0.8.0 polars-0.18.4 pyproj-3.2.1 scipy-1.7.3 shapely-2.0.7 statsmodels-0.13.5 typing_extensions-4.7.1 wrapt-1.16.0
+Installing duckdb...
+Requirement already satisfied: duckdb in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (0.10.3)
+Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)...
+Collecting pandas==0.25.3
+  Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl.metadata (4.8 kB)
+Collecting python-dateutil>=2.6.1 (from pandas==0.25.3)
+  Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting pytz>=2017.2 (from pandas==0.25.3)
+  Downloading pytz-2026.2-py2.py3-none-any.whl.metadata (22 kB)
+Collecting numpy>=1.13.3 (from pandas==0.25.3)
+  Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl.metadata (2.1 kB)
+Collecting six>=1.5 (from python-dateutil>=2.6.1->pandas==0.25.3)
+  Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Downloading pandas-0.25.3-cp37-cp37m-manylinux1_x86_64.whl (10.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.4/10.4 MB 146.6 MB/s eta 0:00:00
+Downloading numpy-1.21.6-cp37-cp37m-manylinux_2_12_x86_64.manylinux2010_x86_64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 200.8 MB/s eta 0:00:00
+Downloading python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 229.9/229.9 kB 264.9 MB/s eta 0:00:00
+Downloading pytz-2026.2-py2.py3-none-any.whl (510 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 510.1/510.1 kB 282.5 MB/s eta 0:00:00
+Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: pytz, six, numpy, python-dateutil, pandas
+  Attempting uninstall: pytz
+    Found existing installation: pytz 2019.3
+    Uninstalling pytz-2019.3:
+      Successfully uninstalled pytz-2019.3
+  Attempting uninstall: six
+    Found existing installation: six 1.14.0
+    Uninstalling six-1.14.0:
+      Successfully uninstalled six-1.14.0
+  Attempting uninstall: numpy
+    Found existing installation: numpy 1.21.6
+    Uninstalling numpy-1.21.6:
+      Successfully uninstalled numpy-1.21.6
+  Attempting uninstall: python-dateutil
+    Found existing installation: python-dateutil 2.8.1
+    Uninstalling python-dateutil-2.8.1:
+      Successfully uninstalled python-dateutil-2.8.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 1.3.5
+    Uninstalling pandas-1.3.5:
+      Successfully uninstalled pandas-1.3.5
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+formulaic 1.1.1 requires pandas>=1.0, but you have pandas 0.25.3 which is incompatible.
+jupyter-console 6.6.3 requires ipykernel>=6.14, but you have ipykernel 5.1.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-client>=7.0.0, but you have jupyter-client 5.3.4 which is incompatible.
+jupyter-console 6.6.3 requires jupyter-core!=5.0.*,>=4.12, but you have jupyter-core 4.6.1 which is incompatible.
+jupyter-console 6.6.3 requires prompt-toolkit>=3.0.30, but you have prompt-toolkit 3.0.3 which is incompatible.
+jupyter-console 6.6.3 requires traitlets>=5.4, but you have traitlets 4.3.3 which is incompatible.
+lhn 0.2.1.dev0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+lifelines 0.27.8 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+mizani 0.7.3 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+omop-concept-mapper 0.1.0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+plotnine 0.8.0 requires pandas>=1.1.0, but you have pandas 0.25.3 which is incompatible.
+spark-config-mapper 0.1.0 requires pandas>=1.0.0, but you have pandas 0.25.3 which is incompatible.
+Successfully installed numpy-1.21.6 pandas-0.25.3 python-dateutil-2.9.0.post0 pytz-2026.2 six-1.17.0
+Installing ipykernel...
+Requirement already satisfied: ipykernel in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (5.1.4)
+Requirement already satisfied: ipython>=5.0.0 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipykernel) (7.11.1)
+Requirement already satisfied: traitlets>=4.1.0 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipykernel) (4.3.3)
+Requirement already satisfied: jupyter-client in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipykernel) (5.3.4)
+Requirement already satisfied: tornado>=4.2 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipykernel) (5.1.1)
+Requirement already satisfied: setuptools>=18.5 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (45.1.0.post20200119)
+Requirement already satisfied: jedi>=0.10 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.16.0)
+Requirement already satisfied: decorator in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.4.1)
+Requirement already satisfied: pickleshare in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.7.5)
+Requirement already satisfied: prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (3.0.3)
+Requirement already satisfied: pygments in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (2.5.2)
+Requirement already satisfied: backcall in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (0.1.0)
+Requirement already satisfied: pexpect in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from ipython>=5.0.0->ipykernel) (4.8.0)
+Requirement already satisfied: ipython-genutils in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (0.2.0)
+Requirement already satisfied: six in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from traitlets>=4.1.0->ipykernel) (1.17.0)
+Requirement already satisfied: jupyter-core>=4.6.0 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from jupyter-client->ipykernel) (4.6.1)
+Requirement already satisfied: pyzmq>=13 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from jupyter-client->ipykernel) (18.1.1)
+Requirement already satisfied: python-dateutil>=2.1 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from jupyter-client->ipykernel) (2.9.0.post0)
+Requirement already satisfied: parso>=0.5.2 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from jedi>=0.10->ipython>=5.0.0->ipykernel) (0.6.0)
+Requirement already satisfied: wcwidth in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from prompt-toolkit!=3.0.0,!=3.0.1,<3.1.0,>=2.0.0->ipython>=5.0.0->ipykernel) (0.1.8)
+Requirement already satisfied: ptyprocess>=0.5 in /tmp/lhn_dev-hnelson3/lib/python3.7/site-packages (from pexpect->ipython>=5.0.0->ipykernel) (0.6.0)
+Registering Jupyter kernel for development environment...
+Installed kernelspec lhn_dev in /home/hnelson3/.local/share/jupyter/kernels/lhn_dev
+Verifying lhn installation...
+Warning: Ignoring non-spark config property: hive.exec.dynamic.partition.mode=nonstrict
+26/06/05 13:57:41 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+26/06/05 13:57:42 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+26/06/05 13:57:42 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
+26/06/05 13:58:20 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
+lhn imported successfully
+duckdb 0.10.3 installed
+
+========== Setup Complete! ==========
+
+Created two conda environments with lhn:
+
+  PRODUCTION (monolithic v0.1.0):
+    Environment: /tmp/lhn_prod-hnelson3
+    Source code: /tmp/lhn_prod_src-hnelson3
+    Kernel: Python (lhn-prod v0.1.0)
+    Activate: conda activate /tmp/lhn_prod-hnelson3
+
+  DEVELOPMENT (refactored v0.2.0-dev):
+    Environment: /tmp/lhn_dev-hnelson3
+    Source code: /home/hnelson3/work/Users/hnelson3/lhn (persistent)
+    Dependencies: /home/hnelson3/work/Users/hnelson3/spark_config_mapper
+                  /home/hnelson3/work/Users/hnelson3/omop_concept_mapper
+    Kernel: Python (lhn-dev v0.2.0)
+    Activate: conda activate /tmp/lhn_dev-hnelson3
+
+========== Jupyter Kernel Usage ==========
+
+RECOMMENDED (with Hive metastore access):
+  - PySpark + lhn-prod (v0.1.0)  <- Use this for production testing
+  - PySpark + lhn-dev (v0.2.0)   <- Use this for development testing
+
+These hybrid kernels have full database access and lhn pre-loaded.
+No sys.path modification needed!
+
+ALTERNATIVE (no metastore, for non-Spark testing only):
+  - Python (lhn-prod v0.1.0)
+  - Python (lhn-dev v0.2.0)
+
+========== Editable Installs ==========
+
+Both environments use editable installs (-e), so:
+  - Changes to /tmp/lhn_prod_src-hnelson3 affect the production env (temp, lost on restart)
+  - Changes to /home/hnelson3/work/Users/hnelson3/lhn affect the development env (persistent)
+
+Production source is in /tmp (fast but ephemeral).
+Development source is in ~/work (persistent S3 mount).
+
+========== Pandas Version Note ==========
+
+IMPORTANT: Both environments use pandas 0.25.3 (from base conda)
+for compatibility with pyspark 2.4.4.
+
+The pyproject.toml files in spark_config_mapper and lhn v0.2.0
+require pandas>=1.0.0, but this was bypassed using --no-deps.
+
+If you encounter pandas-related import errors, the code may need
+to be updated to support pandas 0.25.x API.
+
+========== Hive Metastore Note ==========
+
+IMPORTANT: The lhn_prod and lhn_dev kernels may NOT have access to
+the Hive metastore (you'll only see 'default' database).
+
+The base pyspark kernel has the metastore configuration.
+
+RECOMMENDED: Use the 'pyspark' kernel with sys.path modification:
+
+  # For PRODUCTION testing (add to top of notebook):
+  import sys
+  sys.path.insert(0, '/tmp/lhn_prod_src-hnelson3')
+  import lhn
+
+  # For DEVELOPMENT testing (add to top of notebook):
+  import sys
+  sys.path.insert(0, '/home/hnelson3/work/Users/hnelson3/spark_config_mapper')
+  sys.path.insert(0, '/home/hnelson3/work/Users/hnelson3/lhn')
+  import lhn
+
+========== Creating Hybrid Kernels (pyspark + lhn) ==========
+
+Creating kernels that use base pyspark (with metastore) + lhn paths...
+Created: PySpark + lhn-prod (v0.1.0)
+Created: PySpark + lhn-dev (v0.2.0)
+
+Creating upgraded Spark kernels with metastore access...
+Created: Spark Upgraded + lhn-prod (Metastore)
+Created: Spark Upgraded + lhn-dev (Metastore)
+
+These hybrid kernels use the base pyspark (with Hive metastore access)
+but automatically include the lhn paths - no sys.path needed!
+
+========== R Environment ==========
+
+  R ENVIRONMENT:
+    Environment: /tmp/r_env-hnelson3
+    R Version: 4.4.0
+    Python Version: 3.10
+    Kernels:
+      - Python 3.10 (r_env)  <- For Python ML work
+      - R 4.4.0 (r_env)      <- For R analysis
+
+    Activate: conda activate /tmp/r_env-hnelson3
+
+========== Quarto ==========
+
+  Quarto version: 1.9.38
+  Location: /opt/quarto/
+
+========== Configuring .bashrc ==========
+
+no change     /tmp/miniconda/condabin/conda
+no change     /tmp/miniconda/bin/conda
+no change     /tmp/miniconda/bin/conda-env
+no change     /tmp/miniconda/bin/activate
+no change     /tmp/miniconda/bin/deactivate
+no change     /tmp/miniconda/etc/profile.d/conda.sh
+no change     /tmp/miniconda/etc/fish/conf.d/conda.fish
+no change     /tmp/miniconda/shell/condabin/Conda.psm1
+no change     /tmp/miniconda/shell/condabin/conda-hook.ps1
+no change     /tmp/miniconda/lib/python3.10/site-packages/xontrib/conda.xsh
+no change     /tmp/miniconda/etc/profile.d/conda.csh
+no change     /home/hnelson3/.bashrc
+No action taken.
+========== List Available Kernels ==========
+Available kernels:
+  lhn_dev                /home/hnelson3/.local/share/jupyter/kernels/lhn_dev
+  pyspark-lhn-dev        /home/hnelson3/.local/share/jupyter/kernels/pyspark-lhn-dev
+  pyspark-lhn-prod       /home/hnelson3/.local/share/jupyter/kernels/pyspark-lhn-prod
+  spark-upgraded-dev     /home/hnelson3/.local/share/jupyter/kernels/spark-upgraded-dev
+  spark-upgraded-prod    /home/hnelson3/.local/share/jupyter/kernels/spark-upgraded-prod
+  ir                     /opt/conda/share/jupyter/kernels/ir
+  python3                /opt/conda/share/jupyter/kernels/python3
+  pyspark                /usr/local/share/jupyter/kernels/pyspark
+
+========== Quick Reference ==========
+
+  RECOMMENDED KERNELS:
+    PySpark + lhn-dev (v0.2.0)           <- PySpark 2.4.4 + lhn dev (stable metastore)
+    Spark Upgraded + lhn-dev (Metastore) <- Uses lhn_dev env pyspark + metastore
+
+  OTHER KERNELS:
+    Python 3.10 (r_env)  <- For Python ML work (no Spark)
+    R 4.4.0 (r_env)      <- For R analysis
+
+  UPGRADED SPARK NOTE:
+    The 'Spark Upgraded' kernels use HADOOP_CONF_DIR=/etc/jupyter/configs
+    to enable metastore access. If you upgrade pyspark in lhn_prod or lhn_dev,
+    these kernels should connect to the metastore automatically.
+
+    To upgrade pyspark in an environment:
+      conda activate /tmp/lhn_dev-hnelson3
+      pip install pyspark==3.3.0  # or desired version
+
+  Terminal shortcuts:
+    oldbase  - Switch to original Docker conda with pyspark
+    oldconda - Make /opt/conda available without activating
+
+Setup completed at: Fri Jun  5 13:58:30 UTC 2026
+:WQ
+
