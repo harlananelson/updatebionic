@@ -1,0 +1,9 @@
+-rwxrwxr-x 1 root users      511 Jan 30  2020 /opt/conda/bin/conda
+-rwxrwxr-x 1 root users      148 Jan 30  2020 /opt/conda/bin/conda-env
+lrwxrwxrwx 1 root root         9 Oct 18  2023 /opt/conda/bin/python -> python3.7
+lrwxrwxrwx 1 root root         9 Oct 18  2023 /opt/conda/bin/python3 -> python3.7
+-rwxrwxr-x 1 root users 12806296 Oct 18  2023 /opt/conda/bin/python3.7
+lrwxrwxrwx 1 root root        17 Oct 18  2023 /opt/conda/bin/python3.7-config -> python3.7m-config
+lrwxrwxrwx 1 root root         9 Oct 18  2023 /opt/conda/bin/python3.7m -> python3.7
+-rwxrwxr-x 1 root users     3292 Oct 18  2023 /opt/conda/bin/python3.7m-config
+lrwxrwxrwx 1 root root        17 Oct 18  2023 /opt/conda/bin/python3-config -> python3.7m-config

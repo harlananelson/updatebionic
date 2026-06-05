@@ -1,0 +1,12 @@
+Python: 3.7.6 | packaged by conda-forge | (default, Jun  1 2020, 18:57:50) 
+[GCC 7.5.0]
+Executable: /opt/conda/bin/python
+Prefix: /opt/conda
+First 8 sys.path:
+  
+  /usr/local/spark/python
+  /usr/local/spark/python/lib/py4j-0.10.7-src.zip
+  /opt/conda/lib/python37.zip
+  /opt/conda/lib/python3.7
+  /opt/conda/lib/python3.7/lib-dynload
+  /opt/conda/lib/python3.7/site-packages

@@ -1,0 +1,27 @@
+
+     active environment : None
+       user config file : /home/hnelson3/.condarc
+ populated config files : /opt/conda/.condarc
+          conda version : 4.7.12
+    conda-build version : not installed
+         python version : 3.7.6.final.0
+       virtual packages : 
+       base environment : /opt/conda  (writable)
+           channel URLs : https://conda.anaconda.org/conda-forge/linux-64
+                          https://conda.anaconda.org/conda-forge/noarch
+                          https://repo.anaconda.com/pkgs/main/linux-64
+                          https://repo.anaconda.com/pkgs/main/noarch
+                          https://repo.anaconda.com/pkgs/r/linux-64
+                          https://repo.anaconda.com/pkgs/r/noarch
+          package cache : /opt/conda/pkgs
+                          /home/hnelson3/.conda/pkgs
+       envs directories : /opt/conda/envs
+                          /home/hnelson3/.conda/envs
+               platform : linux-64
+             user-agent : conda/4.7.12 requests/2.22.0 CPython/3.7.6 Linux/4.14.290-217.505.amzn2.x86_64 ubuntu/18.04.3 glibc/2.27
+                UID:GID : 33074928:100
+             netrc file : None
+           offline mode : False
+
+/opt/conda/lib/python3.7/site-packages/boto3/compat.py:82: PythonDeprecationWarning: Boto3 will no longer support Python 3.7 starting December 13, 2023. To continue receiving service updates, bug fixes, and security updates please upgrade to Python 3.8 or later. More information can be found here: https://aws.amazon.com/blogs/developer/python-support-policy-updates-for-aws-sdks-and-tools/
+  warnings.warn(warning, PythonDeprecationWarning)

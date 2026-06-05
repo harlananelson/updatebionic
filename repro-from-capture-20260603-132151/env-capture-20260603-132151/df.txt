@@ -1,0 +1,7 @@
+Filesystem      Size  Used Avail Use% Mounted on
+overlay         300G   18G  283G   6% /
+tmpfs            64M     0   64M   0% /dev
+tmpfs            63G     0   63G   0% /sys/fs/cgroup
+shm              64M     0   64M   0% /dev/shm
+/dev/nvme0n1p1  300G   18G  283G   6% /tmp
+s3fs            256T     0  256T   0% /home/hnelson3/work

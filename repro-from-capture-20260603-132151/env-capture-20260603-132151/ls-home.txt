@@ -1,0 +1,4 @@
+drwxr-xr-x 3 root     root  24 Oct 18  2023 /home/hadoop
+drwxr-xr-x 4 hnelson3 root  32 Jun  3 13:17 /home/hnelson3
+drwsrwsr-x 1 root     users 20 Jan 30  2020 /home/jovyan
+drwx------ 2 root     root  37 Jan 12  2020 /root
