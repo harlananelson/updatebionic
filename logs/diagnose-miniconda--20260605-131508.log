@@ -1,0 +1,89 @@
+-20260605-131508.log##############################################################
+# Miniconda Part 3 diagnostic
+# Started: Fri Jun  5 13:15:08 UTC 2026
+# Log file: /home/hnelson3/work/Users/hnelson3/updatebionic/logs/diagnose-miniconda-20260605-131508.log
+##############################################################
+
+========== 1. Host, OS and user ==========
+  whoami      : hnelson3
+  hostname    : ip-10-42-66-158.us-east-2.compute.internal
+  uname -a    : Linux ip-10-42-66-158.us-east-2.compute.internal 4.14.290-217.505.amzn2.x86_64 #1 SMP Wed Aug 10 09:52:16 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
+  os-release  : Ubuntu 18.04.3 LTS
+  GLIBC       : ldd (Ubuntu GLIBC 2.27-3ubuntu1) 2.27
+    (Miniconda 23.11.0-2 is pinned for Ubuntu 18.04 GLIBC 2.27 compatibility)
+
+========== 2. /tmp state and disk space ==========
+  /tmp/miniconda does NOT exist — Part 3 would attempt a full download+install (expected on a fresh daily container).
+  Free space on /tmp:
+    Filesystem      Size  Used Avail Use% Mounted on
+    /dev/nvme0n1p1  300G   19G  282G   7% /tmp
+
+========== 3. Proxy and network environment variables ==========
+  http_proxy = (unset)
+  https_proxy = (unset)
+  HTTP_PROXY = (unset)
+  HTTPS_PROXY = (unset)
+  no_proxy = (unset)
+  NO_PROXY = (unset)
+  ALL_PROXY = (unset)
+
+========== 4. DNS resolution of repo.anaconda.com ==========
+    2606:4700::6810:20f1 repo.anaconda.com
+    2606:4700::6810:bf9e repo.anaconda.com
+
+========== 5. HTTPS reachability — HEAD request to the Miniconda URL ==========
+  Using curl -sSIL (follow redirects, show status):
+    HTTP/1.1 200 OK
+    Date: Fri, 05 Jun 2026 13:15:08 GMT
+    Content-Type: application/octet-stream
+    Content-Length: 134343349
+    Connection: keep-alive
+    x-amz-id-2: h4KzVzM/yKRc0gczJBVdumW4iyiuLKdCFjTm2PELFUVvnSKLmdE33EmZJjylMJ+xJzMm5/1Sm8E3aHCuEEZxqfW+BtoIdowH
+    x-amz-request-id: 7WV4Y7ZBEH45FHVC
+    Last-Modified: Thu, 13 Feb 2025 19:44:07 GMT
+    x-amz-version-id: vsJDRu9Q_KpHlBi5US6LBMe7X0ZHVsS5
+    ETag: "f3abe7c10fab3e9689e18d66698d4734-17"
+    Server: cloudflare
+    Accept-Ranges: bytes
+    Age: 76332
+    expires: Fri, 05 Jun 2026 13:15:38 GMT
+    Cache-Control: public, max-age=30
+    cf-cache-status: HIT
+    set-cookie: __cf_bm=WD2UlpMDBg.rGY7YF6PXpFG1Pa18Okc1J08Z5gIb8HA-1780665308.6929193-1.0.1.1-w_zN3d272.MvRlGptV43GXjI0DizDSW4F_vgCw8F_Pv9L7MNT0_FSpBxfZsmygT579DsZ6dhiMaaOGfRtcUpYa4bQAH9YOS.yNX0S_GOOFX5Cnv4_iIkI8n.QBdNRHNV; HttpOnly; SameSite=None; Secure; Path=/; Domain=anaconda.com; Expires=Fri, 05 Jun 2026 13:45:08 GMT
+    Content-Security-Policy: upgrade-insecure-requests; frame-ancestors 'self' https://content.anaconda.com/
+    X-Robots-Tag: noindex
+    CF-RAY: a06f71c35ecb7929-CMH
+    
+  curl exit code: 0
+
+========== 6. Actual download attempt (this is what Part 3 does, but NOT quiet) ==========
+  Downloading to /tmp/diagnose-miniconda-20260605-131508.sh ...
+  Command: wget --timeout=120 --tries=2 -O "/tmp/diagnose-miniconda-20260605-131508.sh" "https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh"
+--2026-06-05 13:15:08--  https://repo.anaconda.com/miniconda/Miniconda3-py310_23.11.0-2-Linux-x86_64.sh
+Resolving repo.anaconda.com (repo.anaconda.com)... 104.16.191.158, 104.16.32.241, 2606:4700::6810:20f1, ...
+Connecting to repo.anaconda.com (repo.anaconda.com)|104.16.191.158|:443... connected.
+ERROR: cannot verify repo.anaconda.com's certificate, issued by ‘CN=YE2,O=Let's Encrypt,C=US’:
+  Issued certificate has expired.
+To connect to repo.anaconda.com insecurely, use `--no-check-certificate'.
+  wget exit code: 5  (0 = success; non-zero = THIS is why Part 3 aborts silently with wget -q)
+  Downloaded file size: 0 bytes
+    (a healthy Miniconda3-py310_23.11.0-2 installer is roughly 130 MB / ~130000000 bytes)
+  First 3 lines of the downloaded file (should look like a shell installer header):
+
+========== 7. Installer execution into a throwaway prefix (only if download looked OK) ==========
+  Skipped installer test because the download did not produce a plausible installer.
+  ==> The failure is in the DOWNLOAD step (network/proxy/CDN), not the installer.
+
+========== 8. Cleanup ==========
+  removed /tmp/diagnose-miniconda-20260605-131508.sh
+  removed /tmp/diagnose-miniconda-prefix-20260605-131508
+  The real /tmp/miniconda was never modified by this diagnostic.
+
+========== Verdict ==========
+  Download FAILED. Part 3 of setup-system.sh uses 'wget -q' under 'set -eo pipefail',
+  so this same failure aborts the whole setup with no message. Review sections 3-6
+  above (proxy vars, DNS, HTTPS HEAD, wget exit code) to see exactly why.
+
+Finished: Fri Jun  5 13:15:08 UTC 2026
+Log saved to: /home/hnelson3/work/Users/hnelson3/updatebionic/logs/diagnose-miniconda-20260605-131508.log
+
