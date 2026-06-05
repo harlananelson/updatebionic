@@ -556,16 +556,24 @@ if [ "$CLONED_R_ENV" -eq 0 ]; then
     # *updated* conda, not accidentally created under the old /opt/conda.
     # That isolation is the whole point of the "old conda for spark, new
     # miniconda for R notebooks" design.
+    # --override-channels: use ONLY conda-forge, NOT the configured `defaults`
+    # channels (repo.anaconda.com). On this Ubuntu 18.04 container micromamba
+    # rejects repo.anaconda.com's Let's Encrypt cert as expired
+    # ("OpenSSL verify result: certificate has expired (10)"), which failed the
+    # whole r_env solve even though conda-forge (conda.anaconda.org) fetched
+    # fine. conda-forge has python 3.10, r-base 4.4.0 and every r-* package we
+    # need, so overriding to conda-forge-only sidesteps the broken host entirely
+    # (and drops the Anaconda commercial-ToS warning).
     MINICONDA_CONDA="/tmp/miniconda/bin/conda"
     if [ -x "$MICROMAMBA_BIN" ]; then
         SOLVER_DESC="micromamba ($($MICROMAMBA_BIN --version 2>&1 | head -1)) via miniconda"
-        SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+        SOLVE_CMD=("$MICROMAMBA_BIN" "create" "-y" "--override-channels" "-p" "$R_ENV_PATH" "-c" "conda-forge")
     elif [ -x "$MINICONDA_CONDA" ]; then
         SOLVER_DESC="miniconda conda (libmamba if configured)"
-        SOLVE_CMD=("$MINICONDA_CONDA" "create" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+        SOLVE_CMD=("$MINICONDA_CONDA" "create" "-y" "--override-channels" "-p" "$R_ENV_PATH" "-c" "conda-forge")
     else
         SOLVER_DESC="PATH conda (slow/fallback — miniconda not found)"
-        SOLVE_CMD=(conda create -y -p "$R_ENV_PATH" -c conda-forge)
+        SOLVE_CMD=(conda create -y --override-channels -p "$R_ENV_PATH" -c conda-forge)
     fi
 
     echo "Creating R ${R_VERSION} environment with Python ${PYTHON_VERSION} + R packages (single-shot solve)..."
@@ -628,10 +636,12 @@ EOF
         # may fail, but everything non-geospatial works.
         echo ""
         echo "Attempting separate geospatial R packages solve (r-sf, r-units)..."
+        # --override-channels for the same reason as the main solve: conda-forge
+        # only, never touch repo.anaconda.com (expired cert on this container).
         if [ -x "$MICROMAMBA_BIN" ]; then
-            GEO_INSTALL=("$MICROMAMBA_BIN" "install" "-y" "-p" "$R_ENV_PATH" "-c" "conda-forge")
+            GEO_INSTALL=("$MICROMAMBA_BIN" "install" "-y" "--override-channels" "-p" "$R_ENV_PATH" "-c" "conda-forge")
         else
-            GEO_INSTALL=(conda install -y -p "$R_ENV_PATH" -c conda-forge)
+            GEO_INSTALL=(conda install -y --override-channels -p "$R_ENV_PATH" -c conda-forge)
         fi
         if "${GEO_INSTALL[@]}" r-sf r-units; then
             echo "  ✓ Geospatial R packages installed."
