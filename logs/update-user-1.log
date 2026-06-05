@@ -1,0 +1,193 @@
+lson3@ip-10-42-66-158:~/work/Users/hnelson3/updatebionic$ ls
+add-r-kernel.sh           flake.nix       README.md                setup-lhn-dual-envs-old.sh  spark_metastore_init.py
+archive                   install-log.md  requirements-python.txt  setup-lhn-dual-envs.sh
+diagnose_spark_config.py  logs            requirements-R.txt       setup_spark_upgrade.py
+documentation             nix             requirements.txt         setup-system.sh
+environment-ml.yml        oldstuff        scripts                  setup-user.sh
+hnelson3@ip-10-42-66-158:~/work/Users/hnelson3/updatebionic$ bash setup-user.sh
+Checking GitHub for newer version of setup-user.sh...
+Already running the latest version.
+========== LHN Per-User Environment Setup ==========
+User:             hnelson3
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 12:48:03 UTC 2026
+
+========== Ensuring shared system setup ==========
+Shared system setup has not run today.
+Running /home/hnelson3/work/Users/hnelson3/updatebionic/setup-system.sh (shared items; needs sudo)...
+Checking GitHub for newer version of setup-system.sh...
+Already running the latest version.
+========== LHN System (Shared) Setup ==========
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 12:48:03 UTC 2026
+Waiting for system-setup lock (/tmp/lhn-setup-system.lock)...
+Lock acquired.
+
+========== Part 1: System Updates ==========
+Updating apt package lists...
+Hit:1 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:2 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:3 http://repos.mesosphere.com/ubuntu xenial InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Reading package lists... Done
+Installing system dependencies...
+[apt-get install] Attempt 1 of 3...
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+build-essential is already the newest version (12.4ubuntu1).
+gdal-bin is already the newest version (2.2.3+dfsg-2).
+libgdal-dev is already the newest version (2.2.3+dfsg-2).
+libgeos-dev is already the newest version (3.6.2-1build2).
+libproj-dev is already the newest version (4.9.3-2).
+libudunits2-dev is already the newest version (2.2.26-1).
+gfortran is already the newest version (4:7.4.0-1ubuntu2.3).
+libfreetype6-dev is already the newest version (2.8.1-2ubuntu2.2).
+libpng-dev is already the newest version (1.6.34-1ubuntu0.18.04.2).
+openssh-client is already the newest version (1:7.6p1-4ubuntu0.7).
+vim is already the newest version (2:8.0.1453-1ubuntu1.13).
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 185 not upgraded.
+[apt-get install] Succeeded on attempt 1.
+Updating pip in base conda...
+Requirement already satisfied: pip in /opt/conda/lib/python3.7/site-packages (24.0)
+
+========== Part 1.5: Install micromamba ==========
+micromamba already installed at /usr/local/bin/micromamba (2.8.0)
+
+========== Part 2: Install Quarto ==========
+Installing Quarto...
+Downloading and extracting Quarto 1.9.38...
+Quarto 1.9.38 installed successfully.
+
+========== Part 3: Install Miniconda (shared) ==========
+Installing Miniconda to /tmp/miniconda...
+ERROR: shared system setup (/home/hnelson3/work/Users/hnelson3/updatebionic/setup-system.sh) failed.
+setup-system.sh performs actions that may require sudo (e.g. apt-get).
+If the current user cannot provide sudo credentials when prompted,
+ask someone with the necessary permissions on this node to run
+setup-system.sh first (it is safe and idempotent), then re-run this script.
+hnelson3@ip-10-42-66-158:~/work/Users/hnelson3/updatebionic$ bash setup-system.sh
+Checking GitHub for newer version of setup-system.sh...
+Already running the latest version.
+========== LHN System (Shared) Setup ==========
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 12:48:42 UTC 2026
+Waiting for system-setup lock (/tmp/lhn-setup-system.lock)...
+Lock acquired.
+
+========== Part 1: System Updates ==========
+Updating apt package lists...
+Hit:1 http://repos.mesosphere.com/ubuntu xenial InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:3 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Reading package lists... Done
+Installing system dependencies...
+[apt-get install] Attempt 1 of 3...
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+build-essential is already the newest version (12.4ubuntu1).
+gdal-bin is already the newest version (2.2.3+dfsg-2).
+libgdal-dev is already the newest version (2.2.3+dfsg-2).
+libgeos-dev is already the newest version (3.6.2-1build2).
+libproj-dev is already the newest version (4.9.3-2).
+libudunits2-dev is already the newest version (2.2.26-1).
+gfortran is already the newest version (4:7.4.0-1ubuntu2.3).
+libfreetype6-dev is already the newest version (2.8.1-2ubuntu2.2).
+libpng-dev is already the newest version (1.6.34-1ubuntu0.18.04.2).
+openssh-client is already the newest version (1:7.6p1-4ubuntu0.7).
+vim is already the newest version (2:8.0.1453-1ubuntu1.13).
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 185 not upgraded.
+[apt-get install] Succeeded on attempt 1.
+Updating pip in base conda...
+Requirement already satisfied: pip in /opt/conda/lib/python3.7/site-packages (24.0)
+
+========== Part 1.5: Install micromamba ==========
+micromamba already installed at /usr/local/bin/micromamba (2.8.0)
+
+========== Part 2: Install Quarto ==========
+Installing Quarto...
+Downloading and extracting Quarto 1.9.38...
+Quarto 1.9.38 installed successfully.
+
+========== Part 3: Install Miniconda (shared) ==========
+Installing Miniconda to /tmp/miniconda...
+hnelson3@ip-10-42-66-158:~/work/Users/hnelson3/updatebionic$ bash setup-user.sh
+Checking GitHub for newer version of setup-user.sh...
+Already running the latest version.
+========== LHN Per-User Environment Setup ==========
+User:             hnelson3
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 12:49:18 UTC 2026
+
+========== Ensuring shared system setup ==========
+Shared system setup has not run today.
+Running /home/hnelson3/work/Users/hnelson3/updatebionic/setup-system.sh (shared items; needs sudo)...
+Checking GitHub for newer version of setup-system.sh...
+Already running the latest version.
+========== LHN System (Shared) Setup ==========
+Script directory: /home/hnelson3/work/Users/hnelson3/updatebionic
+Fri Jun  5 12:49:18 UTC 2026
+Waiting for system-setup lock (/tmp/lhn-setup-system.lock)...
+Lock acquired.
+
+========== Part 1: System Updates ==========
+Updating apt package lists...
+Hit:1 http://archive.ubuntu.com/ubuntu bionic InRelease
+Hit:2 http://security.ubuntu.com/ubuntu bionic-security InRelease
+Hit:3 http://repos.mesosphere.com/ubuntu xenial InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu bionic-updates InRelease
+Hit:5 http://archive.ubuntu.com/ubuntu bionic-backports InRelease
+Reading package lists... Done
+Installing system dependencies...
+[apt-get install] Attempt 1 of 3...
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+build-essential is already the newest version (12.4ubuntu1).
+gdal-bin is already the newest version (2.2.3+dfsg-2).
+libgdal-dev is already the newest version (2.2.3+dfsg-2).
+libgeos-dev is already the newest version (3.6.2-1build2).
+libproj-dev is already the newest version (4.9.3-2).
+libudunits2-dev is already the newest version (2.2.26-1).
+gfortran is already the newest version (4:7.4.0-1ubuntu2.3).
+libfreetype6-dev is already the newest version (2.8.1-2ubuntu2.2).
+libpng-dev is already the newest version (1.6.34-1ubuntu0.18.04.2).
+openssh-client is already the newest version (1:7.6p1-4ubuntu0.7).
+vim is already the newest version (2:8.0.1453-1ubuntu1.13).
+The following packages were automatically installed and are no longer required:
+  libapr1 libaprutil1 libcurl3-nss libevent-2.1-6 libevent-core-2.1-6 libevent-dev libevent-extra-2.1-6 libevent-openssl-2.1-6
+  libevent-pthreads-2.1-6 libserf-1-1 libsvn1
+Use 'sudo apt autoremove' to remove them.
+0 upgraded, 0 newly installed, 0 to remove and 185 not upgraded.
+[apt-get install] Succeeded on attempt 1.
+Updating pip in base conda...
+Requirement already satisfied: pip in /opt/conda/lib/python3.7/site-packages (24.0)
+
+========== Part 1.5: Install micromamba ==========
+micromamba already installed at /usr/local/bin/micromamba (2.8.0)
+
+========== Part 2: Install Quarto ==========
+Installing Quarto...
+Downloading and extracting Quarto 1.9.38...
+Quarto 1.9.38 installed successfully.
+
+========== Part 3: Install Miniconda (shared) ==========
+Installing Miniconda to /tmp/miniconda...
+ERROR: shared system setup (/home/hnelson3/work/Users/hnelson3/updatebionic/setup-system.sh) failed.
+setup-system.sh performs actions that may require sudo (e.g. apt-get).
+If the current user cannot provide sudo credentials when prompted,
+ask someone with the necessary permissions on this node to run
+setup-system.sh first (it is safe and idempotent), then re-run this script.
+hnelson3@ip-10-42-66-158:~/work/Users/hnelson3/updatebionic$
