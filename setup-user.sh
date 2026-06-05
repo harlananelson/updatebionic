@@ -480,6 +480,20 @@ MICROMAMBA_BIN="/usr/local/bin/micromamba"
 RETRY_COUNT=0
 MAX_RETRIES=3
 
+# Point micromamba/libmamba at the SYSTEM CA bundle. On this Ubuntu 18.04
+# container micromamba is a static binary that ships its own (stale) CA certs,
+# so it rejects repo.anaconda.com's current Let's Encrypt chain with
+# "OpenSSL verify result: certificate has expired (10)" and the r_env solve
+# fails (then the script continues non-fatally, leaving no r_env). curl on the
+# same box validates the same URL fine using /etc/ssl/certs/ca-certificates.crt,
+# so we just point micromamba at that working bundle. Exported here so every
+# micromamba call in Part 5 (solve + geospatial install) inherits it. The
+# container is rebuilt daily, so this per-run export is all that's needed.
+if [ -f /etc/ssl/certs/ca-certificates.crt ]; then
+    export CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+    export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+fi
+
 # ── Reuse another user's r_env if one already exists on this shared node ──
 # Each user keeps their OWN /tmp/r_env-<user> (isolation — no mid-session
 # collisions if someone re-runs setup), but the env content is identical
