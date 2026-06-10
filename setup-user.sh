@@ -727,6 +727,21 @@ EOF
             || echo "  WARNING: txtarchive pip install failed (continuing)."
     fi
 
+    # Make quarto visible inside r_env. setup-system.sh installs quarto
+    # system-wide (/opt/quarto -> /usr/local/bin/quarto), but fresh JupyterHub
+    # terminal sessions don't always have /usr/local/bin on PATH — so the
+    # conda shell a user gets at terminal open (.bashrc activates r_env)
+    # couldn't see quarto even when it was installed on the node. A symlink
+    # inside the env's bin/ means `conda activate r_env` alone is enough.
+    # Runs for BOTH the from-scratch solve and the cloned-sibling paths.
+    if [ -x /usr/local/bin/quarto ]; then
+        ln -sf /usr/local/bin/quarto "$R_ENV_PATH/bin/quarto"
+        echo "Linked quarto into r_env: $R_ENV_PATH/bin/quarto -> /usr/local/bin/quarto"
+    else
+        echo "WARNING: /usr/local/bin/quarto not found — setup-system.sh Part 2 may have failed."
+        echo "         quarto will NOT be available in the r_env shell. Re-run setup-system.sh."
+    fi
+
     echo "Registering Python 3.10 kernel (using $R_ENV_PYTHON)..."
     "$R_ENV_PYTHON" -m pip install ipykernel
     "$R_ENV_PYTHON" -m ipykernel install --user --name "python310_renv" --display-name "Python 3.10 (r_env)"
@@ -1333,8 +1348,18 @@ echo "    Activate: conda activate $R_ENV_PATH"
 echo ""
 echo "========== Quarto =========="
 echo ""
-QUARTO_INSTALLED_VERSION=$(quarto --version 2>/dev/null || echo "Not installed")
-echo "  Quarto version: ${QUARTO_INSTALLED_VERSION}"
+# Check the r_env symlink specifically — that is what the terminal shell
+# (which .bashrc drops into r_env) will actually see.
+R_ENV_QUARTO="/tmp/r_env-$CURRENT_USER/bin/quarto"
+if [ -x "$R_ENV_QUARTO" ] && "$R_ENV_QUARTO" --version >/dev/null 2>&1; then
+    echo "  Quarto version: $("$R_ENV_QUARTO" --version 2>/dev/null)"
+    echo "  Available in r_env shell: YES ($R_ENV_QUARTO)"
+else
+    QUARTO_INSTALLED_VERSION=$(quarto --version 2>/dev/null || echo "Not installed")
+    echo "  Quarto version: ${QUARTO_INSTALLED_VERSION}"
+    echo "  Available in r_env shell: NO — quarto missing from $R_ENV_QUARTO"
+    echo "  (re-run setup-system.sh, then setup-user.sh)"
+fi
 echo "  Location: /opt/quarto/"
 echo ""
 
@@ -1343,6 +1368,16 @@ echo ""
 
 # Initialize miniconda in .bashrc
 "$MINICONDA_PATH/bin/conda" init bash 2>/dev/null || true
+
+# Guarantee /usr/local/bin is on PATH in terminal sessions. Fresh JupyterHub
+# terminals sometimes start with a minimal PATH that omits it, which hides
+# system-wide tools installed by setup-system.sh (quarto in particular).
+# Appended BEFORE the conda activate line so the activated env's bin/ still
+# ends up first on PATH at shell startup.
+if ! grep -qF 'export PATH="/usr/local/bin:$PATH"' "$HOME/.bashrc"; then
+    echo 'export PATH="/usr/local/bin:$PATH"' >> "$HOME/.bashrc"
+    echo "Added /usr/local/bin to PATH in .bashrc"
+fi
 
 # Add conda environment activation (only if not already present)
 if ! grep -qF "conda activate $R_ENV_PATH" "$HOME/.bashrc"; then

@@ -200,16 +200,52 @@ fi
 echo ""
 echo "========== Part 2: Install Quarto =========="
 
-echo "Installing Quarto..."
-# Fetch the latest tag from GitHub API
-LATEST_TAG=$(curl -s https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-QUARTO_VERSION=${LATEST_TAG#v} # Remove 'v' prefix if present
-sudo mkdir -p "/opt/quarto/${QUARTO_VERSION}"
-RELEASE_URL="https://github.com/quarto-dev/quarto-cli/releases/download/${LATEST_TAG}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz"
-echo "Downloading and extracting Quarto ${QUARTO_VERSION}..."
-sudo curl -L "${RELEASE_URL}" | sudo tar -xz -C "/opt/quarto/${QUARTO_VERSION}" --strip-components=1
-sudo ln -sf "/opt/quarto/${QUARTO_VERSION}/bin/quarto" "/usr/local/bin/quarto"
-echo "Quarto ${QUARTO_VERSION} installed successfully."
+# Known-good fallback release, used only when the GitHub API "latest" lookup
+# fails (api.github.com rate limits are common from a shared cluster NAT).
+# A slightly older quarto beats no quarto for the day.
+QUARTO_FALLBACK_TAG="v1.6.43"
+
+if command -v quarto >/dev/null 2>&1 && quarto --version >/dev/null 2>&1; then
+    echo "Quarto already installed: $(quarto --version 2>/dev/null) at $(command -v quarto)"
+else
+    echo "Installing Quarto..."
+    # Fetch the latest tag from GitHub API. `|| true` so an API failure
+    # (rate limit, network blip) cannot abort the whole setup under set -e;
+    # we fall back to the pinned release instead. Previously a rate-limited
+    # response here killed setup-system silently, which is one way quarto
+    # ended up missing for the day.
+    LATEST_TAG=$(curl -fsS https://api.github.com/repos/quarto-dev/quarto-cli/releases/latest 2>/dev/null | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' || true)
+    if [[ -z "$LATEST_TAG" ]]; then
+        echo "WARNING: could not determine latest Quarto release from the GitHub API."
+        echo "         Falling back to pinned release ${QUARTO_FALLBACK_TAG}."
+        LATEST_TAG="$QUARTO_FALLBACK_TAG"
+    fi
+    QUARTO_VERSION=${LATEST_TAG#v} # Remove 'v' prefix if present
+    RELEASE_URL="https://github.com/quarto-dev/quarto-cli/releases/download/${LATEST_TAG}/quarto-${QUARTO_VERSION}-linux-amd64.tar.gz"
+    QUARTO_TARBALL="/tmp/quarto-${QUARTO_VERSION}.tar.gz"
+
+    # Download to a file first (curl -f + retry), THEN extract. The old
+    # `curl | sudo tar` pipe under `set -eo pipefail` aborted the whole
+    # setup on any transient failure, with no retry and no clear message.
+    retry_cmd 3 15 "quarto download" \
+        curl -fSL --connect-timeout 30 --max-time 600 -o "$QUARTO_TARBALL" "$RELEASE_URL"
+
+    sudo mkdir -p "/opt/quarto/${QUARTO_VERSION}"
+    echo "Extracting Quarto ${QUARTO_VERSION}..."
+    sudo tar -xzf "$QUARTO_TARBALL" -C "/opt/quarto/${QUARTO_VERSION}" --strip-components=1
+    rm -f "$QUARTO_TARBALL"
+    sudo ln -sf "/opt/quarto/${QUARTO_VERSION}/bin/quarto" "/usr/local/bin/quarto"
+
+    # Verify it actually runs — fail LOUDLY here rather than discovering at
+    # render time that quarto never made it onto the node.
+    if /usr/local/bin/quarto --version >/dev/null 2>&1; then
+        echo "Quarto $(/usr/local/bin/quarto --version 2>/dev/null) installed successfully."
+    else
+        echo "ERROR: quarto extracted to /opt/quarto/${QUARTO_VERSION} but does not run." >&2
+        echo "       Check the download URL and GLIBC compatibility for this release." >&2
+        exit 1
+    fi
+fi
 
 # ========== Part 3: Install Miniconda (shared) ==========
 echo ""
