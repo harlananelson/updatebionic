@@ -251,6 +251,12 @@ else
     fi
 fi
 
+# ========== Logging ==========
+mkdir -p "$HOME/logs"
+LOG_FILE="$HOME/logs/setup-user-$(date +%Y%m%d-%H%M%S).log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+echo "Logging to $LOG_FILE"
+
 # ========== Auto-fetch sibling scripts (setup-system.sh, requirements*) ==========
 #
 # If a user bootstrapped via the curl one-liner (downloads only

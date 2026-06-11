@@ -85,6 +85,12 @@ else
     fi
 fi
 
+# ========== Logging ==========
+mkdir -p "$HOME/logs"
+LOG_FILE="$HOME/logs/setup-system-$(date +%Y%m%d-%H%M%S).log"
+exec > >(tee -a "$LOG_FILE") 2>&1
+echo "Logging to $LOG_FILE"
+
 echo "========== LHN System (Shared) Setup =========="
 echo "Script directory: $SCRIPT_DIR"
 date
