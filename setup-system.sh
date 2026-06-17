@@ -192,14 +192,29 @@ if [ -x "$MICROMAMBA_BIN" ]; then
     echo "micromamba already installed at $MICROMAMBA_BIN ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
 else
     echo "Installing micromamba (single static binary) → $MICROMAMBA_BIN..."
+    # Download to a tarball first (with retry), then extract separately.
+    # The old `curl | tar` pipe under `set -eo pipefail` aborted the whole
+    # script on any network blip with no retry and no clear error message —
+    # the same failure mode we fixed for quarto in Part 2.
+    MICROMAMBA_URL="https://micro.mamba.pm/api/micromamba/linux-64/latest"
+    MICROMAMBA_TARBALL="/tmp/micromamba-latest.tar.bz2"
     TMP_MM="/tmp/micromamba-install-$$"
+
+    retry_cmd 3 15 "micromamba download" \
+        curl -fSL --connect-timeout 30 --max-time 120 -o "$MICROMAMBA_TARBALL" "$MICROMAMBA_URL"
+
     mkdir -p "$TMP_MM"
-    curl -fsSL "https://micro.mamba.pm/api/micromamba/linux-64/latest" \
-        | tar -xj -C "$TMP_MM" bin/micromamba
+    tar -xj -C "$TMP_MM" -f "$MICROMAMBA_TARBALL" bin/micromamba
     sudo mv "$TMP_MM/bin/micromamba" "$MICROMAMBA_BIN"
     sudo chmod +x "$MICROMAMBA_BIN"
-    rm -rf "$TMP_MM"
-    echo "Installed: $($MICROMAMBA_BIN --version 2>&1 | head -1)"
+    rm -rf "$TMP_MM" "$MICROMAMBA_TARBALL"
+
+    if [ -x "$MICROMAMBA_BIN" ]; then
+        echo "Installed: $($MICROMAMBA_BIN --version 2>&1 | head -1)"
+    else
+        echo "ERROR: micromamba not found at $MICROMAMBA_BIN after install." >&2
+        exit 1
+    fi
 fi
 
 # ========== Part 2: Install Quarto ==========
