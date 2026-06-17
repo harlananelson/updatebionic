@@ -192,28 +192,38 @@ if [ -x "$MICROMAMBA_BIN" ]; then
     echo "micromamba already installed at $MICROMAMBA_BIN ($($MICROMAMBA_BIN --version 2>&1 | head -1))"
 else
     echo "Installing micromamba (single static binary) → $MICROMAMBA_BIN..."
-    # Download to a tarball first (with retry), then extract separately.
-    # The old `curl | tar` pipe under `set -eo pipefail` aborted the whole
-    # script on any network blip with no retry and no clear error message —
-    # the same failure mode we fixed for quarto in Part 2.
-    MICROMAMBA_URL="https://micro.mamba.pm/api/micromamba/linux-64/latest"
+    # Two download sources: micro.mamba.pm (primary) and GitHub releases (fallback).
+    # Both tried in order; if both fail, skip micromamba with a warning — setup-user.sh
+    # falls back to miniconda's conda for the r_env solve, so this is non-fatal.
     MICROMAMBA_TARBALL="/tmp/micromamba-latest.tar.bz2"
     TMP_MM="/tmp/micromamba-install-$$"
+    MICROMAMBA_INSTALLED=0
 
-    retry_cmd 3 15 "micromamba download" \
-        curl -fSL --connect-timeout 30 --max-time 120 -o "$MICROMAMBA_TARBALL" "$MICROMAMBA_URL"
+    for MICROMAMBA_URL in \
+        "https://micro.mamba.pm/api/micromamba/linux-64/latest" \
+        "https://github.com/mamba-org/micromamba-releases/releases/latest/download/micromamba-linux-64.tar.bz2"
+    do
+        echo "Trying: $MICROMAMBA_URL"
+        if retry_cmd 2 10 "micromamba download" \
+               curl -fSL --connect-timeout 30 --max-time 120 -o "$MICROMAMBA_TARBALL" "$MICROMAMBA_URL"; then
+            mkdir -p "$TMP_MM"
+            if tar -xj -C "$TMP_MM" -f "$MICROMAMBA_TARBALL" bin/micromamba 2>/dev/null; then
+                sudo mv "$TMP_MM/bin/micromamba" "$MICROMAMBA_BIN"
+                sudo chmod +x "$MICROMAMBA_BIN"
+                MICROMAMBA_INSTALLED=1
+            fi
+            rm -rf "$TMP_MM" "$MICROMAMBA_TARBALL"
+        fi
+        [ "$MICROMAMBA_INSTALLED" -eq 1 ] && break
+        rm -f "$MICROMAMBA_TARBALL"
+    done
 
-    mkdir -p "$TMP_MM"
-    tar -xj -C "$TMP_MM" -f "$MICROMAMBA_TARBALL" bin/micromamba
-    sudo mv "$TMP_MM/bin/micromamba" "$MICROMAMBA_BIN"
-    sudo chmod +x "$MICROMAMBA_BIN"
-    rm -rf "$TMP_MM" "$MICROMAMBA_TARBALL"
-
-    if [ -x "$MICROMAMBA_BIN" ]; then
+    if [ "$MICROMAMBA_INSTALLED" -eq 1 ] && [ -x "$MICROMAMBA_BIN" ]; then
         echo "Installed: $($MICROMAMBA_BIN --version 2>&1 | head -1)"
     else
-        echo "ERROR: micromamba not found at $MICROMAMBA_BIN after install." >&2
-        exit 1
+        echo "WARNING: micromamba could not be downloaded from any source."
+        echo "         setup-user.sh will fall back to miniconda's conda for the r_env solve."
+        echo "         The solve will work but may be slower."
     fi
 fi
 
