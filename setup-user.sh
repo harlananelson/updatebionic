@@ -786,7 +786,7 @@ EOF
     if [ -f "$R_KERNEL_DIR/kernel.json" ]; then
         python -c '
 import json, os, sys
-kpath = os.path.expanduser(sys.argv[1])
+kpath = os.path.join(os.path.expanduser(sys.argv[1]), "kernel.json")
 r_env = sys.argv[2]
 try:
     with open(kpath) as f: k = json.load(f)
