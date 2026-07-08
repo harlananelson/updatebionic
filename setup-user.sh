@@ -360,6 +360,21 @@ retry_cmd() {
     done
 }
 
+# Converts a GitHub HTTPS remote back to SSH so git operations don't prompt
+# for username/password. Idempotent — no-op if already SSH.
+ensure_ssh_remote() {
+    local dir="$1"
+    local current_url
+    current_url=$(git -C "$dir" remote get-url origin 2>/dev/null || true)
+    if [[ "$current_url" == https://github.com/* ]]; then
+        local ssh_url
+        ssh_url=$(echo "$current_url" | sed 's|https://github.com/|git@github.com:|')
+        echo "  WARNING: remote was HTTPS ($current_url) — correcting to SSH..."
+        git -C "$dir" remote set-url origin "$ssh_url"
+        echo "  Remote URL corrected to $ssh_url"
+    fi
+}
+
 # Ensure conda environments registry exists (suppresses "Unable to create environments file" warning)
 mkdir -p ~/.conda
 touch ~/.conda/environments.txt 2>/dev/null || true
@@ -885,6 +900,7 @@ echo "--- Verifying DEVELOPMENT sources (persistent storage) ---"
 if [[ -d "$LHN_PERSIST" ]]; then
     echo "Found lhn at $LHN_PERSIST"
     git config --global --add safe.directory "$LHN_PERSIST" 2>/dev/null || true
+    ensure_ssh_remote "$LHN_PERSIST"
     cd "$LHN_PERSIST"
     git fetch --all --tags
     # Use older git-compatible command (--show-current requires git 2.22+)
@@ -918,6 +934,7 @@ fi
 if [[ -d "$SPARK_CONFIG_PERSIST" ]]; then
     echo "Found spark_config_mapper at $SPARK_CONFIG_PERSIST"
     git config --global --add safe.directory "$SPARK_CONFIG_PERSIST" 2>/dev/null || true
+    ensure_ssh_remote "$SPARK_CONFIG_PERSIST"
     cd "$SPARK_CONFIG_PERSIST"
     git pull origin main 2>/dev/null || echo "  (pull skipped or failed)"
 else
@@ -937,6 +954,7 @@ fi
 if [[ -d "$OMOP_CONCEPT_PERSIST" ]]; then
     echo "Found omop_concept_mapper at $OMOP_CONCEPT_PERSIST"
     git config --global --add safe.directory "$OMOP_CONCEPT_PERSIST" 2>/dev/null || true
+    ensure_ssh_remote "$OMOP_CONCEPT_PERSIST"
     cd "$OMOP_CONCEPT_PERSIST"
     git pull origin main 2>/dev/null || echo "  (pull skipped or failed)"
 else
