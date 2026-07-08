@@ -1,6 +1,6 @@
 # Spark Upgrade Testing Guide
 
-This document describes how to test an upgraded Spark version while maintaining access to the Hive metastore in the IU Health Datalab container environment.
+This document describes how to test an upgraded Spark version while maintaining access to the Hive metastore in the Oracle Health HealtheDataLab container environment.
 
 ## The Key Discovery
 

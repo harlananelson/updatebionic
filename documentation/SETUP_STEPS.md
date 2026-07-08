@@ -1,6 +1,6 @@
 # Container Setup Steps
 
-This document provides step-by-step instructions for setting up the IU Health Datalab container environment with dual lhn environments for development and production testing.
+This document provides step-by-step instructions for setting up the Oracle Health HealtheDataLab container environment with dual lhn environments for development and production testing.
 
 ## Quick Start
 

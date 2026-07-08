@@ -443,7 +443,7 @@ To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLeve
 26/02/13 13:59:35 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
 26/02/13 13:59:36 WARN Client: Neither spark.yarn.jars nor spark.yarn.archive is set, falling back to uploading libraries under SPARK_HOME.
 26/02/13 14:00:15 WARN Utils: spark.executor.instances less than spark.dynamicAllocation.minExecutors is invalid, ignoring its setting, please update your configs.
-2026-02-13 14:00:15,900 - root - INFO - Spark Session Started by iuhealth.header.py
+2026-02-13 14:00:15,900 - root - INFO - Spark Session Started by hdl.header.py
 lhn imported successfully
 
 ========== Part 9: Create Development Environment (lhn_dev) ==========
