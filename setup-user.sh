@@ -907,14 +907,14 @@ if [[ -d "$LHN_PERSIST" ]]; then
     git config --global --add safe.directory "$LHN_PERSIST" 2>/dev/null || true
     ensure_ssh_remote "$LHN_PERSIST"
     cd "$LHN_PERSIST"
-    git fetch --all --tags
+    git fetch origin main
     # Use older git-compatible command (--show-current requires git 2.22+)
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
     if [[ "$CURRENT_BRANCH" != "main" ]]; then
         echo "WARNING: lhn is on branch '$CURRENT_BRANCH', switching to 'main'..."
         git checkout main
     fi
-    git pull origin main
+    git reset --hard origin/main
     echo "lhn updated to latest main branch"
 else
     echo "lhn not found at $LHN_PERSIST — cloning it (per-user persistent storage)..."
@@ -941,7 +941,7 @@ if [[ -d "$SPARK_CONFIG_PERSIST" ]]; then
     git config --global --add safe.directory "$SPARK_CONFIG_PERSIST" 2>/dev/null || true
     ensure_ssh_remote "$SPARK_CONFIG_PERSIST"
     cd "$SPARK_CONFIG_PERSIST"
-    git pull origin main 2>/dev/null || echo "  (pull skipped or failed)"
+    git fetch origin main 2>/dev/null && git reset --hard origin/main 2>/dev/null || echo "  (update skipped or failed)"
 else
     echo "spark_config_mapper not found at $SPARK_CONFIG_PERSIST — cloning it..."
     mkdir -p "$PERSIST_BASE"
@@ -961,7 +961,7 @@ if [[ -d "$OMOP_CONCEPT_PERSIST" ]]; then
     git config --global --add safe.directory "$OMOP_CONCEPT_PERSIST" 2>/dev/null || true
     ensure_ssh_remote "$OMOP_CONCEPT_PERSIST"
     cd "$OMOP_CONCEPT_PERSIST"
-    git pull origin main 2>/dev/null || echo "  (pull skipped or failed)"
+    git fetch origin main 2>/dev/null && git reset --hard origin/main 2>/dev/null || echo "  (update skipped or failed)"
 else
     echo "WARNING: omop_concept_mapper not found at $OMOP_CONCEPT_PERSIST"
     echo "Will skip installation (may not be required)"
