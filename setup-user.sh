@@ -490,8 +490,13 @@ R_VERSION="4.4.0"
 PYTHON_VERSION="3.10"
 R_ENV_PATH="/tmp/r_env-$CURRENT_USER"
 
-if [ -d "$R_ENV_PATH" ]; then
-    echo "R environment already exists at $R_ENV_PATH. Removing and recreating..."
+SKIP_R_ENV_BUILD=0
+if [ -d "$R_ENV_PATH" ] && [ -x "$R_ENV_PATH/bin/R" ] && [ -d "$R_ENV_PATH/lib/R/library" ] && [ "${FORCE_R_ENV_SOLVE:-0}" != "1" ]; then
+    echo "R environment already complete at $R_ENV_PATH — skipping rebuild."
+    echo "(Set FORCE_R_ENV_SOLVE=1 to force a full rebuild.)"
+    SKIP_R_ENV_BUILD=1
+elif [ -d "$R_ENV_PATH" ]; then
+    echo "R environment at $R_ENV_PATH is incomplete or FORCE_R_ENV_SOLVE=1 — removing and recreating..."
     conda env remove -p "$R_ENV_PATH" -y 2>/dev/null || rm -rf "$R_ENV_PATH"
 fi
 
@@ -525,7 +530,7 @@ fi
 # env prefix, including the install.packages / remotes::install_github
 # libraries that live inside it. Set FORCE_R_ENV_SOLVE=1 to force a fresh
 # from-scratch build instead.
-CLONED_R_ENV=0
+CLONED_R_ENV="$SKIP_R_ENV_BUILD"   # 1 = already complete, skip solve + package installs
 if [ -z "${FORCE_R_ENV_SOLVE:-}" ]; then
     for candidate in /tmp/r_env-*; do
         [ "$candidate" = "$R_ENV_PATH" ] && continue
@@ -1061,11 +1066,15 @@ fi   # end BUILD_LHN_PROD guard (Part 8)
 echo ""
 echo "========== Part 9: Create Development Environment (lhn_dev) =========="
 
-# Remove existing environment if present
-if [[ -d "$DEV_ENV_PATH" ]]; then
-    echo "Removing existing development environment..."
-    conda env remove -p "$DEV_ENV_PATH" -y 2>/dev/null || rm -rf "$DEV_ENV_PATH"
-fi
+if [[ -d "$DEV_ENV_PATH" ]] && [[ -x "$DEV_ENV_PATH/bin/python" ]] && [[ "${FORCE_LHN_DEV_REBUILD:-0}" != "1" ]]; then
+    echo "lhn_dev already exists at $DEV_ENV_PATH — skipping rebuild."
+    echo "(Set FORCE_LHN_DEV_REBUILD=1 to force a full rebuild.)"
+    conda activate "$DEV_ENV_PATH"
+else
+    if [[ -d "$DEV_ENV_PATH" ]]; then
+        echo "Removing existing development environment..."
+        conda env remove -p "$DEV_ENV_PATH" -y 2>/dev/null || rm -rf "$DEV_ENV_PATH"
+    fi
 
 # Clone the Docker base environment (Python 3.7 + pyspark 2.4.4).
 # Clone by PREFIX ($OLD_CONDA_PATH), not the bare name `base`: with Miniconda
@@ -1147,9 +1156,11 @@ pip install duckdb
 echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
 pip install --no-cache-dir pandas==0.25.3 --force-reinstall
 
-# Install ipykernel and register
+# Install ipykernel
 echo "Installing ipykernel..."
 pip install ipykernel
+
+fi  # end lhn_dev skip/build block
 
 echo "Registering Jupyter kernel for development environment..."
 python -m ipykernel install --user --name "lhn_dev" --display-name "Python (lhn-dev v0.2.0)"
