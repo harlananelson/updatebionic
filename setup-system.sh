@@ -169,11 +169,28 @@ retry_cmd 3 30 "apt-get install" \
 echo "Updating pip in base conda..."
 "$OLD_CONDA_PATH/bin/python" -m pip install --upgrade pip
 
-# NOTE: duckdb + plotnine are NOT installed into /opt/conda base here. The
-# pyspark-lhn-dev kernel runs from /tmp/lhn_dev-$USER (a clone of base), and
-# setup-user.sh installs duckdb (Part 9) and plotnine via requirements.txt
-# into that clone directly. Polluting the docker base just costs ~2 min
-# during setup and serves no consumer (base isn't registered as a kernel).
+# Hybrid kernels (pyspark-lhn-dev / pyspark-lhn-prod) launch
+# /opt/conda/bin/python as the driver (for Hive metastore + yarn-client),
+# so packages that notebooks `import` (plotnine for lhn.plot.plotByTime,
+# duckdb for scd_phenotyping) MUST be on this interpreter — not only in
+# the per-user /tmp/lhn_dev-$USER clone.
+#
+# Install a py3.7-compatible plotnine into base here. setup-user.sh also
+# ensures plotnine in the clones + puts clone site-packages on the hybrid
+# kernel PYTHONPATH (belt-and-suspenders). Pin matches requirements.txt.
+echo "Installing plotnine into Docker base conda ($OLD_CONDA_PATH) for hybrid kernels..."
+if "$OLD_CONDA_PATH/bin/python" -c "import plotnine" 2>/dev/null; then
+    echo "  plotnine already importable in base ($("$OLD_CONDA_PATH/bin/python" -c 'import plotnine; print(plotnine.__version__)' 2>/dev/null))"
+else
+    # plotnine==0.8.0: last release with py3.7 wheels (see requirements.txt).
+    "$OLD_CONDA_PATH/bin/python" -m pip install --no-cache-dir 'plotnine==0.8.0' \
+        || echo "WARNING: plotnine install into base failed (setup-user.sh will retry)"
+fi
+if "$OLD_CONDA_PATH/bin/python" -c "import plotnine" 2>/dev/null; then
+    echo "  plotnine OK in base: $("$OLD_CONDA_PATH/bin/python" -c 'import plotnine; print(plotnine.__version__)')"
+else
+    echo "  WARNING: plotnine still not importable in $OLD_CONDA_PATH — hybrid kernels will miss it"
+fi
 
 # ========== Part 1.5: Install micromamba (fast solver) ==========
 #

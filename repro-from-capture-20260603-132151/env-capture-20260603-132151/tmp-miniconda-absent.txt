@@ -1,1 +1,0 @@
-/tmp/miniconda NOT PRESENT (expected in a fresh or pre-setup container)

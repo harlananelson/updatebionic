@@ -7,6 +7,7 @@ r-tidymodels
 r-targets
 r-tarchetypes
 r-gtsummary
+r-flextable
 r-ggpubr
 r-pacman
 r-pak

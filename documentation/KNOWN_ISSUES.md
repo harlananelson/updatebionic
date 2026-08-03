@@ -1,5 +1,95 @@
 # Known Issues and Troubleshooting
 
+## `ModuleNotFoundError: No module named 'plotnine'` on `pyspark-lhn-dev`
+
+### Cause
+
+The hybrid kernels **`pyspark-lhn-dev`** / **`pyspark-lhn-prod`**
+(display name **PySpark + lhn-dev (v0.2.0)**) launch **`/opt/conda/bin/python`**
+(Docker base) as the driver so Hive metastore + yarn-client work. Plotting
+packages from `requirements.txt` live in the per-user clones
+(`/tmp/lhn_dev-$USER`) and/or base. If plotnine is only in the clone and the
+kernel `PYTHONPATH` does not prepend clone `site-packages`, `import plotnine`
+fails even when setup installed it into the clone.
+
+`lhn.plot.plotByTime` needs plotnine at runtime.
+
+### Fix (in setup scripts)
+
+1. `setup-system.sh` / `ensure_plotnine_in_env` install `plotnine==0.8.0` into
+   `/opt/conda` (base).
+2. `setup-user.sh` always runs `ensure_plotnine_in_env` on lhn_dev (including
+   the “already exists — skip rebuild” path) and on base.
+3. Hybrid kernel `PYTHONPATH` **prepends** the clone’s `site-packages`.
+4. `requirements.txt` pins `plotnine==0.8.0` (last clean py3.7 release).
+
+Re-run `./setup-user.sh`, then **Kernel → Restart** any notebook that was
+already open. Morning setup does **not** update a kernel process started
+before setup finished.
+
+Quick check on `pyspark-lhn-dev`:
+
+```python
+import sys
+print(sys.executable)  # expect /opt/conda/bin/python
+import plotnine
+print(plotnine.__version__)  # expect 0.8.0
+from lhn import plotByTime
+```
+
+### Order of operations (important)
+
+`lhn.plot` binds `pn` **once** at import time:
+
+```python
+try:
+    import plotnine as pn
+except ImportError:
+    pn = None
+```
+
+If `lhn` / `lhn.plot` was imported **before** plotnine was available, later
+`pip install` or setup does **not** update `lhn.plot.pn`. You must either:
+
+- **Restart the kernel** after plotnine is installed, then import lhn, or  
+- **Rebind** after plotnine works:
+
+```python
+import plotnine
+import lhn.plot
+lhn.plot.pn = plotnine   # must be the plotnine package, not lhn.plot
+from lhn import plotByTime
+```
+
+Do **not** write `import lhn.plot as pn` then `lhn.plot.pn = pn` — that sets
+`pn` to the **lhn.plot module** and causes:
+
+```text
+AttributeError: module 'lhn.plot' has no attribute 'ggplot'
+```
+
+(`ggplot` lives on **plotnine**, not on `lhn.plot`.)
+
+### One-off install (without full setup)
+
+In a notebook on the hybrid kernel (same driver as setup):
+
+```python
+import sys
+!{sys.executable} -m pip install --user "plotnine==0.8.0"
+```
+
+Or in a terminal:
+
+```bash
+/opt/conda/bin/python -m pip install --no-cache-dir 'plotnine==0.8.0'
+# and/or into the clone:
+/tmp/lhn_dev-$(whoami)/bin/python -m pip install --no-cache-dir 'plotnine==0.8.0'
+/tmp/lhn_dev-$(whoami)/bin/python -m pip install --no-cache-dir 'pandas==0.25.3' --force-reinstall
+```
+
+Then restart the kernel (or rebind `lhn.plot.pn` as above).
+
 ## Dependency Warnings (Expected)
 
 When running `setup-lhn-dual-envs.sh`, you will see warnings like:

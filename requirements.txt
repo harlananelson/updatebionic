@@ -2,7 +2,11 @@ patsy
 numpy
 scipy
 pandas
-plotnine
+# plotnine 0.8.0 is the last release that installs cleanly on Python 3.7
+# (HDL Docker base + lhn clones). Newer plotnine needs py>=3.8/3.9.
+# Declares pandas>=1.1; we still pin pandas==0.25.3 for pyspark 2.4.4 —
+# pip warns, import still works (see documentation/KNOWN_ISSUES.md).
+plotnine==0.8.0
 lifelines
 geopandas
 jupyterlab-quarto

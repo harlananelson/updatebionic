@@ -23,11 +23,12 @@
         # (old /opt/conda for pyspark + new /tmp/miniconda + r_env for modern R+py)
         # plus kernel registration, reticulate, lhn clones, etc.
         dockerReproTest = let
-          reproDir = "${self}/repro-from-capture-20260603-132151";
+          reproDirPath = "${self}/repro-from-capture-20260603-132151";
         in pkgs.writeShellScriptBin "docker-repro-test" ''
           set -euo pipefail
 
-          if [ ! -d "${reproDir}" ]; then
+          reproDir="${reproDirPath}"
+          if [ ! -d "$reproDir" ]; then
             # Fallback when running from a checkout (not via nix run from store)
             if [ -d "$(pwd)/repro-from-capture-20260603-132151" ]; then
               reproDir="$(pwd)/repro-from-capture-20260603-132151"

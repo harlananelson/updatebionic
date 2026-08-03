@@ -1,1 +1,0 @@
-drwsrwsr-x 1 hnelson3 users 24 Oct 18  2023 /opt/conda

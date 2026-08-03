@@ -17,3 +17,6 @@ logs/
 
 # Secrets
 .env
+
+# Archived: superseded one-off experiments, kept on disk but untracked
+archive/
