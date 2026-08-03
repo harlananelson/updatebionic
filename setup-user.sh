@@ -201,6 +201,71 @@ BUILD_LHN_PROD="${BUILD_LHN_PROD:-0}"
 export PIP_CACHE_DIR="${PIP_CACHE_DIR:-$PERSIST_BASE/.cache/pip}"
 mkdir -p "$PIP_CACHE_DIR" 2>/dev/null || true
 
+# ---------------------------------------------------------------------------
+# plotnine for hybrid PySpark kernels (pyspark-lhn-dev / pyspark-lhn-prod)
+#
+# Those kernels launch /opt/conda/bin/python as the driver (metastore + yarn),
+# while requirements.txt packages (plotnine, duckdb, …) are installed into the
+# per-user clones under /tmp/lhn_dev-$USER. If plotnine is only in the clone,
+# notebooks get: ModuleNotFoundError: No module named 'plotnine'.
+#
+# ensure_plotnine_in_env  — install plotnine==0.8.0 (py3.7 pin) if missing
+# site_packages_for       — path used on hybrid-kernel PYTHONPATH so clone
+#                           site-packages are visible to base python
+# ---------------------------------------------------------------------------
+ensure_plotnine_in_env() {
+    local env_path="$1"
+    local py="${env_path}/bin/python"
+    local ver
+    local base
+    base=$(basename "$env_path")
+
+    if [[ ! -x "$py" ]]; then
+        echo "WARNING: no python at $py — skip plotnine ensure"
+        return 0
+    fi
+
+    if "$py" -c "import plotnine" 2>/dev/null; then
+        ver=$("$py" -c "import plotnine; print(plotnine.__version__)" 2>/dev/null || echo "?")
+        echo "plotnine already importable in $env_path ($ver)"
+        return 0
+    fi
+
+    echo "Installing plotnine==0.8.0 into $env_path (Python 3.7 pin for HDL)..."
+    if ! "$py" -m pip install --no-cache-dir "plotnine==0.8.0"; then
+        echo "WARNING: plotnine install failed in $env_path"
+        return 0
+    fi
+
+    # lhn clones must keep pandas 0.25.3 for pyspark 2.4.4 (plotnine may pull newer)
+    case "$base" in
+        lhn_dev*|lhn_prod*)
+            "$py" -m pip install --no-cache-dir "pandas==0.25.3" --force-reinstall || true
+            ;;
+    esac
+
+    if "$py" -c "import plotnine" 2>/dev/null; then
+        ver=$("$py" -c "import plotnine; print(plotnine.__version__)" 2>/dev/null || echo "?")
+        echo "plotnine OK in $env_path ($ver)"
+    else
+        echo "WARNING: plotnine still not importable in $env_path after install"
+    fi
+}
+
+site_packages_for() {
+    local env_path="$1"
+    local py="${env_path}/bin/python"
+    local sp
+    if [[ -x "$py" ]]; then
+        sp=$("$py" -c "import site; print(site.getsitepackages()[0])" 2>/dev/null || true)
+        if [[ -n "$sp" ]]; then
+            echo "$sp"
+            return 0
+        fi
+    fi
+    echo "${env_path}/lib/python3.7/site-packages"
+}
+
 # Node-wide system-setup sentinel (written by setup-system.sh).
 #
 # This node is SHARED: /tmp, /opt and /usr/local are visible to every user,
@@ -1029,7 +1094,12 @@ rm -rf "$PROD_ENV_PATH/lib/python3.7/site-packages/pandas-*.dist-info"
 # Clear pip cache and install fresh
 pip cache purge 2>/dev/null || true
 echo "Installing pandas 0.25.3 fresh (for pyspark 2.4.4 compatibility)..."
-pip install --no-cache-dir pandas==0.25.3
+# --only-binary=:all: is REQUIRED, not an optimisation. Without it pip may choose the
+# sdist and build under PEP 517 isolation, where the throwaway build env has a modern
+# setuptools that no longer ships pkg_resources -- pandas 0.25.3's setup.py imports it,
+# so the build dies with "No module named 'pkg_resources'" and takes the whole Part
+# with it (observed 2026-08-03). A cp37 manylinux wheel exists, so forcing it is safe.
+pip install --no-cache-dir --only-binary=:all: pandas==0.25.3
 
 # Install additional packages from requirements.txt (same as updatebionic-ml.sh)
 # These packages are needed by lhn for plotting and data analysis
@@ -1039,17 +1109,28 @@ if [[ -f "$REQUIREMENTS_FILE" ]]; then
     pip install -r "$REQUIREMENTS_FILE"
 else
     echo "Warning: $REQUIREMENTS_FILE not found, installing critical packages individually..."
-    pip install plotnine lifelines
+    pip install 'plotnine==0.8.0' lifelines
 fi
 
 # Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
 # pyspark 2.4.4 requires pandas 0.25.x
 echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
-pip install --no-cache-dir pandas==0.25.3 --force-reinstall
+# --force-reinstall alone does NOT safely downgrade from a 1.x that requirements.txt
+# (or plotnine) dragged in: pandas 1.x ships pandas/io/parsers/ as a PACKAGE DIRECTORY
+# while 0.25.3 ships parsers.py as a MODULE, and pip leaves the directory behind. It
+# then shadows the module and every later import dies with "cannot import name
+# 'STR_NA_VALUES' from 'pandas._libs.parsers'" (observed 2026-08-03). Clearing the tree
+# first is the same fix already applied on the fresh-install path above.
+pip uninstall pandas -y 2>/dev/null || true
+rm -rf "$PROD_ENV_PATH/lib/python3.7/site-packages/pandas"
+rm -rf "$PROD_ENV_PATH"/lib/python3.7/site-packages/pandas-*.dist-info
+pip install --no-cache-dir --only-binary=:all: pandas==0.25.3
 
 # Install ipykernel and register
 echo "Installing ipykernel..."
 pip install ipykernel
+
+ensure_plotnine_in_env "$PROD_ENV_PATH"
 
 echo "Registering Jupyter kernel for production environment..."
 python -m ipykernel install --user --name "lhn_prod" --display-name "Python (lhn-prod v0.1.0)"
@@ -1070,6 +1151,9 @@ if [[ -d "$DEV_ENV_PATH" ]] && [[ -x "$DEV_ENV_PATH/bin/python" ]] && [[ "${FORC
     echo "lhn_dev already exists at $DEV_ENV_PATH — skipping rebuild."
     echo "(Set FORCE_LHN_DEV_REBUILD=1 to force a full rebuild.)"
     conda activate "$DEV_ENV_PATH"
+    # Skip path used to omit requirements entirely — ensure plotnine every run
+    # so hybrid kernels + lhn.plot.plotByTime work without a full rebuild.
+    ensure_plotnine_in_env "$DEV_ENV_PATH"
 else
     if [[ -d "$DEV_ENV_PATH" ]]; then
         echo "Removing existing development environment..."
@@ -1108,7 +1192,12 @@ rm -rf "$DEV_ENV_PATH/lib/python3.7/site-packages/pandas"
 rm -rf "$DEV_ENV_PATH/lib/python3.7/site-packages/pandas-*.dist-info"
 pip cache purge 2>/dev/null || true
 echo "Installing pandas 0.25.3 fresh (for pyspark 2.4.4 compatibility)..."
-pip install --no-cache-dir pandas==0.25.3
+# --only-binary=:all: is REQUIRED, not an optimisation. Without it pip may choose the
+# sdist and build under PEP 517 isolation, where the throwaway build env has a modern
+# setuptools that no longer ships pkg_resources -- pandas 0.25.3's setup.py imports it,
+# so the build dies with "No module named 'pkg_resources'" and takes the whole Part
+# with it (observed 2026-08-03). A cp37 manylinux wheel exists, so forcing it is safe.
+pip install --no-cache-dir --only-binary=:all: pandas==0.25.3
 
 echo "Installing dependencies for refactored lhn from persistent storage..."
 
@@ -1144,7 +1233,7 @@ if [[ -f "$REQUIREMENTS_FILE" ]]; then
     pip install -r "$REQUIREMENTS_FILE"
 else
     echo "Warning: $REQUIREMENTS_FILE not found, installing critical packages individually..."
-    pip install plotnine lifelines
+    pip install 'plotnine==0.8.0' lifelines
 fi
 
 # Install duckdb for scd_phenotyping (ICD phenotype classification)
@@ -1154,21 +1243,44 @@ pip install duckdb
 # Restore pandas 0.25.3 after requirements.txt (transitive deps may have upgraded it)
 # pyspark 2.4.4 requires pandas 0.25.x
 echo "Restoring pandas 0.25.3 (required for pyspark 2.4.4 compatibility)..."
-pip install --no-cache-dir pandas==0.25.3 --force-reinstall
+# See the identical note in Part 8: --force-reinstall leaves pandas 1.x's
+# pandas/io/parsers/ DIRECTORY shadowing 0.25.3's parsers.py module, and every later
+# import dies with "cannot import name 'STR_NA_VALUES'" (observed 2026-08-03).
+pip uninstall pandas -y 2>/dev/null || true
+rm -rf "$DEV_ENV_PATH/lib/python3.7/site-packages/pandas"
+rm -rf "$DEV_ENV_PATH"/lib/python3.7/site-packages/pandas-*.dist-info
+pip install --no-cache-dir --only-binary=:all: pandas==0.25.3
 
 # Install ipykernel
 echo "Installing ipykernel..."
 pip install ipykernel
 
+# Full-build path: requirements.txt should have brought plotnine; re-check.
+ensure_plotnine_in_env "$DEV_ENV_PATH"
+
 fi  # end lhn_dev skip/build block
 
 echo "Registering Jupyter kernel for development environment..."
-python -m ipykernel install --user --name "lhn_dev" --display-name "Python (lhn-dev v0.2.0)"
+# Use the env's interpreter EXPLICITLY rather than trusting `conda activate` to have
+# mutated PATH -- the same defensive idiom already used for python310_renv above.
+# On 2026-08-03 the skip-rebuild path reached here with bare `python` still resolving to
+# /tmp/miniconda/bin/python, which has no ipykernel. Under `set -e` that one line killed
+# Part 9 outright, so the pyspark-lhn-dev kernel written ~140 lines below was never
+# created and every lhn notebook failed with "No such kernel". Addressing the symptom
+# (activation) would leave the fragility; addressing the interpreter removes it.
+DEV_ENV_PYTHON="$DEV_ENV_PATH/bin/python"
+"$DEV_ENV_PYTHON" -m ipykernel install --user --name "lhn_dev" --display-name "Python (lhn-dev v0.2.0)"
 
 # Verify installation
 echo "Verifying lhn installation..."
-python -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lhn import failed"
-python -c "import duckdb; print(f'duckdb {duckdb.__version__} installed')" || echo "WARNING: duckdb import failed"
+"$DEV_ENV_PYTHON" -c "import lhn; print(f'lhn imported successfully')" || echo "WARNING: lhn import failed"
+"$DEV_ENV_PYTHON" -c "import duckdb; print(f'duckdb {duckdb.__version__} installed')" || echo "WARNING: duckdb import failed"
+"$DEV_ENV_PYTHON" -c "import plotnine; print(f'plotnine {plotnine.__version__} installed (lhn_dev)')" \
+    || echo "WARNING: plotnine import failed in lhn_dev"
+
+# Hybrid kernels use /opt/conda/bin/python — plotnine must be on base too.
+echo "Ensuring plotnine on Docker base (hybrid kernel driver)..."
+ensure_plotnine_in_env "$OLD_CONDA_PATH"
 
 conda deactivate
 
@@ -1275,6 +1387,12 @@ fi
 #     env from the start (rather than inheriting whatever the bare
 #     kernel launch had).
 
+# site-packages from the per-user clones so plotnine/duckdb/etc. installed
+# there are importable by the hybrid driver (/opt/conda/bin/python). Without
+# this, notebooks see ModuleNotFoundError for packages that only live in the clone.
+PROD_SITE="$(site_packages_for "$PROD_ENV_PATH")"
+DEV_SITE="$(site_packages_for "$DEV_ENV_PATH")"
+
 # Create kernel directory for pyspark-lhn-prod
 KERNEL_DIR_PROD="$HOME/.local/share/jupyter/kernels/pyspark-lhn-prod"
 mkdir -p "$KERNEL_DIR_PROD"
@@ -1286,14 +1404,14 @@ cat > "$KERNEL_DIR_PROD/kernel.json" << EOF
   "env": {
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
-    "PYTHONPATH": "$LHN_PROD_CLONE:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
+    "PYTHONPATH": "$PROD_SITE:$LHN_PROD_CLONE:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
     "PYSPARK_PYTHON": "python3",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell"
   }
 }
 EOF
-echo "Created: PySpark + lhn-prod (v0.1.0)"
+echo "Created: PySpark + lhn-prod (v0.1.0)  (site-packages: $PROD_SITE)"
 
 # Create kernel directory for pyspark-lhn-dev
 KERNEL_DIR_DEV="$HOME/.local/share/jupyter/kernels/pyspark-lhn-dev"
@@ -1306,14 +1424,28 @@ cat > "$KERNEL_DIR_DEV/kernel.json" << EOF
   "env": {
     "SPARK_HOME": "/usr/local/spark",
     "HADOOP_CONF_DIR": "/etc/jupyter/configs",
-    "PYTHONPATH": "$LHN_PERSIST:$SPARK_CONFIG_PERSIST:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
+    "PYTHONPATH": "$DEV_SITE:$LHN_PERSIST:$SPARK_CONFIG_PERSIST:/usr/local/spark/python:$PY4J_ZIP:\${PYTHONPATH}",
     "PYSPARK_PYTHON": "python3",
     "PYSPARK_DRIVER_PYTHON": "/opt/conda/bin/python",
     "PYSPARK_SUBMIT_ARGS": "--master yarn --deploy-mode client pyspark-shell"
   }
 }
 EOF
-echo "Created: PySpark + lhn-dev (v0.2.0)"
+echo "Created: PySpark + lhn-dev (v0.2.0)  (site-packages: $DEV_SITE)"
+
+# Verify hybrid-kernel view of plotnine (same interpreter + same PYTHONPATH prefix)
+echo "Verifying plotnine via hybrid-kernel PYTHONPATH + base python..."
+if PYTHONPATH="$DEV_SITE:${PYTHONPATH:-}" "$OLD_CONDA_PATH/bin/python" -c "import plotnine; print('hybrid plotnine', plotnine.__version__)" 2>/dev/null; then
+    echo "  OK: plotnine importable under pyspark-lhn-dev-equivalent path"
+else
+    echo "  WARNING: plotnine NOT importable for hybrid kernel — re-run ensure or check $DEV_SITE"
+    echo "  (Clone site-packages: $DEV_SITE)"
+fi
+# Live Jupyter kernels started *before* this script keep their old env. lhn.plot
+# also caches pn=None at first import if plotnine was missing — restart kernels
+# after setup (or rebind: import plotnine; import lhn.plot; lhn.plot.pn = plotnine).
+echo "  NOTE: Restart Jupyter kernels after setup-user so PySpark+lhn-dev picks up"
+echo "        plotnine/PYTHONPATH. Already-imported lhn.plot needs restart or rebind."
 
 # Create kernels for upgraded Spark with metastore access
 # These use the cloned environments (with newer pyspark if installed) but set HADOOP_CONF_DIR
@@ -1447,6 +1579,15 @@ echo ""
 echo "  OTHER KERNELS:"
 echo "    Python 3.10 (r_env)  <- For Python ML work (no Spark)"
 echo "    R 4.4.0 (r_env)      <- For R analysis"
+echo ""
+echo "  PLOTNINE / PLOTS (hybrid PySpark kernels):"
+echo "    setup-user installs plotnine==0.8.0 into lhn_dev + /opt/conda and sets"
+echo "    PYTHONPATH for pyspark-lhn-dev. After this script: Kernel → Restart any"
+echo "    open notebook (kernels started before setup keep a stale env)."
+echo "    If lhn was imported before plotnine worked, either restart or rebind:"
+echo "      import plotnine; import lhn.plot; lhn.plot.pn = plotnine"
+echo "    Do not: import lhn.plot as pn  (causes 'lhn.plot has no attribute ggplot')."
+echo "    See documentation/KNOWN_ISSUES.md (plotnine section)."
 echo ""
 echo "  UPGRADED SPARK NOTE:"
 echo "    The 'Spark Upgraded' kernels use HADOOP_CONF_DIR=/etc/jupyter/configs"
