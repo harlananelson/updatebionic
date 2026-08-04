@@ -429,12 +429,24 @@ retry_cmd() {
 # for username/password. Idempotent — no-op if already SSH.
 ensure_ssh_remote() {
     local dir="$1"
-    local current_url
+    local current_url ssh_url safe_url
     current_url=$(git -C "$dir" remote get-url origin 2>/dev/null || true)
-    if [[ "$current_url" == https://github.com/* ]]; then
-        local ssh_url
-        ssh_url=$(echo "$current_url" | sed 's|https://github.com/|git@github.com:|')
-        echo "  WARNING: remote was HTTPS ($current_url) — correcting to SSH..."
+
+    # Match ANY github HTTPS remote, INCLUDING one carrying a credential in the userinfo
+    # position (https://<token>@github.com/...). The old glob was `https://github.com/*`,
+    # which a token URL does not match — so the one case that most needed correcting was
+    # the one silently skipped. Reported 2026-08-04 after a gho_ token was found embedded
+    # in the transfer-archive remote and printed to a terminal by `git remote -v`.
+    if [[ "$current_url" =~ ^https://([^@/]*@)?github\.com/(.*)$ ]]; then
+        ssh_url="git@github.com:${BASH_REMATCH[2]}"
+        safe_url="https://github.com/${BASH_REMATCH[2]}"
+        if [[ -n "${BASH_REMATCH[1]}" ]]; then
+            # NEVER echo current_url here: it carries the credential.
+            echo "  WARNING: remote carried an EMBEDDED CREDENTIAL — replacing with SSH."
+            echo "           (URL not printed. Rotate that token: it has been stored in .git/config)"
+        else
+            echo "  WARNING: remote was HTTPS ($safe_url) — correcting to SSH..."
+        fi
         git -C "$dir" remote set-url origin "$ssh_url"
         echo "  Remote URL corrected to $ssh_url"
     fi
