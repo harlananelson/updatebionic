@@ -156,7 +156,14 @@ echo "========== Part 1: System Updates =========="
 
 # Update package lists and install system dependencies
 echo "Updating apt package lists..."
-sudo apt-get update
+# A dead THIRD-PARTY source must not abort the whole node setup. 2026-10-22: the stale
+# repos.mesosphere.com (xenial) source returned "Network is unreachable" and, under
+# `set -e`, killed setup-system.sh here, so setup-user.sh exited and the 08:00 batch waited
+# its full 90 min for a setup that had already stopped. The `apt-get install` below is the
+# backstop: if apt is genuinely broken it fails 3x and this script still exits non-zero.
+# The exit code is printed, not hidden. Remove the dead source under
+# /etc/apt/sources.list.d when someone with node access can.
+sudo apt-get update || echo "WARN: apt-get update exited $? (continuing; a stale third-party index is not fatal)"
 
 # Consolidated system dependencies for geopandas, plotting, and other R packages.
 # build-essential and gfortran compile R packages from source (lobstr, butcher, etc.).
