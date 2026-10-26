@@ -163,6 +163,13 @@ echo "Updating apt package lists..."
 # backstop: if apt is genuinely broken it fails 3x and this script still exits non-zero.
 # The exit code is printed, not hidden. Remove the dead source under
 # /etc/apt/sources.list.d when someone with node access can.
+# Disable the dead Mesosphere apt source if present. Only the SOURCE line is commented;
+# the installed mesos package (Spark's cluster manager) is left untouched. Idempotent.
+MESOS_LIST="/etc/apt/sources.list.d/mesosphere.list"
+if [ -f "$MESOS_LIST" ] && grep -q '^deb .*mesosphere' "$MESOS_LIST"; then
+    echo "Disabling stale Mesosphere apt source in $MESOS_LIST"
+    sudo sed -i 's|^deb \(.*mesosphere\)|#deb \1|' "$MESOS_LIST" || echo "WARN: could not edit $MESOS_LIST"
+fi
 sudo apt-get update || echo "WARN: apt-get update exited $? (continuing; a stale third-party index is not fatal)"
 
 # Consolidated system dependencies for geopandas, plotting, and other R packages.
