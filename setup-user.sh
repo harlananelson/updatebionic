@@ -475,37 +475,67 @@ SSH_PERSIST_DIR="$PERSIST_BASE/.ssh"
 # Restore SSH keys from persistent storage if they exist
 if [[ -d "$SSH_PERSIST_DIR" ]] && [[ -n "$(ls -A "$SSH_PERSIST_DIR" 2>/dev/null)" ]]; then
     echo "Restoring SSH keys from persistent storage ($SSH_PERSIST_DIR)..."
-    cp -n "$SSH_PERSIST_DIR"/* ~/.ssh/ 2>/dev/null || true
-    # Set correct permissions on private keys (read/write for owner only)
+    # hdl-pass stays in persistent storage. Do not copy it into ~/.ssh.
+    for _f in "$SSH_PERSIST_DIR"/*; do
+        [[ -e "$_f" ]] || continue
+        [[ "$(basename "$_f")" == "hdl-pass" ]] && continue
+        cp -n "$_f" ~/.ssh/ 2>/dev/null || true
+    done
+    rm -f ~/.ssh/hdl-pass
     chmod 600 ~/.ssh/id_* 2>/dev/null || true
-    # Set correct permissions on public keys (readable by others)
     chmod 644 ~/.ssh/*.pub 2>/dev/null || true
-    # Restore known_hosts if present
     [[ -f "$SSH_PERSIST_DIR/known_hosts" ]] && cp -n "$SSH_PERSIST_DIR/known_hosts" ~/.ssh/
     echo "SSH keys restored successfully."
 
-    # Start ssh-agent and add key (so passphrase is only entered once)
-    echo "Starting ssh-agent..."
-    eval "$(ssh-agent -s)"
+    # ssh-add -l exits 1 (agent up, no key) or 2 (no agent). Either status
+    # aborts the script under set -e unless it is inside if. A fresh
+    # automation shell has no SSH_AUTH_SOCK; exit 0 only means some identity
+    # is loaded, so require ED25519 before trusting it. The pipeline is
+    # inside if so pipefail cannot kill the script.
+    agent_rc=2
+    if [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
+        if ssh-add -l >/dev/null 2>&1; then
+            agent_rc=0
+        else
+            agent_rc=$?
+        fi
+    fi
+    if [[ "$agent_rc" -eq 0 ]] && ! ssh-add -l 2>/dev/null | grep -q 'ED25519'; then
+        agent_rc=1
+    fi
 
-    # Support non-interactive passphrase entry via SSH_KEY_PASSPHRASE env var
-    # This enables automation (e.g., Playwright MCP) without manual input.
-    # If SSH_KEY_PASSPHRASE is not set, falls back to interactive prompt.
-    if [[ -n "${SSH_KEY_PASSPHRASE:-}" ]]; then
-        echo "Adding SSH key to agent (using SSH_KEY_PASSPHRASE)..."
-        # Create a temporary askpass script that echoes the passphrase
-        ASKPASS_SCRIPT=$(mktemp /tmp/ssh-askpass-XXXXXX)
-        cat > "$ASKPASS_SCRIPT" <<ASKEOF
-#!/bin/bash
-echo "\$SSH_KEY_PASSPHRASE"
-ASKEOF
-        chmod +x "$ASKPASS_SCRIPT"
-        # Use SSH_ASKPASS with DISPLAY unset to force askpass usage
-        SSH_ASKPASS="$ASKPASS_SCRIPT" SSH_ASKPASS_REQUIRE=force ssh-add ~/.ssh/id_ed25519 </dev/null
-        rm -f "$ASKPASS_SCRIPT"
+    if [[ "$agent_rc" -eq 0 ]]; then
+        echo "ssh-agent already has an ED25519 key; not asking for a passphrase."
     else
-        echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
-        ssh-add ~/.ssh/id_ed25519
+        if [[ "$agent_rc" -ne 1 ]]; then
+            echo "Starting ssh-agent (ssh-add -l status ${agent_rc})..."
+            eval "$(ssh-agent -s)"
+        else
+            echo "ssh-agent is up with no ED25519 key; adding id_ed25519."
+        fi
+
+        pass_file="$PERSIST_BASE/.ssh/hdl-pass"
+        if [[ -f "$pass_file" ]]; then
+            echo "Adding id_ed25519 from on-node hdl-pass (passphrase not printed)."
+            ASKPASS_SCRIPT=$(mktemp /tmp/ssh-askpass-XXXXXX)
+            printf '#!/bin/bash\ncat %q\n' "$pass_file" > "$ASKPASS_SCRIPT"
+            chmod 700 "$ASKPASS_SCRIPT"
+            # OpenSSH 7.6 ignores SSH_ASKPASS_REQUIRE. It uses SSH_ASKPASS only
+            # when DISPLAY is set and stdin is not a tty. Step 2 does not export
+            # DISPLAY, and a fresh shell does not inherit step 1.
+            DISPLAY="${DISPLAY:-:0}" \
+                SSH_ASKPASS="$ASKPASS_SCRIPT" \
+                SSH_ASKPASS_REQUIRE=force \
+                ssh-add ~/.ssh/id_ed25519 </dev/null
+            rm -f "$ASKPASS_SCRIPT"
+        elif [[ -t 0 ]]; then
+            echo "Adding SSH key to agent (you'll be prompted for passphrase once)..."
+            ssh-add ~/.ssh/id_ed25519
+        else
+            echo "ERROR: no ED25519 key loaded, no $pass_file, stdin is not a tty."
+            echo "Refusing to continue: git-over-SSH would block on a passphrase prompt."
+            exit 1
+        fi
     fi
 
     # Test GitHub connectivity
